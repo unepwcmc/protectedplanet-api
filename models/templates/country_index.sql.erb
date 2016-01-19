@@ -1,0 +1,11 @@
+SELECT
+  countries.name,
+  countries.iso_3,
+  regions.name AS region_name,
+  regions.iso AS region_iso,
+  country_statistics.*
+FROM countries
+  LEFT JOIN country_statistics ON country_statistics.country_id = countries.id
+  LEFT JOIN regions ON regions.id = countries.region_id
+OFFSET <%= page * per_page %>
+LIMIT  <%= per_page %>

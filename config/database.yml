@@ -1,0 +1,23 @@
+default: &default
+  host: localhost
+  encoding: unicode
+  adapter: postgis
+  pool: 5
+  timeout: 5000
+  username: postgres
+  database: pp_development
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+  database: pp_test
+
+production:
+  <<: *default
+  database: pp_production
+
+staging:
+  <<: *default
+  database: pp_staging
