@@ -9,4 +9,3 @@ require 'config/rabl'
 require 'config/active_record'
 
 Dir["#{File.dirname(__FILE__)}/../models/**/*.rb"].each {|f| require f}
-

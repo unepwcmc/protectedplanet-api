@@ -1,11 +1,10 @@
-ENV["RACK_ENV"] = "test"
+ENV["RACK_ENV"] = ENV["API_ENV"] = "test"
 
 require "minitest/autorun"
 require "rack/test"
 require "factory_girl"
 require "database_cleaner"
 require "config/environment"
-
 
 DatabaseCleaner.clean_with :truncation
 DatabaseCleaner.strategy = :transaction

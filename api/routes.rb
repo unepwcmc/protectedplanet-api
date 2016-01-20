@@ -9,7 +9,13 @@ module API
     formatter :json, Grape::Formatter::Rabl
 
     version "v3"
-    mount API::V3::ProtectedAreas
-    mount API::V3::Countries
+
+    resources :protected_areas do
+      mount API::V3::ProtectedAreas
+    end
+
+    resources :countries do
+      mount API::V3::Countries
+    end
   end
 end
