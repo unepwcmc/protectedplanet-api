@@ -2,3 +2,5 @@ language: ruby
 before_script:
   - psql -c 'create database pp_test' -U postgres
   - API_ENV=test bundle exec rake migrate
+addons:
+  postgresql: 9.3
