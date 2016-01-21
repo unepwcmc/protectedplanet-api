@@ -1,4 +1,4 @@
-ENV["RACK_ENV"] = ENV["API_ENV"] = "test"
+ENV["API_ENV"] = ENV["RACK_ENV"] = ENV["RAILS_ENV"] = "test"
 
 require "minitest/autorun"
 require "rack/test"

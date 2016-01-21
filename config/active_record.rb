@@ -1,4 +1,6 @@
-$environment = ENV["API_ENV"] || "development"
+require 'active_record'
+
+$environment = (ENV["API_ENV"] || ENV["RAILS_ENV"] || "development")
 db_config = YAML.load_file("config/database.yml")[$environment]
 
 ActiveRecord::Base.default_timezone = :utc
