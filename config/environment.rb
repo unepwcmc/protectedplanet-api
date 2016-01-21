@@ -2,7 +2,6 @@ require 'sinatra'
 require 'grape'
 require 'grape-rabl'
 require 'grape-kaminari'
-require 'active_record'
 require 'active_support'
 
 require 'config/rabl'
