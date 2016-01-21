@@ -30,19 +30,19 @@ class API::V3::CountriesTest < MiniTest::Test
     assert_equal(EXPECTED_GEOJSON, @json_response["countries"][0]["geojson"])
   end
 
-  def test_get_countries_WHO_returns_country_with_iso_3_WHO
-    create(:country, name: "Gallifrey", iso_3: "WHO")
-    get_with_rabl "/v3/countries/WHO"
+  def test_get_countries_WES_returns_country_with_iso_3_WES
+    create(:country, name: "Zubrowka", iso_3: "WES")
+    get_with_rabl "/v3/countries/WES"
 
     assert last_response.ok?
-    assert_equal("WHO", @json_response["country"]["id"])
-    assert_equal("WHO", @json_response["country"]["iso_3"])
-    assert_equal("Gallifrey", @json_response["country"]["name"])
+    assert_equal("WES", @json_response["country"]["id"])
+    assert_equal("WES", @json_response["country"]["iso_3"])
+    assert_equal("Zubrowka", @json_response["country"]["name"])
   end
 
-  def test_get_countries_WHO_with_geometry_returns_country_WHO_with_geojson
-    create(:country, name: "Gallifrey", iso_3: "WHO", bounding_box: "POINT(-122 47)")
-    get_with_rabl "/v3/countries/WHO"
+  def test_get_countries_WES_with_geometry_returns_country_WES_with_geojson
+    create(:country, name: "Zubrowka", iso_3: "WES", bounding_box: "POINT(-122 47)")
+    get_with_rabl "/v3/countries/WES"
 
     assert last_response.ok?
     assert_equal(EXPECTED_GEOJSON, @json_response["country"]["geojson"])

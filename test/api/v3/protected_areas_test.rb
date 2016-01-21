@@ -31,21 +31,43 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
   end
 
   def test_get_protected_areas_123_returns_protected_area_with_wdpa_id_123
-    create(:protected_area, name: "Bad Wolf", wdpa_id: 123)
+    create(:protected_area, name: "Darjeeling", wdpa_id: 123)
     get_with_rabl "/v3/protected_areas/123"
 
     assert last_response.ok?
     assert_equal(123, @json_response["protected_area"]["id"])
     assert_equal(123, @json_response["protected_area"]["wdpa_id"])
-    assert_equal("Bad Wolf", @json_response["protected_area"]["name"])
+    assert_equal("Darjeeling", @json_response["protected_area"]["name"])
   end
 
   def test_get_protected_areas_123_with_geometry_returns_protected_area_123_with_geojson
-    create(:protected_area, name: "Bad Wolf", wdpa_id: 123, the_geom: "POINT(-122 47)")
+    create(:protected_area, name: "Darjeeling", wdpa_id: 123, the_geom: "POINT(-122 47)")
     get_with_rabl "/v3/protected_areas/123"
 
     assert last_response.ok?
     assert_equal(EXPECTED_GEOJSON, @json_response["protected_area"]["geojson"])
   end
-end
 
+  def test_get_protected_areas_search_with_country_returns_pas_with_country
+    country = create(:country, name: "Zubrowka", iso_3: "WES")
+    create(:protected_area, name: "Darjeeling", countries: [country])
+    create(:protected_area, name: "From Another Country")
+
+    get_with_rabl "/v3/protected_areas/search", {country: "WES"}
+
+    assert last_response.ok?
+    assert_equal(1, @json_response["protected_areas"].size)
+    assert_equal("Darjeeling", @json_response["protected_areas"][0]["name"])
+  end
+
+  def test_get_protected_areas_search_with_marine_returns_marine_pas
+    create(:protected_area, name: "Darjeeling", marine: true)
+    create(:protected_area, name: "Not Marine", marine: false)
+
+    get_with_rabl "/v3/protected_areas/search", {marine: true}
+
+    assert last_response.ok?
+    assert_equal(1, @json_response["protected_areas"].size)
+    assert_equal("Darjeeling", @json_response["protected_areas"][0]["name"])
+  end
+end
