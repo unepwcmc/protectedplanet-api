@@ -25,6 +25,7 @@ class API::V3::ProtectedAreas < Grape::API
   params do
     optional :country, type: String, regexp: /[a-zA-Z]{3}/
     optional :marine, type: Boolean
+    at_least_one_of :country, :marine
   end
   # annotations ==
   #
