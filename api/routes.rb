@@ -7,6 +7,7 @@ module API
   class Routes < Grape::API
     format :json
     formatter :json, Grape::Formatter::Rabl
+    content_type :json, 'application/json; charset=utf-8'
 
     version "v3"
 
