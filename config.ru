@@ -5,7 +5,7 @@ require 'config/environment'
 require 'api/routes'
 require 'web/routes'
 
-use Rack::Session::Cookie
+use Rack::Session::Cookie, secret: ENV["RACK_SESSION_SECRET"]
 use Rack::Csrf, :raise => true
 use Rack::Config do |env|
   env['api.tilt.root'] = "#{File.dirname(__FILE__)}/api"

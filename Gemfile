@@ -8,6 +8,7 @@ gem "sinatra", "~> 1.4.6"
 
 # Security
 gem "rack_csrf", "~> 2.5.0"
+gem "dotenv", "~> 2.1.0"
 
 # Database
 gem "pg", "~> 0.18.4"
