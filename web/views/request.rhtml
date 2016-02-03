@@ -1,0 +1,47 @@
+<div class="container--profile container--push-bottom">
+  <section class="hero">
+    <div class="hero__top">
+      <h1 class="hero__title hero__title--article">Request an API key</h1>
+    </div>
+  </section>
+
+  <div class="cover-story">
+    <div class="cover-story__cover statistics-cover"></div>
+    <div class="cover-story__story">
+      <div class="cover-story__story-border"></div>
+      <div class="cover-story__story-body">
+        <h3 class="cover-story__story-title">Request Form</h3>
+        <p class="cover-story__story-content">
+          <form class="s-form" method="POST" action="/request">
+            <%= Rack::Csrf.csrf_tag(env) %>
+            <fieldset>
+              <label for="email">Email</label>
+              <input class="big" name="email" required type="email">
+            </fieldset>
+
+            <fieldset>
+              <label for="fullname">Full name</label>
+              <input class="big" name="fullname" required type="text">
+            </fieldset>
+
+            <fieldset>
+              <label for="company">Company (Optional)</label>
+              <input class="big" name="company" type="text">
+            </fieldset>
+
+            <div class="info-box info-box--alt-color info-box--overflow">
+              <fieldset>
+                <label for="reason">Why would you like to use the Protected Planet API?</label>
+                <textarea name="reason" required></textarea>
+              </fieldset>
+            </div>
+
+            <button class="big-button" type="submit">
+              <i class="fa fa-paper-plane big-button__icon"></i>Submit request
+            </button>
+          </form>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
