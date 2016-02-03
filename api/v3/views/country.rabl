@@ -16,6 +16,12 @@ child :country_statistic => :statistics do
     :polygons_count, :points_count
 end
 
+child :pame_statistic => :pame_statistics do
+  attributes :assessments, :assessed_pas,
+    :average_score, :total_area_assessed,
+    :percentage_area_assessed
+end
+
 child :region do
   attributes :name, :iso
 end

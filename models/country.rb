@@ -5,6 +5,7 @@ class Country < ActiveRecord::Base
 
   belongs_to :region
   has_one :country_statistic
+  has_one :pame_statistic
   has_many :sub_locations
   has_many :protected_areas
 end
