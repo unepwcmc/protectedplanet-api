@@ -3,15 +3,13 @@
     <div class="hero__top">
       <h1 class="hero__title hero__title--article">Request an API key</h1>
     </div>
-  </section>
 
-  <div class="cover-story">
-    <div class="cover-story__cover statistics-cover"></div>
-    <div class="cover-story__story">
-      <div class="cover-story__story-border"></div>
-      <div class="cover-story__story-body">
-        <h3 class="cover-story__story-title">Request Form</h3>
-        <p class="cover-story__story-content">
+    <div class="cover-story">
+      <div class="cover-story__cover statistics-cover"></div>
+      <div class="cover-story__story">
+        <div class="cover-story__story-border"></div>
+        <div class="cover-story__story-body">
+          <p class="cover-story__story-content">
           <form class="s-form" method="POST" action="/request">
             <%= Rack::Csrf.csrf_tag(env) %>
             <fieldset>
@@ -40,8 +38,9 @@
               <i class="fa fa-paper-plane big-button__icon"></i>Submit request
             </button>
           </form>
-        </p>
+          </p>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
