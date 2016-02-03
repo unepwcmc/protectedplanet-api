@@ -1,0 +1,27 @@
+{
+  "name": "protectedplanet-api",
+  "version": "0.0.0",
+  "homepage": "https://github.com/unepwcmc/protectedplanet-api",
+  "authors": [
+    "Andrea Rossi <andrea.rossi@unep-wcmc.org>"
+  ],
+  "main": "config.ru",
+  "keywords": [
+    "protectedplanet",
+    "wcmc",
+    "ruby",
+    "sinatra",
+    "grape"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "protectedplanet-frontend": "latest"
+  }
+}
