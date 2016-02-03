@@ -1,3 +1,4 @@
+require 'rack/csrf'
 require 'sinatra'
 require 'grape'
 require 'grape-rabl'

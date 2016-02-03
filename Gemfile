@@ -6,6 +6,9 @@ gem "grape-rabl", "~> 0.4.1"
 gem "grape-kaminari", "~> 0.1.8"
 gem "sinatra", "~> 1.4.6"
 
+# Security
+gem "rack_csrf", "~> 2.5.0"
+
 # Database
 gem "pg", "~> 0.18.4"
 gem "activerecord", "~> 4.2.5"
