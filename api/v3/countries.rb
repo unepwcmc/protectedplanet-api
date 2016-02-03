@@ -3,6 +3,10 @@ require 'models/country'
 class API::V3::Countries < Grape::API
   include Grape::Kaminari
 
+  before do
+    authenticate!
+  end
+
   desc "Get all countries, paginated."
   paginate per_page: 25, max_per_page: 50
   params { optional :with_geometry, default: false, type: Boolean }

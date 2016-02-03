@@ -3,6 +3,10 @@ require 'models/protected_area'
 class API::V3::ProtectedAreas < Grape::API
   include Grape::Kaminari
 
+  before do
+    authenticate!
+  end
+
   #
   # == annotations
   desc "Get all protected areas, paginated."
