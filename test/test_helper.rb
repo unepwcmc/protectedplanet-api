@@ -1,4 +1,5 @@
 ENV["API_ENV"] = ENV["RACK_ENV"] = ENV["RAILS_ENV"] = "test"
+TEST_API_TOKEN = "123890123890"
 
 require "minitest/autorun"
 require "rack/test"
@@ -14,6 +15,7 @@ class Minitest::Test
 
   def setup
     DatabaseCleaner.start
+    ApiUser.create(token: TEST_API_TOKEN, active: true)
   end
 
   def teardown
@@ -21,7 +23,7 @@ class Minitest::Test
   end
 
   def get_with_rabl path, params={}
-    get path, params, {"api.tilt.root" => "api"}
+    get path, {token: TEST_API_TOKEN}.merge(params), {"api.tilt.root" => "api"}
     @json_response = JSON.parse(last_response.body) rescue nil
   end
 end
