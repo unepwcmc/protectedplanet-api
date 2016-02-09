@@ -4,6 +4,10 @@ module Web
       erb :home, layout: :layout
     end
 
+    get '/documentation' do
+      erb :documentation, layout: :layout
+    end
+
     get '/request' do
       erb :request, layout: :layout
     end
