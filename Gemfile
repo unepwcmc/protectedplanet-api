@@ -32,5 +32,3 @@ gem 'capistrano', '~> 3.4', require: false
 gem 'capistrano-bundler', '~> 1.1', require: false
 gem 'capistrano-rvm',   '~> 0.1', require: false
 gem 'capistrano-bower'
-gem 'capistrano-unicorn', :require => false
-
