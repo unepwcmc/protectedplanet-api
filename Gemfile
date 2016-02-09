@@ -14,6 +14,7 @@ gem "dotenv", "~> 2.1.0"
 # Database
 gem "pg", "~> 0.18.4"
 gem "activerecord", "~> 4.2.5"
+gem "active_record_migrations", "~> 4.2.5.1.1", require: false
 gem "activerecord-postgis-adapter", "~> 3.1.3"
 
 # Support

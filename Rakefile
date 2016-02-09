@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}")
 
+require 'active_record_migrations'
 require 'config/environment'
 require 'rake/testtask'
 
@@ -10,7 +11,8 @@ end
 
 task :default => [:test]
 
-desc "Migrate the database through scripts in db/migrate. Target specific version with VERSION=x"
-task :migrate do
-  ActiveRecord::Migrator.migrate('db/migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
+ActiveRecordMigrations.configure do |c|
+  c.yaml_config = "config/database.yml"
+  c.environment = $environment
 end
+ActiveRecordMigrations.load_tasks
