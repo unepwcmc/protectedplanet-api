@@ -7,6 +7,9 @@ require 'grape'
 require 'grape-rabl'
 require 'grape-kaminari'
 require 'active_support'
+require 'kramdown'
+
+Tilt.prefer Tilt::KramdownTemplate
 
 require 'config/rabl'
 require 'config/active_record'
