@@ -36,7 +36,7 @@ build/
 .rvmrc
 
 # Sinatra
-/web/public
+/web/public/protectedplanet-frontend
 
 # dotenv
 .env
