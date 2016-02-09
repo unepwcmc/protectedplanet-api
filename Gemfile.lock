@@ -45,11 +45,11 @@ GEM
     capistrano-bundler (1.1.4)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
-    capistrano-passenger (0.1.1)
-      capistrano (~> 3.0)
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+    capistrano-unicorn (0.1.10)
+      capistrano
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     database_cleaner (1.5.1)
@@ -152,8 +152,8 @@ DEPENDENCIES
   capistrano (~> 3.4)
   capistrano-bower
   capistrano-bundler (~> 1.1)
-  capistrano-passenger (~> 0.1.1)
   capistrano-rvm (~> 0.1)
+  capistrano-unicorn
   database_cleaner (~> 1.5.1)
   dotenv (~> 2.1.0)
   factory_girl (~> 4.0)
