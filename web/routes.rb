@@ -1,3 +1,5 @@
+require 'lib/mailer'
+
 module Web
   class Routes < Sinatra::Base
     get '/' do
@@ -14,6 +16,7 @@ module Web
 
     post '/request' do
       if @new_user = create_api_user(params)
+        Thread.new { Mailer.send_new_request_notification(@new_user) }
         erb :request_success, layout: :layout
       else
         erb :request_error, layout: :layout
