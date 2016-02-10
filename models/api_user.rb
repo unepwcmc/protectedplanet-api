@@ -7,7 +7,7 @@ class ApiUser < ActiveRecord::Base
   end
 
   def refresh_token
-    self.token = SecureRandom.hex(32)
+    self.token = SecureRandom.hex
     save
   end
 end
