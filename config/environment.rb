@@ -1,3 +1,5 @@
+$environment = (ENV["API_ENV"] || ENV["RACK_ENV"] || ENV["RAILS_ENV"] || "development")
+
 require 'dotenv'
 Dotenv.load
 
@@ -17,7 +19,11 @@ require 'active_support'
 require 'kramdown'
 Tilt.prefer Tilt::KramdownTemplate
 
+# Notifications
+require 'pony'
+
 # Configuration files
+require 'config/pony'
 require 'config/rabl'
 require 'config/active_record'
 

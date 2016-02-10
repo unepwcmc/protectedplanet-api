@@ -17,6 +17,9 @@ gem "activerecord", "~> 4.2.5"
 gem "active_record_migrations", "~> 4.2.5.1.1", require: false
 gem "activerecord-postgis-adapter", "~> 3.1.3"
 
+# Notifications
+gem "pony", "~> 1.11"
+
 # Support
 gem "rake", "~> 10.5.0"
 gem "activesupport", "~> 4.2.5"
