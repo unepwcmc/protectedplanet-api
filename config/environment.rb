@@ -23,6 +23,7 @@ Tilt.prefer Tilt::KramdownTemplate
 require 'pony'
 
 # Configuration files
+require 'config/secrets'
 require 'config/pony'
 require 'config/rabl'
 require 'config/active_record'
