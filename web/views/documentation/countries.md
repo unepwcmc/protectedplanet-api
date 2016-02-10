@@ -2,7 +2,9 @@
 
 ## `GET /countries`
 Returns all countries, paginated. Accepts a `with_geometry` parameter, to
-retrieve a `geojson` representation of the countries. The accepted parameters are:
+retrieve a `geojson` representation of the countries.
+
+The accepted parameters are:
 
 ~~~
 with_geometry (Boolean)
@@ -21,7 +23,9 @@ per_page (Number)
 
 ## `GET /countries/:iso_3`
 Returns the country with ISO3 `:iso_3`. A `geojson` representation
-of the geometry is also returned. The accepted parameters are:
+of the geometry is also returned.
+
+The accepted parameters are:
 
 ~~~
 with_geometry (Boolean)
