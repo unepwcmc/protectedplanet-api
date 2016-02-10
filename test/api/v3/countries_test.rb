@@ -1,5 +1,5 @@
 require "test_helper"
-require "api/routes"
+require "api/root"
 
 class API::V3::CountriesTest < MiniTest::Test
   include Rack::Test::Methods

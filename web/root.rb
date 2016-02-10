@@ -1,7 +1,7 @@
 require 'lib/mailer'
 
 module Web
-  class Routes < Sinatra::Base
+  class Root < Sinatra::Base
     get '/' do
       erb :home, layout: :layout
     end

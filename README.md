@@ -9,13 +9,13 @@ The Protected Planet API is a Rack application, written in Ruby. It is composed 
 * `/api/**/*`: [Grape](https://github.com/ruby-grape/grape)
 * `/web/**/*`: [Sinatra](http://www.sinatrarb.com/)
 
-The two frameworks are then cascaded inside Rack, in the [config.ru](/config.ru) file: 
+The two frameworks are then cascaded inside Rack, in the [config.ru](/config.ru) file:
 
 ```
-require ‘api/routes’
-require ‘web/routes’
+require ‘api/root’
+require ‘web/root’
 […]
-run Rack::Cascade.new [Web::Routes, API::Routes]
+run Rack::Cascade.new [Web::Root, API::Root]
 ```
 
 Both frameworks share a bunch of`ActiveRecord` models, which form a subset of the [ProtectedPlanet models](https://github.com/unepwcmc/ProtectedPlanet/tree/master/app/models), with the addition of the `ApiUser` model.

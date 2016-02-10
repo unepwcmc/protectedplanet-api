@@ -1,5 +1,5 @@
 require "test_helper"
-require "api/routes"
+require "api/root"
 
 class API::Authentication < MiniTest::Test
   include Rack::Test::Methods
