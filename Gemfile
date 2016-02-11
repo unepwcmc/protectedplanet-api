@@ -20,6 +20,9 @@ gem "activerecord-postgis-adapter", "~> 3.1.3"
 # Notifications
 gem "pony", "~> 1.11"
 
+# Analytics
+gem "appsignal", "~> 1.1.0.beta.5"
+
 # Support
 gem "rake", "~> 10.5.0"
 gem "activesupport", "~> 4.2.5"

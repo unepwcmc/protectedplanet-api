@@ -7,6 +7,7 @@ Dir["#{File.dirname(__FILE__)}/**/*.rb"].each {|f| require f}
 
 module API
   class Root < Grape::API
+    use Appsignal::Grape::Middleware
     helpers API::Helpers
 
     format :json
