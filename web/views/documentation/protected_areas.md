@@ -1,6 +1,6 @@
 # Protected Areas
 
-## `GET /protected_areas`
+## `GET /v3/protected_areas`
 Returns all protected areas, paginated. Accepts a `with_geometry` parameter, to
 retrieve a `geojson` representation of the protected area.
 
@@ -21,7 +21,7 @@ per_page (Number)
 
 ---
 
-## `GET /protected_areas/:wdpa_id`
+## `GET /v3/protected_areas/:wdpa_id`
 Returns the protected area with WDPA ID `:wdpa_id`. A `geojson` representation
 of the geometry is also returned.
 
@@ -35,7 +35,7 @@ with_geometry (Boolean)
 
 ---
 
-## `GET /protected_areas/search`
+## `GET /v3/protected_areas/search`
 Returns a collection of protected areas matching the given attributes. At the moment,
 search is possible on the `marine` attribute and on the country ISO.
 

@@ -1,6 +1,6 @@
 # Countries
 
-## `GET /countries`
+## `GET /v3/countries`
 Returns all countries, paginated. Accepts a `with_geometry` parameter, to
 retrieve a `geojson` representation of the countries.
 
@@ -21,7 +21,7 @@ per_page (Number)
 
 ---
 
-## `GET /countries/:iso_3`
+## `GET /v3/countries/:iso_3`
 Returns the country with ISO3 `:iso_3`. A `geojson` representation
 of the geometry is also returned.
 
