@@ -1,4 +1,4 @@
-ENV["API_ENV"] = ENV["RACK_ENV"] = ENV["RAILS_ENV"] = "test"
+$environment = ENV["API_ENV"] = ENV["RACK_ENV"] = ENV["RAILS_ENV"] = "test"
 TEST_API_TOKEN = "123890123890"
 
 require "minitest/autorun"

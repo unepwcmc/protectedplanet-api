@@ -8,7 +8,7 @@ Dir["#{File.dirname(__FILE__)}/**/*.rb"].each {|f| require f}
 
 module API
   class Root < Grape::API
-    use Appsignal::Grape::Middleware if Appsignal.active?
+    use Appsignal::Grape::Middleware unless $environment == "test"
 
     helpers API::Helpers
 
