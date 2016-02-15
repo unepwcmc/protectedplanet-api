@@ -3,9 +3,6 @@ require 'models/country'
 class API::V3::Countries < Grape::API
   include Grape::Kaminari
 
-  before do
-    authenticate!
-  end
 
   desc "Get all countries, paginated."
   paginate per_page: 25, max_per_page: 50
@@ -23,7 +20,7 @@ class API::V3::Countries < Grape::API
   get ":iso_3", rabl: "v3/views/country" do
     @with_geometry = params[:with_geometry]
     @country = Country.find_by_iso_3(
-      params[:iso_3]
+      params[:iso_3].upcase
     ) or error!(:not_found, 404)
   end
 end
