@@ -1,4 +1,4 @@
-require 'grape-appsignal'
+require 'appsignal/integrations/grape'
 require 'api/helpers'
 
 module API; end
