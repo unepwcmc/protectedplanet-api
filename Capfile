@@ -1,3 +1,6 @@
+require 'dotenv'
+Dotenv.load
+
 # Load DSL and set up stages
 require 'capistrano/setup'
 
@@ -22,6 +25,9 @@ require 'capistrano/bundler'
 # require 'capistrano/rails/assets'
 # require 'capistrano/rails/migrations'
 require 'capistrano/bower'
+
+# Send deploy trackers to Appsignal
+require 'appsignal/capistrano'
 
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
