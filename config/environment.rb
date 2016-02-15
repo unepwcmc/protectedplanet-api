@@ -14,7 +14,6 @@ require 'grape-rabl'
 require 'grape-kaminari'
 
 require 'appsignal'
-require 'appsignal/integrations/grape'
 Appsignal.start
 
 require 'active_support'

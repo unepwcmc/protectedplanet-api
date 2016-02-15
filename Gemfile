@@ -21,7 +21,8 @@ gem "activerecord-postgis-adapter", "~> 3.1.3"
 gem "pony", "~> 1.11"
 
 # Analytics
-gem "appsignal", "~> 1.1.0.beta.5"
+gem "appsignal", "~> 1.0.3"
+gem "grape-appsignal", "~> 0.4.1"
 
 # Support
 gem "rake", "~> 10.5.0"

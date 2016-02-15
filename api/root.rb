@@ -1,3 +1,4 @@
+require 'grape-appsignal'
 require 'api/helpers'
 
 module API; end
@@ -7,7 +8,8 @@ Dir["#{File.dirname(__FILE__)}/**/*.rb"].each {|f| require f}
 
 module API
   class Root < Grape::API
-    use Appsignal::Grape::Middleware
+    use Appsignal::Grape::Middleware if Appsignal.active?
+
     helpers API::Helpers
 
     format :json
