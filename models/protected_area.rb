@@ -13,7 +13,7 @@ class ProtectedArea < ActiveRecord::Base
   delegate :jurisdiction, to: :designation, allow_nil: true
 
   SEARCHES = {
-    country: -> (scope, value) { scope.joins(:countries).where("countries.iso_3 = ?", value) },
+    country: -> (scope, value) { scope.joins(:countries).where("countries.iso_3 = ?", value.upcase) },
     marine:  -> (scope, value) { scope.where(marine: value) }
   }
 

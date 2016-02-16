@@ -60,6 +60,18 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
     assert_equal("Darjeeling", @json_response["protected_areas"][0]["name"])
   end
 
+  def test_get_protected_areas_search_with_country_lowercase_returns_pas_with_country
+    country = create(:country, name: "Zubrowka", iso_3: "WES")
+    create(:protected_area, name: "Darjeeling", countries: [country])
+    create(:protected_area, name: "From Another Country")
+
+    get_with_rabl "/v3/protected_areas/search", {country: "wes"}
+
+    assert last_response.ok?
+    assert_equal(1, @json_response["protected_areas"].size)
+    assert_equal("Darjeeling", @json_response["protected_areas"][0]["name"])
+  end
+
   def test_get_protected_areas_search_with_marine_returns_marine_pas
     create(:protected_area, name: "Darjeeling", marine: true)
     create(:protected_area, name: "Not Marine", marine: false)
