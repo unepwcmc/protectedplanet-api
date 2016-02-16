@@ -11,7 +11,7 @@ namespace :deploy do
   desc 'Start application'
   task :start do
     on roles(:web), in: :sequence, wait: 5 do
-      execute "cd #{current_path} ; bundle exec unicorn_rails -c config/unicorn.rb -D -E #{fetch(:rails_env)}"
+      execute "cd #{current_path} ; bundle exec unicorn -c config/unicorn.rb -D -E #{fetch(:rack_env)}"
     end
   end
 
