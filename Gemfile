@@ -28,15 +28,23 @@ gem "rake", "~> 10.5.0"
 gem "activesupport", "~> 4.2.5"
 
 # Testing
-gem "minitest"
-gem "minitest-around", "~> 0.3.2"
-gem "database_cleaner", "~> 1.5.1"
-gem "factory_girl", "~> 4.0"
-gem "rack-test", "~> 0.6.3"
-
+group :test, :development do
+  gem "minitest"
+  gem "minitest-around", "~> 0.3.2"
+  gem "database_cleaner", "~> 1.5.1"
+  gem "factory_girl", "~> 4.0"
+  gem "rack-test", "~> 0.6.3"
+end
 
 # Deploy
-gem 'capistrano', '~> 3.4', require: false
-gem 'capistrano-bundler', '~> 1.1', require: false
-gem 'capistrano-rvm',   '~> 0.1', require: false
-gem 'capistrano-bower'
+group :development do
+  gem "capistrano", "~> 3.4", require: false
+  gem "capistrano-bundler", "~> 1.1", require: false
+  gem "capistrano-rvm",   "~> 0.1", require: false
+  gem "capistrano-bower"
+end
+
+# Server
+group :production, :staging do
+  gem "unicorn", "~> 5.0.1"
+end
