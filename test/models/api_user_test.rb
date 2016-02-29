@@ -23,6 +23,13 @@ class ApiUserTest < MiniTest::Test
     assert_equal api_user.token, "123456"
   end
 
+  def test_deactivate_sets_active_to_false
+    api_user = create(:api_user, active: true)
+
+    api_user.deactivate!
+    refute api_user.active
+  end
+
   def test_refresh_token_sets_a_new_token_for_the_api_user
     api_user = create(:api_user, token: "a token")
 
