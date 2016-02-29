@@ -1,11 +1,26 @@
-Hi there,
+<p>
+  Hi there,
 
-a request for a new API token has been submitted.
+  a request for a new API token has been submitted.
+</p>
 
-Here the details:
+<p>
+  Here the details:
+</p>
 
-- Name: <%= api_user.full_name %>
-- Email: <%= api_user.email %>
-- Company: <%= api_user.company %>
-- Reason for using the api:
-<%= api_user.reason %>
+<ul>
+  <li>
+    Name: <%= api_user.full_name %>
+  </li>
+  <li>
+    Email: <%= api_user.email %>
+  </li>
+  <li>
+    Company: <%= api_user.company %>
+  </li>
+  <li>
+    Reason for using the api: <%= api_user.reason %>
+  </li>
+</ul>
+
+<p>To activate this user, follow <a href="<%= activation_url %>">this link</a> and insert your administration credentials.</p>
