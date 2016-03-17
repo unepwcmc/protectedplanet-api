@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gem "grape", "~> 0.14.0"
 gem "grape-rabl", "~> 0.4.1"
 gem "grape-kaminari", "~> 0.1.8"
+gem "grape-cors", "~> 0.9.2"
 gem "sinatra", "~> 1.4.6"
 gem "kramdown", "~> 1.9.0"
 

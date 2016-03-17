@@ -1,5 +1,6 @@
 require 'appsignal/integrations/grape'
 require 'api/helpers'
+require 'grape-cors'
 
 module API; end
 module API::V3; end
@@ -34,3 +35,5 @@ module API
     end
   end
 end
+
+Grape::CORS.apply!
