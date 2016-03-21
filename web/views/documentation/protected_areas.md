@@ -19,6 +19,61 @@ per_page (Number)
   For performance reasons, the maximum value is 50.
 ~~~
 
+Sample response:
+
+~~~
+{
+    "protected_areas": [
+        {
+            "id": 40366,
+            "name": "Kaniabizo",
+            "original_name": "Kaniabizo",
+            "wdpa_id": 40366,
+            "countries": [
+                {
+                    "name": "Uganda",
+                    "iso_3": "UGA",
+                    "id": "UGA"
+                }
+            ],
+            "sublocations": {},
+            "iucn_category": {
+                "id": 8,
+                "name": "Not Reported"
+            },
+            "designation": {
+                "id": 3,
+                "name": "Forest Reserve"
+            },
+            "marine": false
+        },
+        {
+            "id": 64700,
+            "name": "Otzi",
+            "original_name": "Otzi (East and West)",
+            "wdpa_id": 64700,
+            "countries": [
+                {
+                    "name": "Uganda",
+                    "iso_3": "UGA",
+                    "id": "UGA"
+                }
+            ],
+            "sublocations": {},
+            "iucn_category": {
+                "id": 8,
+                "name": "Not Reported"
+            },
+            "designation": {
+                "id": 3,
+                "name": "Forest Reserve"
+            },
+            "marine": false
+        }
+    ]
+}
+~~~
+
 ---
 
 ## `GET /v3/protected_areas/:wdpa_id`
@@ -33,6 +88,57 @@ with_geometry (Boolean)
   Defaults to true.
 ~~~
 
+Sample response:
+
+~~~
+{
+    "protected_area": {
+        "id": 40366,
+        "name": "Kaniabizo",
+        "original_name": "Kaniabizo",
+        "wdpa_id": 40366,
+        "geojson": {
+            "type": "Feature",
+            "properties": {
+                "fill-opacity": 0.7,
+                "stroke-width": 0.05,
+                "stroke": "#40541b",
+                "fill": "#83ad35",
+                "marker-color": "#2B3146"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [ 29.785, -0.692 ],
+                        [ 29.782, -0.687 ],
+                        [ 29.785, -0.683 ],
+                        [ 29.789, -0.688 ],
+                        [ 29.785, -0.692 ]
+                    ]
+                ]
+            }
+        },
+        "countries": [
+            {
+                "name": "Uganda",
+                "iso_3": "UGA",
+                "id": "UGA"
+            }
+        ],
+        "sublocations": {},
+        "iucn_category": {
+            "id": 8,
+            "name": "Not Reported"
+        },
+        "designation": {
+            "id": 3,
+            "name": "Forest Reserve"
+        },
+        "marine": false
+    }
+}
+~~~
 ---
 
 ## `GET /v3/protected_areas/search`
@@ -57,4 +163,59 @@ page (Number)
 per_page (Number)
   Controls how many protected areas are returned per page. Defaults to 25.
   For performance reasons, the maximum value is 50.
+~~~
+
+Sample response:
+
+~~~
+{
+    "protected_areas": [
+        {
+            "id": 6722,
+            "name": "Keti Bunder South",
+            "original_name": "Keti Bunder South",
+            "wdpa_id": 6722,
+            "countries": [
+                {
+                    "name": "Pakistan",
+                    "iso_3": "PAK",
+                    "id": "PAK"
+                }
+            ],
+            "sublocations": {},
+            "iucn_category": {
+                "id": 8,
+                "name": "Not Reported"
+            },
+            "designation": {
+                "id": 16,
+                "name": "Wildlife Sanctuary"
+            },
+            "marine": false
+        },
+        {
+            "id": 166899,
+            "name": "Kyliiske Mouth",
+            "original_name": "Kyliiske Mouth",
+            "wdpa_id": 166899,
+            "countries": [
+                {
+                    "name": "Ukraine",
+                    "iso_3": "UKR",
+                    "id": "UKR"
+                }
+            ],
+            "sublocations": {},
+            "iucn_category": {
+                "id": 8,
+                "name": "Not Reported"
+            },
+            "designation": {
+                "id": 2,
+                "name": "Ramsar Site, Wetland of International Importance"
+            },
+            "marine": false
+        }
+    ]
+}
 ~~~
