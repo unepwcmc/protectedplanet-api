@@ -49,3 +49,14 @@ node :iucn_categories do |country|
     }
   end
 end
+
+node :governances do |country|
+  country.protected_areas_per_governance.map do |row|
+    {
+      id:             row["governance_id"].to_i,
+      name:           row["governance_name"],
+      pas_count:      row["count"].to_i,
+      pas_percentage: row["percentage"].to_f.round(2)
+    }
+  end
+end

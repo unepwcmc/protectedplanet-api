@@ -40,6 +40,17 @@ class Country < ActiveRecord::Base
     """)
   end
 
+  def protected_areas_per_governance
+    ActiveRecord::Base.connection.execute("""
+      SELECT governances.id AS governance_id, governances.name AS governance_name, pas_per_governances.count, round((pas_per_governances.count::decimal/(SUM(pas_per_governances.count) OVER ())::decimal) * 100, 2) AS percentage
+      FROM governances
+      INNER JOIN (
+        #{protected_areas_inner_join(:governance_id)}
+      ) AS pas_per_governances
+        ON pas_per_governances.governance_id = governances.id
+    """)
+  end
+
   private
 
   def protected_areas_inner_join group_by
