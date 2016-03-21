@@ -57,4 +57,37 @@ class API::V3::CountriesTest < MiniTest::Test
     assert last_response.ok?
     assert_equal(EXPECTED_GEOJSON, @json_response["country"]["geojson"])
   end
+
+  def test_get_countries_WES_returns_designations_with_counts
+    country = create(:country, name: "Zubrowka", iso_3: "WES", bounding_box: "POINT(-122 47)")
+    jurisdiction = create(:jurisdiction, name: "National")
+    designation = create(:designation, name: "National Hotel", jurisdiction: jurisdiction)
+    create(:protected_area, name: "Grand Budapest", countries: [country], designation: designation)
+
+    get_with_rabl "/v3/countries/wes"
+
+    assert last_response.ok?
+    assert_equal([{
+      "id" => designation.id,
+      "name" => "National Hotel",
+      "jurisdiction" => {"id" => jurisdiction.id, "name" => "National"},
+      "pas_count" => 1
+    }], @json_response["country"]["designations"])
+  end
+
+  def test_get_countries_WES_returns_iucn_categories_with_counts
+    country = create(:country, name: "Zubrowka", iso_3: "WES", bounding_box: "POINT(-122 47)")
+    iucn_category = create(:iucn_category, name: "IV")
+    create(:protected_area, name: "Grand Budapest", countries: [country], iucn_category: iucn_category)
+
+    get_with_rabl "/v3/countries/wes"
+
+    assert last_response.ok?
+    assert_equal([{
+      "id" => iucn_category.id,
+      "name" => "IV",
+      "pas_count" => 1,
+      "pas_percentage" => 100
+    }], @json_response["country"]["iucn_categories"])
+  end
 end

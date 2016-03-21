@@ -25,3 +25,27 @@ end
 child :region do
   attributes :name, :iso
 end
+
+node :designations do |country|
+  Jurisdiction.all.flat_map do |jurisdiction|
+    country.protected_areas_per_designation(jurisdiction).map do |row|
+      {
+        id:           row["designation_id"].to_i,
+        name:         row["designation_name"],
+        jurisdiction: {id: jurisdiction.id, name: jurisdiction.name},
+        pas_count:    row["count"].to_i
+      }
+    end
+  end
+end
+
+node :iucn_categories do |country|
+  country.protected_areas_per_iucn_category.map do |row|
+    {
+      id:             row["iucn_category_id"].to_i,
+      name:           row["iucn_category_name"],
+      pas_count:      row["count"].to_i,
+      pas_percentage: row["percentage"].to_f.round(2)
+    }
+  end
+end
