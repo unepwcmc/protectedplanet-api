@@ -14,7 +14,7 @@ require 'grape-rabl'
 require 'grape-kaminari'
 
 require 'appsignal'
-Appsignal.start
+Appsignal.start unless $environment == "test"
 
 require 'active_support'
 
