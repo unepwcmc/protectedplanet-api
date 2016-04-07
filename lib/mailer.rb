@@ -7,4 +7,13 @@ module Mailer
       html_body: NEW_REQUEST_TEMPLATE.result(binding)
     )
   end
+
+  NEW_ACTIVATION_TEMPLATE = ERB.new(File.read("lib/templates/new_activation_notification.erb"))
+  def self.send_new_activation_notification api_user, documentation_url
+    Pony.mail(
+      to: api_user.email,
+      subject: "Your Protected Planet API token",
+      html_body: NEW_ACTIVATION_TEMPLATE.result(binding)
+    )
+  end
 end
