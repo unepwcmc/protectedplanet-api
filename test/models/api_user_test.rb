@@ -36,5 +36,22 @@ class ApiUserTest < MiniTest::Test
     api_user.refresh_token
     refute_equal api_user.token, "a token"
   end
+
+  def test_access_to_returns_true_if_user_has_attribute_access
+    api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "marine"]})
+    assert api_user.access_to?(ProtectedArea, :marine)
+  end
+
+  def test_access_to_returns_false_if_user_has_no_attribute_access
+    api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "marine"]})
+    refute api_user.access_to?(ProtectedArea, :designation)
+  end
+
+  def test_access_to_with_model_instance
+    api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "marine"]})
+    protected_area = create(:protected_area)
+
+    assert api_user.access_to?(protected_area, :marine)
+  end
 end
 

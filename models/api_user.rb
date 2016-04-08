@@ -19,4 +19,22 @@ class ApiUser < ActiveRecord::Base
   def self.new_token
     SecureRandom.hex
   end
+
+  def access_to?(api_object, attribute)
+    return false if self.permissions.nil?
+
+    object_name = if api_object.is_a?(Class)
+      api_object.name
+    else
+      api_object.class.name
+    end
+
+    self.permissions[object_name]&.include?(attribute.to_s)
+  end
+
+  private
+
+  def set_permissions
+
+  end
 end

@@ -6,6 +6,7 @@ FactoryGirl.define do
     full_name "Test User"
     company "Test Company"
     reason "To test things"
+    permissions({"ProtectedArea" => ["name", "marine"]})
 
     token "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   end
