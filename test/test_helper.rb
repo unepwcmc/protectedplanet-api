@@ -28,4 +28,10 @@ class Minitest::Test
   end
 end
 
+class TestClass
+  def self.remove_module(mod)
+    mod.instance_methods.each{|m| undef_method(m)}
+  end
+end
+
 FactoryGirl.find_definitions
