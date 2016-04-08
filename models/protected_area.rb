@@ -1,7 +1,17 @@
 require 'models/concerns/geometry_concern'
+require 'models/concerns/api_object'
 
 class ProtectedArea < ActiveRecord::Base
   include GeometryConcern
+  include ApiObject
+
+  self.api_attributes = [
+    :wdpa_id,
+    :name, :original_name,
+    :geometry, :marine,
+    :countries, :sublocation,
+    :iucn_category, :designation
+  ]
 
   belongs_to :iucn_category
   belongs_to :designation
