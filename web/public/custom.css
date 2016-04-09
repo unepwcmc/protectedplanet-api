@@ -1,4 +1,5 @@
 .request-form {
+  height: 42rem;
   background-image: url("/images/request-form-cover.jpg");
   background-position: center;
   background-size: cover;
