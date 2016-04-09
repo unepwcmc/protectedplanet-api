@@ -3,11 +3,12 @@ module Web
     # Routes
     ########
     SHOW_ADMIN = -> {
+      protected!
       erb :admin, layout: :layout
     }
 
     UPDATE_API_USER = -> {
-      p params
+      protected!
       user = ApiUser.find(params[:id])
 
       if params.has_key?("destroy")
@@ -25,10 +26,18 @@ module Web
       redirect back
     }
 
+    SIGN_OUT = -> {
+      protected!
+      session.destroy
+
+      redirect "/"
+    }
+
     # Register to Sinatra app
     #########################
     def self.registered(app)
-      app.get "/admin", &SHOW_ADMIN
+      app.get  "/admin", &SHOW_ADMIN
+      app.get  "/admin/sign_out", &SIGN_OUT
       app.post "/admin/api_users/:id", &UPDATE_API_USER
     end
   end
