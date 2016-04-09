@@ -1,7 +1,16 @@
 require 'models/concerns/geometry_concern'
+require 'models/concerns/api_object'
 
 class Country < ActiveRecord::Base
   include GeometryConcern
+  include ApiObject
+
+  self.api_attributes = [
+    :name, :iso_3, :geometry,
+    :country_statistic, :pame_statistic,
+    :region, :designations,
+    :iucn_categories, :governances
+  ]
 
   belongs_to :region
   has_one :country_statistic
