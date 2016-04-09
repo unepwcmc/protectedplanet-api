@@ -4,24 +4,39 @@ object @protected_area
 attribute :wdpa_id => :id
 attributes :name, :original_name, :wdpa_id
 
-node :marine do |pa|
-  pa.marine == "t"
+# Geometry
+if @current_user.access_to?(ProtectedArea, :geometry)
+  attribute :geojson, if: -> (_) { @with_geometry }
 end
 
-# Geometry
-attribute :geojson, if: -> (_) { @with_geometry }
+if @current_user.access_to?(ProtectedArea, :marine)
+  node :marine do |pa|
+    pa.marine == "t"
+  end
+end
 
 # Relations
-child :countries, object_root: false do
-  attributes :name, :iso_3
-  attribute :iso_3 => :id
+if @current_user.access_to?(ProtectedArea, :countries)
+  child :countries, object_root: false do
+    attributes :name, :iso_3
+    attribute :iso_3 => :id
+  end
 end
-child :sublocations, object_root: false do
-  attributes :id, :english_name
+
+if @current_user.access_to?(ProtectedArea, :sublocations)
+  child :sublocations, object_root: false do
+    attributes :id, :english_name
+  end
 end
-child :iucn_category, object_root: false do
-  attributes :id, :name
+
+if @current_user.access_to?(ProtectedArea, :iucn_category)
+  child :iucn_category, object_root: false do
+    attributes :id, :name
+  end
 end
-child :designation, object_root: false do
-  attributes :id, :name
+
+if @current_user.access_to?(ProtectedArea, :designation)
+  child :designation, object_root: false do
+    attributes :id, :name
+  end
 end
