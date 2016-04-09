@@ -1,15 +1,12 @@
 module Web
   module RequestsController
-    def self.registered(app)
-      app.get  "/request", &SHOW_REQUEST
-      app.post "/request", &POST_REQUEST
-    end
-
-    SHOW_REQUEST = -> do
+    # Routes
+    ########
+    SHOW_REQUEST = -> {
       erb :request, layout: :layout
-    end
+    }
 
-    POST_REQUEST = -> do
+    POST_REQUEST = -> {
       if @new_user = create_api_user(params)
         Thread.new {
           activation_url = url("/api_users/#{@new_user.token}/activate")
@@ -19,6 +16,13 @@ module Web
       else
         erb :request_error, layout: :layout
       end
+    }
+
+    # Register to Sinatra app
+    #########################
+    def self.registered(app)
+      app.get  "/request", &SHOW_REQUEST
+      app.post "/request", &POST_REQUEST
     end
   end
 end

@@ -1,11 +1,8 @@
 module Web
   module ApiUsersController
-    def self.registered(app)
-      app.get "/api_users/:token/activate", &ACTIVATE_USER
-      app.get "/api_users/:token/deactivate", &DEACTIVATE_USER
-    end
-
-    ACTIVATE_USER = -> do
+    # Routes
+    ########
+    ACTIVATE_USER = -> {
       protected!
 
       if api_user = ApiUser.find_by_token(params["token"])
@@ -18,9 +15,9 @@ module Web
       else
         "User not found!"
       end
-    end
+    }
 
-    DEACTIVATE_USER = -> do
+    DEACTIVATE_USER = -> {
       protected!
 
       if api_user = ApiUser.find_by_token(params["token"])
@@ -29,17 +26,14 @@ module Web
       else
         "User not found!"
       end
-    end
+    }
 
-    def create_api_user params
-      ApiUser.create(
-        email:      params["email"],
-        full_name:  params["fullname"],
-        company:    params["company"],
-        reason:     params["reason"],
-        active:     false,
-        token:      ApiUser.new_token
-      )
+
+    # Register to Sinatra app
+    #########################
+    def self.registered(app)
+      app.get "/api_users/:token/activate", &ACTIVATE_USER
+      app.get "/api_users/:token/deactivate", &DEACTIVATE_USER
     end
   end
 end

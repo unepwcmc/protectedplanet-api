@@ -10,5 +10,16 @@ module Web
       @auth ||= Rack::Auth::Basic::Request.new(request.env)
       @auth.provided? && @auth.basic? && @auth.credentials == [ENV["ADMIN_USERNAME"], ENV["ADMIN_PASSWORD"]]
     end
+
+    def create_api_user params
+      ApiUser.create(
+        email:      params["email"],
+        full_name:  params["fullname"],
+        company:    params["company"],
+        reason:     params["reason"],
+        active:     false,
+        token:      ApiUser.new_token
+      )
+    end
   end
 end
