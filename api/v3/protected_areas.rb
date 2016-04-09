@@ -7,13 +7,13 @@ class API::V3::ProtectedAreas < Grape::API
     authenticate!
   end
 
-  #
   # == annotations
+  ################
   desc "Get all protected areas, paginated."
   paginate per_page: 25, max_per_page: 50
   params { optional :with_geometry, default: false, type: Boolean }
-  # annotations ==
-  #
+  # == body
+  #########
   get rabl: "v3/views/protected_areas" do
     collection = ProtectedArea
     collection = collection.without_geometry unless params[:with_geometry]
@@ -22,8 +22,8 @@ class API::V3::ProtectedAreas < Grape::API
     @protected_areas = paginate(collection)
   end
 
-  #
   # == annotations
+  ################
   desc "Search for a subset of protected areas."
   paginate per_page: 25, max_per_page: 50
   params do
@@ -31,19 +31,19 @@ class API::V3::ProtectedAreas < Grape::API
     optional :marine, type: Boolean
     at_least_one_of :country, :marine
   end
-  # annotations ==
-  #
+  # == body
+  #########
   get :search, rabl: "v3/views/protected_areas" do
     collection = ProtectedArea.search(declared(params, include_missing: false))
     @protected_areas = paginate(collection)
   end
 
-  #
   # == annotations
+  ################
   desc "Get a protected area via its wdpa_id."
   params { optional :with_geometry, default: true, type: Boolean }
-  # annotations ==
-  #
+  # == body
+  #########
   get ":wdpa_id", rabl: "v3/views/protected_area" do
     @with_geometry = params[:with_geometry]
     @protected_area = ProtectedArea.find_by_wdpa_id(
