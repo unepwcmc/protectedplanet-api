@@ -1,4 +1,6 @@
 class ApiUser < ActiveRecord::Base
+  before_create :set_permissions
+
   def activate!
     self.active = true
     save!
@@ -35,6 +37,10 @@ class ApiUser < ActiveRecord::Base
   private
 
   def set_permissions
+    self.permissions ||= {}
 
+    $api_objects.each do |api_object|
+      self.permissions[api_object] = api_object.api_attributes
+    end
   end
 end
