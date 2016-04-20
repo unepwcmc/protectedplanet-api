@@ -4,6 +4,12 @@ object @protected_area
 attribute :wdpa_id => :id
 attributes :name, :original_name, :wdpa_id
 
+node :links do |pa|
+  if @current_user.access_to?(ProtectedArea, :link_to_pp)
+    {protected_planet: pa.link_to_pp}
+  end
+end
+
 # Geometry
 if @current_user.access_to?(ProtectedArea, :geometry)
   attribute :geojson, if: -> (_) { @with_geometry }

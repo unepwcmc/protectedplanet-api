@@ -9,7 +9,8 @@ class Country < ActiveRecord::Base
     :name, :iso_3, :geometry,
     :country_statistic, :pame_statistic,
     :region, :designations,
-    :iucn_categories, :governances
+    :iucn_categories, :governances,
+    :link_to_pp
   ]
 
   belongs_to :region
@@ -19,6 +20,10 @@ class Country < ActiveRecord::Base
   has_many :sub_locations
   has_many :protected_areas
   has_many :designations, -> { uniq }, through: :protected_areas
+
+  def link_to_pp
+    File.join($secrets[:host], "country", self.iso)
+  end
 
   def designations_per_jurisdiction
     designations.group_by { |designation|

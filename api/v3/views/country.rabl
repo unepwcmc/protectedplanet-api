@@ -4,6 +4,12 @@ object @country
 attributes :name, :iso_3
 attributes :iso_3 => :id
 
+node :links do |country|
+  if @current_user.access_to?(Country, :link_to_pp)
+    {protected_planet: country.link_to_pp}
+  end
+end
+
 # Geometry
 if @current_user.access_to?(Country, :geometry)
   attribute :geojson, if: -> (_) { @with_geometry }

@@ -10,7 +10,8 @@ class ProtectedArea < ActiveRecord::Base
     :name, :original_name,
     :geometry, :marine,
     :countries, :sublocation,
-    :iucn_category, :designation
+    :iucn_category, :designation,
+    :link_to_pp
   ]
 
   belongs_to :iucn_category
@@ -35,5 +36,9 @@ class ProtectedArea < ActiveRecord::Base
     end
 
     collection
+  end
+
+  def link_to_pp
+    File.join($secrets[:host], self.wdpa_id.to_s)
   end
 end
