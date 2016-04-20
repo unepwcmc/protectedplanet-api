@@ -29,6 +29,9 @@ Sample response:
             "name": "Kaniabizo",
             "original_name": "Kaniabizo",
             "wdpa_id": 40366,
+            "links": {
+                "protected_planet": "http://protectedplanet.net/40366"
+            },
             "countries": [
                 {
                     "name": "Uganda",
@@ -52,6 +55,9 @@ Sample response:
             "name": "Otzi",
             "original_name": "Otzi (East and West)",
             "wdpa_id": 64700,
+            "links": {
+                "protected_planet": "http://protectedplanet.net/64700"
+            },
             "countries": [
                 {
                     "name": "Uganda",
@@ -97,6 +103,9 @@ Sample response:
         "name": "Kaniabizo",
         "original_name": "Kaniabizo",
         "wdpa_id": 40366,
+        "links": {
+            "protected_planet": "http://protectedplanet.net/40366"
+        },
         "geojson": {
             "type": "Feature",
             "properties": {
@@ -175,6 +184,9 @@ Sample response:
             "name": "Keti Bunder South",
             "original_name": "Keti Bunder South",
             "wdpa_id": 6722,
+            "links": {
+                "protected_planet": "http://protectedplanet.net/6722"
+            },
             "countries": [
                 {
                     "name": "Pakistan",
@@ -198,6 +210,9 @@ Sample response:
             "name": "Kyliiske Mouth",
             "original_name": "Kyliiske Mouth",
             "wdpa_id": 166899,
+            "links": {
+                "protected_planet": "http://protectedplanet.net/166899"
+            },
             "countries": [
                 {
                     "name": "Ukraine",

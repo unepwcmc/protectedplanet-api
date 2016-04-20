@@ -28,6 +28,9 @@ Sample response:
             "name": "Philippines",
             "iso_3": "PHL",
             "id": "PHL",
+            "links": {
+                "protected_planet": "http://protectedplanet.net/country/PH"
+            },
             "statistics": {
                 "pa_area": 51844.34889409,
                 "percentage_cover_pas": null,
@@ -111,6 +114,9 @@ Sample response:
             "name": "Switzerland",
             "iso_3": "CHE",
             "id": "CHE",
+            "links": {
+                "protected_planet": "http://protectedplanet.net/country/CH"
+            },
             "statistics": {
                 "pa_area": 4104.71,
                 "percentage_cover_pas": null,
@@ -195,6 +201,9 @@ Sample response:
         "name": "United States of America",
         "iso_3": "USA",
         "id": "USA",
+        "links": {
+            "protected_planet": "http://protectedplanet.net/country/US"
+        },
         "geojson": {
             "type": "Feature",
             "properties": {
