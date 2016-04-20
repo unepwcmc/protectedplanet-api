@@ -1,9 +1,11 @@
 <p>
   Hi <%= api_user.full_name %>,
+</p>
 
+<p>
   your request for a new Protected Planet API token has been accepted. Your new token is:
 </p>
 
-<p><strong><%= api_user.token %></strong></p>
+<h1><strong><%= api_user.token %></strong></h1>
 
 <p>Before using the API, be sure to visit the <a href="<%= documentation_url %>">Protected Planet documentation</a></p>
