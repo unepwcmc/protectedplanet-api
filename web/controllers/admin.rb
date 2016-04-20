@@ -1,7 +1,7 @@
 module Web
   module AdminController
-    # Routes
-    ########
+    # Routes implementation
+    #######################
     SHOW_ADMIN = -> {
       protected!
       erb :admin, layout: :layout
@@ -14,12 +14,7 @@ module Web
       if params.has_key?("destroy")
         user.destroy
       elsif params.has_key?("save")
-        user.active = params["api_user"]["active"].present?
-
-        params["api_user"]["permissions"].each do |(api_object, attrs)|
-          user.permissions[api_object] = attrs.keys
-        end
-
+        UPDATE_USER[user, params["api_user"]]
         user.save
       end
 
@@ -31,6 +26,16 @@ module Web
       session.destroy
 
       redirect "/"
+    }
+
+    # Private implementation
+    ########################
+    UPDATE_USER = -> (user, params) {
+      user.activate! if params["active"].present?
+
+      params["permissions"].each do |(api_object, attrs)|
+        user.permissions[api_object] = attrs.keys
+      end
     }
 
     # Register to Sinatra app

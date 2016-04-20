@@ -1,16 +1,21 @@
 class ApiUser < ActiveRecord::Base
+  include Sinatra::Helpers
   before_create :set_permissions
 
   def activate!
-    self.active = true
-    save!
+    return if self.active
 
+    self.update_attribute(:active, true)
     refresh_token unless token
+
+    Thread.new {
+      documentation_url = url("/documentation")
+      Mailer.send_new_activation_notification(self, documentation_url)
+    }
   end
 
   def deactivate!
-    self.active = false
-    save!
+    self.update_attribute(:active, false)
   end
 
   def refresh_token
