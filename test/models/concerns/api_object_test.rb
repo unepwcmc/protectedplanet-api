@@ -6,7 +6,7 @@ class ApiObjectTest < MiniTest::Test
     TestClass.send(:include, ApiObject)
     assert $api_objects.include?(TestClass)
 
-    TestClass.remove_module(ApiObject)
+    reset_api_objects(TestClass)
   end
 
   def test_including_api_object_let_set_api_attributes
@@ -16,6 +16,13 @@ class ApiObjectTest < MiniTest::Test
     TestClass.api_attributes = ["name", "iso_3"]
     assert_equal ["name", "iso_3"], TestClass.api_attributes
 
-    TestClass.remove_module(ApiObject)
+    reset_api_objects(TestClass)
+  end
+
+  private
+
+  def reset_api_objects(klass)
+    TestClass.remove_module(klass)
+    $api_objects.reject!{ |o| o == klass }
   end
 end

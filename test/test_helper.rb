@@ -30,7 +30,10 @@ end
 
 class TestClass
   def self.remove_module(mod)
-    mod.instance_methods.each{|m| undef_method(m)}
+    mod.instance_methods.each do |m|
+      next if [:object_id, :__send__].include?(m)
+      undef_method(m)
+    end
   end
 end
 
