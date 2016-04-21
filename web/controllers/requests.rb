@@ -9,7 +9,7 @@ module Web
     POST_REQUEST = -> {
       if @new_user = create_api_user(params)
         Thread.new {
-          activation_url = url("/api_users/#{@new_user.token}/activate")
+          activation_url = url("/admin")
           Mailer.send_new_request_notification(@new_user, activation_url)
         }
         erb :request_success, layout: :layout
