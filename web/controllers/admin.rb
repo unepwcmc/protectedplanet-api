@@ -31,7 +31,11 @@ module Web
     # Private implementation
     ########################
     UPDATE_USER = -> (user, params) {
-      user.activate! if params["active"].present?
+      if params["active"].present?
+        user.activate!
+      else
+        user.deactivate!
+      end
 
       params["permissions"].each do |(api_object, attrs)|
         user.permissions[api_object] = attrs.keys
