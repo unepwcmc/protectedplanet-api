@@ -5,6 +5,7 @@ gem "grape", "~> 0.14.0"
 gem "grape-rabl", "~> 0.4.1"
 gem "grape-kaminari", "~> 0.1.8"
 gem "grape-cors", "~> 0.9.2"
+gem "grape_logging", '~> 1.3.0'
 gem "sinatra", "~> 1.4.6"
 gem "kramdown", "~> 1.9.0"
 
@@ -20,6 +21,8 @@ gem "activerecord-postgis-adapter", "~> 3.1.3"
 
 # Notifications
 gem "pony", "~> 1.11"
+gem "slack-notifier", "~> 1.5.1"
+gem "exception_notification", "~> 4.1.4"
 
 # Analytics
 gem "appsignal", "~> 1.1.0.beta.5"
