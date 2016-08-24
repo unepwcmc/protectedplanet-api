@@ -47,8 +47,3 @@ group :development do
   gem "capistrano-rvm",   "~> 0.1", require: false
   gem "capistrano-bower"
 end
-
-# Server
-group :production, :staging do
-  gem "unicorn", "~> 5.0.1"
-end
