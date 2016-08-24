@@ -1,13 +1,13 @@
 set :stage, :staging
-set :branch, "master"
+set :branch, "filter-users-data"
 
-server "stage.protectedplanet.net", user: "ubuntu", roles: %w{app web db}
+server "stage.protectedplanet.net", user: "wcmc", roles: %w{app web db}
 
 set :domain, "stage.protectedplanet.net"
 
 set :server_name, "#{fetch(:application)}.#{fetch(:domain)}"
 
-set :sudo_user, "ubuntu"
+set :sudo_user, "wcmc"
 
 set :app_port, "80"
 
