@@ -1,3 +1,12 @@
+set :stage, :production
+server "web-production-linode.protectedplanet.net", user: "wcmc", roles: %w{app web db}
+
+set :domain, "api.protectedplanet.net"
+set :server_name, "web-production-linode.protectedplanet.net"
+
+set :sudo_user, "wcmc"
+set :app_port, "80"
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
