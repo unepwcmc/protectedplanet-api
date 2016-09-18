@@ -42,8 +42,10 @@ end
 
 # Deploy
 group :development do
-  gem "capistrano", "~> 3.4", require: false
-  gem "capistrano-bundler", "~> 1.1", require: false
-  gem "capistrano-rvm",   "~> 0.1", require: false
-  gem "capistrano-bower"
+  gem 'capistrano', '~> 3.4', require: false
+  gem 'capistrano-bundler', '~> 1.1.4', require: false
+  gem 'capistrano-rvm',   '~> 0.1', require: false
+  gem 'capistrano-maintenance', '~> 1.0', require: false
+  gem 'capistrano-passenger', '~> 0.2.0', require: false
+  gem 'byebug', '~> 3.1.2'
 end

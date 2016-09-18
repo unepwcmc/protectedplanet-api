@@ -22,13 +22,11 @@ require 'capistrano/rvm'
 # require 'capistrano/rbenv'
 # require 'capistrano/chruby'
 require 'capistrano/bundler'
-# require 'capistrano/rails/assets'
-# require 'capistrano/rails/migrations'
-require 'capistrano/bower'
-
-# Send deploy trackers to Appsignal
-require 'appsignal/capistrano'
-
+require 'capistrano/passenger'
+require 'capistrano/maintenance'
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
+
+# Send deploy trackers to Appsignal
+require 'appsignal/capistrano'
