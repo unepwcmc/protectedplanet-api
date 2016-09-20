@@ -2,6 +2,7 @@ require 'appsignal/integrations/grape'
 require 'slack-notifier'
 require 'exception_notification'
 require 'api/helpers'
+require 'api/middlewares/stats_collector'
 require 'grape_logging'
 
 module API; end
@@ -12,6 +13,8 @@ Dir["#{File.dirname(__FILE__)}/**/*.rb"].each {|f| require f}
 module API
   class Root < Grape::API
     use Appsignal::Grape::Middleware
+    use Middlewares::StatsCollector
+
     helpers API::Helpers
 
     log_file = File.open("log/#{$environment}.log", "a")

@@ -1,7 +1,10 @@
 module API
   module Helpers
     def authenticate!
-      error!('Unauthorized. Invalid or expired token.', 401) unless current_user
+      unless current_user
+        Appsignal.increment_counter("unauthorized_access_count", 1)
+        error!('Unauthorized. Invalid or expired token.', 401)
+      end
     end
 
     def current_user
