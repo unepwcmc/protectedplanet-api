@@ -7,11 +7,6 @@ class ApiUser < ActiveRecord::Base
 
     self.update_attribute(:active, true)
     refresh_token unless token
-
-    Thread.new {
-      documentation_url = url("/documentation")
-      Mailer.send_new_activation_notification(self, documentation_url)
-    }
   end
 
   def deactivate!
