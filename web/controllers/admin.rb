@@ -37,10 +37,12 @@ class Web::AdminController < Sinatra::Base
 
   def update_user user, params
     if params["active"].present?
-      user.activate!
+      unless user.active
+        user.activate!
 
-      documentation_url = url("/documentation")
-      Mailer.send_new_activation_notification(user, documentation_url)
+        documentation_url = url("/documentation")
+        Mailer.send_new_activation_notification(user, documentation_url)
+      end
     else
       user.deactivate!
     end
