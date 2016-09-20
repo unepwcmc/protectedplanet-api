@@ -3,7 +3,6 @@ require 'slack-notifier'
 require 'exception_notification'
 require 'api/helpers'
 require 'grape_logging'
-require 'grape-cors'
 
 module API; end
 module API::V3; end
