@@ -1,53 +1,50 @@
-module Web
-  module AdminController
-    # Routes implementation
-    #######################
-    SHOW_ADMIN = -> {
-      protected!
-      erb :admin, layout: :layout
-    }
+module Web; end
+require "web/helpers"
 
-    UPDATE_API_USER = -> {
-      protected!
-      user = ApiUser.find(params[:id])
+class Web::AdminController < Sinatra::Base
+  helpers Web::Helpers
+  set :views, File.join(settings.root, '../views')
 
-      if params.has_key?("destroy")
-        user.destroy
-      elsif params.has_key?("save")
-        UPDATE_USER[user, params["api_user"]]
-        user.save
-      end
+  get("/admin") do
+    protected!
+    erb :admin, layout: :layout
+  end
 
-      redirect back
-    }
+  post("/admin/api_users/:id") do
+    protected!
+    user = ApiUser.find(params[:id])
 
-    SIGN_OUT = -> {
-      protected!
-      session.destroy
+    if params.has_key?("destroy")
+      user.destroy
+    elsif params.has_key?("save")
+      update_user(user, params["api_user"])
+      user.save
+    end
 
-      redirect "/"
-    }
+    redirect back
+  end
 
-    # Private implementation
-    ########################
-    UPDATE_USER = -> (user, params) {
-      if params["active"].present?
-        user.activate!
-      else
-        user.deactivate!
-      end
+  get("/admin/sign_out") do
+    protected!
+    session.destroy
 
-      params["permissions"].each do |(api_object, attrs)|
-        user.permissions[api_object] = attrs.keys
-      end
-    }
+    redirect "/"
+  end
 
-    # Register to Sinatra app
-    #########################
-    def self.registered(app)
-      app.get  "/admin", &SHOW_ADMIN
-      app.get  "/admin/sign_out", &SIGN_OUT
-      app.post "/admin/api_users/:id", &UPDATE_API_USER
+  private
+
+  def update_user user, params
+    if params["active"].present?
+      user.activate!
+
+      documentation_url = url("/documentation")
+      Mailer.send_new_activation_notification(user, documentation_url)
+    else
+      user.deactivate!
+    end
+
+    params["permissions"].each do |(api_object, attrs)|
+      user.permissions[api_object] = attrs.keys
     end
   end
 end

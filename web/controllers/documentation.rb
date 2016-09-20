@@ -1,16 +1,10 @@
-module Web
-  module DocumentationController
-    # Routes
-    ########
-    SHOW_DOCUMENTATION = -> {
-      erb :documentation, layout: :layout
-    }
+module Web; end
 
-    # Register to Sinatra app
-    #########################
-    def self.registered(app)
-      app.get "/documentation", &SHOW_DOCUMENTATION
-    end
+class Web::DocumentationController < Sinatra::Base
+  set :views, File.join(settings.root, '../views')
+
+  get("/documentation") do
+    erb :documentation, layout: :layout
   end
 end
 

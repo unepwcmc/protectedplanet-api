@@ -5,6 +5,7 @@ Dotenv.load
 
 # Sinatra
 require 'rack/csrf'
+require 'rack/cors'
 require 'sinatra'
 
 # Grape

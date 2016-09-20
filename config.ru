@@ -11,4 +11,11 @@ use Rack::Config do |env|
   env['api.tilt.root'] = "#{File.dirname(__FILE__)}/api"
 end
 
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '*', headers: :any, methods: [:get, :post, :options]
+  end
+end
+
 run Rack::Cascade.new [Web::Root, API::Root]

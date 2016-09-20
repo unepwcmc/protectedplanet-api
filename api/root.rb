@@ -58,8 +58,5 @@ module API
         mount API::V3::Countries
       end
     end
-
   end
 end
-
-Grape::CORS.apply!

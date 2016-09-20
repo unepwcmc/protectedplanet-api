@@ -1,16 +1,16 @@
 source "https://rubygems.org"
 
 # Frameworks
-gem "grape", "~> 0.14.0"
+gem "grape", "~> 0.17.0"
 gem "grape-rabl", "~> 0.4.1"
 gem "grape-kaminari", "~> 0.1.8"
-gem "grape-cors", "~> 0.9.2"
 gem "grape_logging", '~> 1.3.0'
 gem "sinatra", "~> 1.4.6"
 gem "kramdown", "~> 1.9.0"
 
 # Security
 gem "rack_csrf", "~> 2.5.0"
+gem "rack-cors", :require => "rack/cors"
 gem "dotenv", "~> 2.1.0"
 
 # Database
