@@ -4,6 +4,10 @@
       <h1 class="hero__title hero__title--article">Request an API key</h1>
     </div>
 
+    <% if settings.environment == :staging %>
+      <%= erb "shared/_live_version_alert".to_sym %>
+    <% end%>
+
     <div class="cover-story">
       <div class="cover-story__cover request-form"></div>
       <div class="cover-story__story">

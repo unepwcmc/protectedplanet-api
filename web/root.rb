@@ -11,7 +11,6 @@ module Web
       erb :home, layout: :layout
     end
 
-
     use Web::AdminController
     use Web::DocumentationController
     use Web::RequestsController
