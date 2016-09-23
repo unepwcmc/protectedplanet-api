@@ -21,7 +21,8 @@ class Web::AdminController < Sinatra::Base
       user.save
     end
 
-    Appsignal.set_gauge("user_count", ApiUser.count)
+    Appsignal.set_gauge("user_count",        ApiUser.count)
+    Appsignal.set_gauge("active_user_count", ApiUser.where(active: true).count)
 
     redirect back
   end
