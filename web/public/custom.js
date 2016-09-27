@@ -14,4 +14,19 @@ $(document).ready(function() {
   accordions.each(function(i, accordionEl) {
     enableToggling($(accordionEl));
   });
+
+  var dismissables = $(".js-dismissable");
+
+  var dismissOnClick = function($dismissableEl) {
+    var $targetEl = $dismissableEl.find(".js-target").addBack(".js-target");
+
+    $dismissableEl.find(".js-trigger").click(function(ev) {
+      $targetEl.addClass("u-hide");
+      ev.preventDefault();
+    });
+  };
+
+  dismissables.each(function(i, dismissableEl) {
+    dismissOnClick($(dismissableEl));
+  });
 });
