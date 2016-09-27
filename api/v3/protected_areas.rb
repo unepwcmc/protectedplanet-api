@@ -7,6 +7,10 @@ class API::V3::ProtectedAreas < Grape::API
     authenticate!
   end
 
+  rescue_from Grape::Exceptions::ValidationErrors do |e|
+    error! e, 400
+  end
+
   # == annotations
   ################
   desc "Get all protected areas, paginated."
