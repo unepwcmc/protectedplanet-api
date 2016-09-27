@@ -25,12 +25,15 @@ class Web::RequestsController < Sinatra::Base
 
   def create_api_user params
     ApiUser.create(
-      email:      params["email"],
-      full_name:  params["fullname"],
-      company:    params["company"],
-      reason:     params["reason"],
-      active:     false,
-      token:      ApiUser.new_token
+      email:          params["email"],
+      full_name:      params["fullname"],
+      company:        params["company"],
+      reason:         params["reason"],
+      licence_number: params["licence_number"],
+      has_licence:    params["has_licence"],
+      kind:           params["kind"],
+      token:          ApiUser.new_token,
+      active:         false
     )
   end
 end

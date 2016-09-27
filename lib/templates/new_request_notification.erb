@@ -9,18 +9,13 @@
 </p>
 
 <ul>
-  <li>
-    Name: <%= api_user.full_name %>
-  </li>
-  <li>
-    Email: <%= api_user.email %>
-  </li>
-  <li>
-    Company: <%= api_user.company %>
-  </li>
-  <li>
-    Reason for using the api: <%= api_user.reason %>
-  </li>
+  <li>Name: <%= api_user.full_name %></li>
+  <li>Email: <%= api_user.email %></li>
+  <li>Company: <%= api_user.company %></li>
+  <li>Type of User: <%= api_user.kind || "N/A" %></li>
+  <li>Has licence? <%= api_user.has_licence || "N/A" %></li>
+  <li>Licence Number: <%= api_user.licence_number || "N/A" %></li>
+  <li>Reason for using the api: <%= api_user.reason %></li>
 </ul>
 
 <p>To activate this user, follow <a href="<%= activation_url %>">this link</a> and insert your administration credentials.</p>

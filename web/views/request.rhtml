@@ -15,32 +15,7 @@
         <div class="cover-story__story-border"></div>
         <div class="cover-story__story-body cover-story__story-body--right">
           <div class="cover-story__story-content">
-            <form class="s-form" method="POST" action="/request">
-              <%= Rack::Csrf.csrf_tag(env) %>
-              <fieldset>
-                <label for="email">Email</label>
-                <input class="big" name="email" required type="email">
-              </fieldset>
-
-              <fieldset>
-                <label for="fullname">Full name</label>
-                <input class="big" name="fullname" required type="text">
-              </fieldset>
-
-              <fieldset>
-                <label for="company">Company (Optional)</label>
-                <input class="big" name="company" type="text">
-              </fieldset>
-
-              <fieldset>
-                <label for="reason">Why would you like to use the Protected Planet API?</label>
-                <textarea name="reason" required></textarea>
-              </fieldset>
-
-              <button class="big-button" type="submit">
-                <i class="fa fa-paper-plane big-button__icon"></i>Submit request
-              </button>
-            </form>
+            <%= erb "request/_form".to_sym %>
           </div>
         </div>
       </div>

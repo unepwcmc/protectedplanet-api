@@ -1,0 +1,59 @@
+<form class="s-form" method="POST" action="/request">
+  <%= Rack::Csrf.csrf_tag(env) %>
+  <fieldset>
+    <label for="email">Email</label>
+    <input class="big" name="email" required type="email">
+  </fieldset>
+
+  <fieldset>
+    <label for="fullname">Full name</label>
+    <input class="big" name="fullname" required type="text">
+  </fieldset>
+
+  <fieldset>
+    <label for="company">Company (Optional)</label>
+    <input class="big" name="company" type="text">
+  </fieldset>
+
+  <fieldset>
+    <label for="kind">Type of User</label>
+    <span class="form__select-container">
+      <select class="big" id="kind" name="kind">
+        <option disabled selected value>Select an option</option>
+        <option value="Scientific Research">Scientific Research</option>
+        <option value="Private Sector">Private Sector</option>
+        <option value="Conservation Organisation">Conservation Organisation</option>
+        <option value="Government">Government</option>
+        <option value="Education">Education</option>
+        <option value="Other">Other</option>
+      </select>
+    </span>
+  </fieldset>
+
+  <fieldset>
+    <label for="has_licence">Do you have a licence to use the API?</label>
+    <span class="form__select-container">
+      <select class="js-licence-select big" id="has_licence" name="has_licence">
+        <option disabled selected value>Select an option</option>
+        <option value="Yes">Yes</option>
+        <option value="No, but I would like to test the API before requesting a licence">No, but I would like to test the API first</option>
+        <option value="No, but I would like to request one">No, but I would like to request one</option>
+      </select>
+    </span>
+  </fieldset>
+
+  <fieldset class="u-hide js-licence-input">
+    <label for="licence_number">Licence number</label>
+    <input class="big" name="licence_number" type="text">
+  </fieldset>
+
+  <fieldset>
+    <label for="reason">Please provide a brief description on how you intend to use the API</label>
+    <textarea placeholder="e.g. who is the audience, what type of service is being provided, how will the data be used: visualisation only, download, reposting" name="reason" required></textarea>
+  </fieldset>
+
+  <button class="big-button" type="submit">
+    <i class="fa fa-paper-plane big-button__icon"></i>Submit request
+  </button>
+</form>
+
