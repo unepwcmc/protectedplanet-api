@@ -90,5 +90,9 @@
       </div>
     <% end%>
   </section>
+
+  <p class="u-full-width u-center article__paragraph--bigger">
+    <%= ApiUser.count %> API users, <%= ApiUser.where(active: true).count %> of which active
+  </p>
 </div>
 
