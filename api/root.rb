@@ -17,20 +17,22 @@ module API
 
     helpers API::Helpers
 
-    log_file = File.open("log/#{$environment}.log", "a")
-    log_file.sync = true
+    unless $environment == "test"
+      log_file = File.open("log/#{$environment}.log", "a")
+      log_file.sync = true
 
-    logger = Logger.new(GrapeLogging::MultiIO.new(STDOUT, log_file))
-    logger.formatter = GrapeLogging::Formatters::Default.new
+      logger = Logger.new(GrapeLogging::MultiIO.new(STDOUT, log_file))
+      logger.formatter = GrapeLogging::Formatters::Default.new
 
-    use GrapeLogging::Middleware::RequestLogger, {logger: logger}
-    use ExceptionNotification::Rack, slack: {
-      webhook_url: ENV["SLACK_WEBHOOK_URL"],
-      channel: "#protectedplanet-api",
-      additional_parameters: {
-        mrkdwn: true
+      use GrapeLogging::Middleware::RequestLogger, {logger: logger}
+      use ExceptionNotification::Rack, slack: {
+        webhook_url: ENV["SLACK_WEBHOOK_URL"],
+        channel: "#protectedplanet-api",
+        additional_parameters: {
+          mrkdwn: true
+        }
       }
-    }
+    end
 
     rescue_from :all do |e|
       logger.error e
