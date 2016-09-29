@@ -13,7 +13,7 @@
       <div class="row accordion js-accordion">
         <h3 class="js-trigger accordion__header">
           <% if api_user.active %>
-            <i class="fa fa-check u-link-color" title="User enabled"></i>
+            <i class="fa fa-check u-link-color" title="Active user"></i>
           <% else %>
             <i class="fa fa-close" title="User disabled"></i>
           <% end %>
@@ -47,7 +47,7 @@
             <%= Rack::Csrf.csrf_tag(env) %>
 
             <div class="row">
-              <label class="u-alt-font">Enabled</label>
+              <label class="u-alt-font">Active</label>
               <input name="api_user[active]" type="checkbox" value="1" <%= api_user.active ? "checked" : nil %>>
             </div>
 
