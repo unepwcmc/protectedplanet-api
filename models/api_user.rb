@@ -5,6 +5,7 @@ class ApiUser < ActiveRecord::Base
   def activate!
     return if self.active
 
+    self.update_attribute(:activated_on, DateTime.now)
     self.update_attribute(:active, true)
     refresh_token unless token
   end
