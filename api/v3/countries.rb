@@ -26,9 +26,12 @@ class API::V3::Countries < Grape::API
   #########
   get ":iso_3", rabl: "v3/views/country" do
     @with_geometry = params[:with_geometry]
-    @country = Country.find_by_iso_3(
-      params[:iso_3].upcase
-    ) or error!(:not_found, 404)
+
+    if params[:iso_3].length == 2
+      @country = Country.find_by_iso(params[:iso_3].upcase) or error!(:not_found, 404)
+    else
+      @country = Country.find_by_iso_3(params[:iso_3].upcase) or error!(:not_found, 404)
+    end
   end
 end
 
