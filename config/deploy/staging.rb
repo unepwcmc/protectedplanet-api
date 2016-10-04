@@ -6,7 +6,6 @@ set :server_name, "stage.protectedplanet.net"
 
 set :sudo_user, "wcmc"
 set :app_port, "80"
-set :branch, "ssl_changes"
 
 
 
