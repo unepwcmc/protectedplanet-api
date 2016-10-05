@@ -4,7 +4,21 @@ object @country
 attributes :name, :iso_3
 attributes :iso_3 => :id
 
-node(:pas_count) { |c| c.protected_areas.count }
+node(:pas_count) { |c|
+  c.protected_areas.count
+}
+node(:pa_national_count) { |c|
+  national = Jurisdiction.find_by_name("National")
+  ProtectedArea.search(country: c.iso_3, jurisdiction: national.id).count rescue 0
+}
+node(:pa_regional_count) { |c|
+  regional = Jurisdiction.find_by_name("Regional")
+  ProtectedArea.search(country: c.iso_3, jurisdiction: regional.id).count rescue 0
+}
+node(:pa_international_count) { |c|
+  international = Jurisdiction.find_by_name("International")
+  ProtectedArea.search(country: c.iso_3, jurisdiction: international.id).count rescue 0
+}
 
 node :links do |country|
   if @current_user.access_to?(Country, :link_to_pp)

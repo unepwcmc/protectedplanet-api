@@ -106,4 +106,15 @@ class API::V3::CountriesTest < MiniTest::Test
       "pas_percentage" => 100
     }], @json_response["country"]["governances"])
   end
+
+  def test_get_countries_WES_returns_pas_count
+    country = create(:country, name: "Zubrowka", iso_3: "WES")
+    create(:protected_area, name: "Grand Budapest", countries: [country])
+    create(:protected_area, name: "Mistery Shack", countries: [country])
+    get_with_rabl "/v3/countries/WES"
+
+    assert last_response.ok?
+    assert_equal("WES", @json_response["country"]["id"])
+    assert_equal(2, @json_response["country"]["pas_count"])
+  end
 end
