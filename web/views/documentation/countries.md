@@ -32,9 +32,9 @@ Sample response:
                 "protected_planet": "http://protectedplanet.net/country/PH"
             },
             "pas_count": 558,
-            "pa_national_count": 547,
-            "pa_regional_count": 0,
-            "pa_international_count": 11,
+            "pas_national_count": 547,
+            "pas_regional_count": 0,
+            "pas_international_count": 11,
             "statistics": {
                 "pa_area": 51844.34889409,
                 "percentage_cover_pas": null,
@@ -122,9 +122,9 @@ Sample response:
                 "protected_planet": "http://protectedplanet.net/country/CH"
             },
             "pas_count": 558,
-            "pa_national_count": 547,
-            "pa_regional_count": 0,
-            "pa_international_count": 11,
+            "pas_national_count": 547,
+            "pas_regional_count": 0,
+            "pas_international_count": 11,
             "statistics": {
                 "pa_area": 4104.71,
                 "percentage_cover_pas": null,
@@ -213,9 +213,9 @@ Sample response:
             "protected_planet": "http://protectedplanet.net/country/US"
         },
         "pas_count": 558,
-        "pa_national_count": 547,
-        "pa_regional_count": 0,
-        "pa_international_count": 11,
+        "pas_national_count": 547,
+        "pas_regional_count": 0,
+        "pas_international_count": 11,
         "geojson": {
             "type": "Feature",
             "properties": {
