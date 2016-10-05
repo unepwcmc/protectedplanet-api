@@ -18,7 +18,7 @@ class Country < ActiveRecord::Base
   has_one :pame_statistic
 
   has_many :sub_locations
-  has_many :protected_areas
+  has_and_belongs_to_many :protected_areas
   has_many :designations, -> { uniq }, through: :protected_areas
 
   def link_to_pp
