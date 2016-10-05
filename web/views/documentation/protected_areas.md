@@ -46,7 +46,11 @@ Sample response:
             },
             "designation": {
                 "id": 3,
-                "name": "Forest Reserve"
+                "name": "Forest Reserve",
+                jurisdiction: {
+                  id: 1,
+                  name: "National"
+                }
             },
             "marine": false
         },
@@ -72,7 +76,11 @@ Sample response:
             },
             "designation": {
                 "id": 3,
-                "name": "Forest Reserve"
+                "name": "Forest Reserve",
+                jurisdiction: {
+                  id: 1,
+                  name: "National"
+                }
             },
             "marine": false
         }
@@ -142,7 +150,11 @@ Sample response:
         },
         "designation": {
             "id": 3,
-            "name": "Forest Reserve"
+            "name": "Forest Reserve",
+            jurisdiction: {
+              id: 1,
+              name: "National"
+            }
         },
         "marine": false
     }
@@ -165,6 +177,22 @@ marine (Boolean)
 country (String, 3 characters)
   If set, returns all protected areas from the country with the given ISO3, paginated.
   By default, this is unset: protected areas from all countries are returned.
+
+designation (Integer)
+  If set, returns all protected areas designated with the given `id`, paginated.
+  By default, this is unset: protected areas with all designations are returned.
+
+jurisdiction (Integer)
+  If set, returns all protected areas with the given jurisdiciton `id`, paginated.
+  By default, this is unset: protected areas with all jurisdictions are returned.
+
+governance (Integer)
+  If set, returns all protected areas with the given governance `id`, paginated.
+  By default, this is unset: protected areas with all governances are returned.
+
+iucn_category (Integer)
+  If set, returns all protected areas with the given IUCN category `id`, paginated.
+  By default, this is unset: protected areas with all IUCN categories are returned.
 
 page (Number)
   Controls the returned page. Defaults to 1.
@@ -200,8 +228,12 @@ Sample response:
                 "name": "Not Reported"
             },
             "designation": {
-                "id": 16,
-                "name": "Wildlife Sanctuary"
+                "id": 3,
+                "name": "Forest Reserve",
+                jurisdiction: {
+                  id: 1,
+                  name: "National"
+                }
             },
             "marine": false
         },
@@ -226,8 +258,12 @@ Sample response:
                 "name": "Not Reported"
             },
             "designation": {
-                "id": 2,
-                "name": "Ramsar Site, Wetland of International Importance"
+                "id": 3,
+                "name": "Forest Reserve",
+                jurisdiction: {
+                  id: 1,
+                  name: "National"
+                }
             },
             "marine": false
         }
