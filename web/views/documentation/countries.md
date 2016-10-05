@@ -31,6 +31,7 @@ Sample response:
             "links": {
                 "protected_planet": "http://protectedplanet.net/country/PH"
             },
+            "pas_count": 558,
             "statistics": {
                 "pa_area": 51844.34889409,
                 "percentage_cover_pas": null,
@@ -117,6 +118,7 @@ Sample response:
             "links": {
                 "protected_planet": "http://protectedplanet.net/country/CH"
             },
+            "pas_count": 558,
             "statistics": {
                 "pa_area": 4104.71,
                 "percentage_cover_pas": null,
@@ -204,6 +206,7 @@ Sample response:
         "links": {
             "protected_planet": "http://protectedplanet.net/country/US"
         },
+        "pas_count": 558,
         "geojson": {
             "type": "Feature",
             "properties": {
