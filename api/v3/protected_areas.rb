@@ -33,7 +33,12 @@ class API::V3::ProtectedAreas < Grape::API
   params do
     optional :country, type: String, regexp: /[a-zA-Z]{3}/
     optional :marine, type: Boolean
-    at_least_one_of :country, :marine
+    optional :designation, type: Integer
+    optional :jurisdiction, type: Integer
+    optional :governance, type: Integer
+    optional :iucn_category, type: Integer
+    at_least_one_of :country, :marine, :designation,
+      :jurisdiction, :governance, :iucn_category
   end
   # == body
   #########

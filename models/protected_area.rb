@@ -24,8 +24,12 @@ class ProtectedArea < ActiveRecord::Base
   delegate :jurisdiction, to: :designation, allow_nil: true
 
   SEARCHES = {
-    country: -> (scope, value) { scope.joins(:countries).where("countries.iso_3 = ?", value.upcase) },
-    marine:  -> (scope, value) { scope.where(marine: value) }
+    country:       -> (scope, value) { scope.joins(:countries).where("countries.iso_3 = ?", value.upcase) },
+    marine:        -> (scope, value) { scope.where(marine: value) },
+    designation:   -> (scope, value) { scope.where(designation_id: value) },
+    jurisdiction:  -> (scope, value) { scope.joins(:designation).where(jurisdiction_id: value) },
+    governance:    -> (scope, value) { scope.where(governance_id: value) },
+    iucn_category: -> (scope, value) { scope.where(iucn_category_id: value) }
   }
 
   def self.search params
