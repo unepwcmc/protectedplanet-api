@@ -44,5 +44,8 @@ end
 if @current_user.access_to?(ProtectedArea, :designation)
   child :designation, object_root: false do
     attributes :id, :name
+    child :jurisdiction do
+      attribute :id, :name
+    end
   end
 end
