@@ -1,10 +1,10 @@
 <div class="container--profile container--push-bottom">
   <section class="hero">
     <div class="hero__top">
-      <h1 class="hero__title hero__title--article">API Users</h1>
+      <h1 class="hero__title hero__title--article">Archived Users</h1>
       <div class="article__paragraph">
-        <a href="/admin/archived" class="tooltip__trigger js-trigger link-with-icon link-with-icon--bold">
-          <i class="link-with-icon__icon fa fa-archive"></i>Archived users
+        <a href="/admin" class="tooltip__trigger js-trigger link-with-icon link-with-icon--bold">
+          <i class="link-with-icon__icon fa fa-list"></i>Active users
         </a>
         <span class="divider"></span>
         <a href="/admin/sign_out" class="tooltip__trigger js-trigger link-with-icon link-with-icon--bold">
@@ -15,7 +15,7 @@
   </section>
 
   <section class="list">
-    <% ApiUser.order(created_at: :desc).where(archived: false).each do |api_user| %>
+    <% ApiUser.order(created_at: :desc).where(archived: true).each do |api_user| %>
       <div class="row accordion js-accordion">
         <h3 class="js-trigger accordion__header">
           <% if api_user.active %>
@@ -97,7 +97,7 @@
   </section>
 
   <p class="u-full-width u-center article__paragraph--bigger">
-    <%= ApiUser.count %> API users, <%= ApiUser.where(active: true).count %> of which active
+    <%= ApiUser.count %> API users, <%= ApiUser.where(archived: true).count %> of which archived
   </p>
 </div>
 

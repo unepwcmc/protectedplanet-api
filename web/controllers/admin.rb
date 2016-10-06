@@ -10,6 +10,11 @@ class Web::AdminController < Sinatra::Base
     erb :admin, layout: :layout
   end
 
+  get("/admin/archived") do
+    protected!
+    erb :archived, layout: :layout
+  end
+
   post("/admin/api_users/:id") do
     protected!
     user = ApiUser.find(params[:id])
@@ -51,5 +56,7 @@ class Web::AdminController < Sinatra::Base
     params["permissions"].each do |(api_object, attrs)|
       user.permissions[api_object] = attrs.keys
     end
+
+    user.archived = params["archived"]
   end
 end
