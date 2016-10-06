@@ -9,7 +9,7 @@
   </section>
 
   <section class="list">
-    <% ApiUser.order(active: :desc, email: :asc).all.each do |api_user| %>
+    <% ApiUser.order(created_at: :desc).where(archived: false).each do |api_user| %>
       <div class="row accordion js-accordion">
         <h3 class="js-trigger accordion__header">
           <% if api_user.active %>
