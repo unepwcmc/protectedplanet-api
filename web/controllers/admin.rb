@@ -53,10 +53,10 @@ class Web::AdminController < Sinatra::Base
       user.deactivate!
     end
 
+    user.archived = params["archived"].present?
+
     params["permissions"].each do |(api_object, attrs)|
       user.permissions[api_object] = attrs.keys
     end
-
-    user.archived = params["archived"]
   end
 end
