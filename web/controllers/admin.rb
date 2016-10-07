@@ -1,5 +1,6 @@
 module Web; end
 require "web/helpers"
+require "lib/admin_csv_generator"
 
 class Web::AdminController < Sinatra::Base
   helpers Web::Helpers
@@ -13,6 +14,13 @@ class Web::AdminController < Sinatra::Base
   get("/admin/archived") do
     protected!
     erb :archived, layout: :layout
+  end
+
+  get("/admin/export") do
+    content_type "application/octet-stream"
+    attachment "pp_api_users.csv"
+
+    AdminCsvGenerator.generate
   end
 
   post("/admin/api_users/:id") do
