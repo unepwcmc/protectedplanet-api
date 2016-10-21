@@ -19,6 +19,14 @@ node(:pas_international_count) { |c|
   international = Jurisdiction.find_by_name("International")
   ProtectedArea.search(country: c.iso_3, jurisdiction: international.id).count rescue 0
 }
+node(:pas_with_iucn_category_count) { |c|
+  c.protected_areas.where("iucn_category_id IS NOT NULL").count
+}
+node(:pas_with_iucn_category_percentage) { |c|
+  with_category = c.protected_areas.where("iucn_category_id IS NOT NULL").count
+  with_category.to_f/c.protected_areas rescue 0
+}
+
 
 node :links do |country|
   if @current_user.access_to?(Country, :link_to_pp)
