@@ -25,7 +25,7 @@ node(:pas_with_iucn_category_count) { |c|
 node(:pas_with_iucn_category_percentage) { |c|
   with_category = c.protected_areas.where("iucn_category_id IS NOT NULL").count
   all_pas = c.protected_areas.count
-  all_pas > 0 ? (with_category.to_f/all_pas)*100 : 0
+  all_pas > 0 ? ((with_category.to_f/all_pas)*100).round(2) : 0.0
 }
 
 
