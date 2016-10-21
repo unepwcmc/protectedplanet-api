@@ -40,6 +40,7 @@ class Country < ActiveRecord::Base
       ) AS pas_per_designations
         ON pas_per_designations.designation_id = designations.id
       #{"WHERE designations.jurisdiction_id = #{jurisdiction.id}" if jurisdiction}
+      ORDER BY designations.name
     """)
   end
 
