@@ -24,7 +24,8 @@ node(:pas_with_iucn_category_count) { |c|
 }
 node(:pas_with_iucn_category_percentage) { |c|
   with_category = c.protected_areas.where("iucn_category_id IS NOT NULL").count
-  with_category.to_f/c.protected_areas rescue 0
+  all_pas = c.protected_areas.count
+  all_pas > 0 ? (with_category.to_f/all_pas)*100 : 0
 }
 
 
@@ -82,9 +83,15 @@ end
 if @current_user.access_to?(Country, :iucn_categories)
   node :iucn_categories do |country|
     country.protected_areas_per_iucn_category.map do |row|
+      if @iucn_category_long_names
+        name = IucnCategory.new(name: row["iucn_category_name"]).long_name
+      else
+        name = row["iucn_category_name"]
+      end
+
       {
         id:             row["iucn_category_id"].to_i,
-        name:           row["iucn_category_name"],
+        name:           name,
         pas_count:      row["count"].to_i,
         pas_percentage: row["percentage"].to_f.round(2)
       }

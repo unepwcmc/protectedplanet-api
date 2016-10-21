@@ -109,12 +109,31 @@ class API::V3::CountriesTest < MiniTest::Test
 
   def test_get_countries_WES_returns_pas_count
     country = create(:country, name: "Zubrowka", iso_3: "WES")
-    create(:protected_area, name: "Grand Budapest", countries: [country])
-    create(:protected_area, name: "Mistery Shack", countries: [country])
+    iucn_category = create(:iucn_category, name: "IV")
+    create(:protected_area, name: "Grand Budapest", countries: [country], iucn_category: nil)
+    create(:protected_area, name: "Mistery Shack", countries: [country], iucn_category: iucn_category)
     get_with_rabl "/v3/countries/WES"
 
     assert last_response.ok?
     assert_equal("WES", @json_response["country"]["id"])
     assert_equal(2, @json_response["country"]["pas_count"])
+    assert_equal(1, @json_response["country"]["pas_with_iucn_category_count"])
+    assert_equal(50.0, @json_response["country"]["pas_with_iucn_category_percentage"])
+  end
+
+  def test_get_country_WES_returns_iucn_categories_with_long_names
+    country = create(:country, name: "Zubrowka", iso_3: "WES", bounding_box: "POINT(-122 47)")
+    iucn_category = create(:iucn_category, name: "IV")
+    create(:protected_area, name: "Grand Budapest", countries: [country], iucn_category: iucn_category)
+
+    get_with_rabl "/v3/countries/wes", iucn_category_long_names: true
+
+    assert last_response.ok?
+    assert_equal([{
+      "id" => iucn_category.id,
+      "name" => "IV - Habitat/Species Management Area",
+      "pas_count" => 1,
+      "pas_percentage" => 100
+    }], @json_response["country"]["iucn_categories"])
   end
 end
