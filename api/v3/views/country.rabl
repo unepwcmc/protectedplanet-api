@@ -103,10 +103,17 @@ if @current_user.access_to?(Country, :governances)
   node :governances do |country|
     if @group_governances
       rows = country.protected_areas_per_governance
+      grouped = rows.group_by { |row| Governance.new(name: row["governance_name"]).governance_type }
 
-      rows.group_by { |row| Governance.new(name: row["governance_name"]).governance_type }.map do |type, governances|
+
+      [
+        "Governance by government",
+        "Private Governance",
+        "Governance by indigenous peoples and local communities",
+        "Not Reported"
+      ].map do |type|
         {
-          type => governances.map { |row|
+          type => grouped[type].sort_by { |row| row["governance_name"] }.map { |row|
             {
               id:              row["governance_id"].to_i,
               name:            row["governance_name"],
