@@ -10,6 +10,7 @@ class API::V3::Countries < Grape::API
   params {
     optional :with_geometry, default: false, type: Boolean
     optional :iucn_category_long_names, default: false, type: Boolean
+    optional :group_governances, default: false, type: Boolean
   }
   # == body
   #########
@@ -28,6 +29,7 @@ class API::V3::Countries < Grape::API
   params {
     optional :with_geometry, default: true, type: Boolean
     optional :iucn_category_long_names, default: false, type: Boolean
+    optional :group_governances, default: false, type: Boolean
   }
   # == body
   #########

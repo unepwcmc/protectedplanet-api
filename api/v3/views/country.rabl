@@ -101,14 +101,32 @@ end
 
 if @current_user.access_to?(Country, :governances)
   node :governances do |country|
-    country.protected_areas_per_governance.map do |row|
-      {
-        id:              row["governance_id"].to_i,
-        name:            row["governance_name"],
-        governance_type: Governance.new(name: row["governance_name"]).governance_type,
-        pas_count:       row["count"].to_i,
-        pas_percentage:  row["percentage"].to_f.round(2)
-      }
+    if @group_governances
+      rows = country.protected_areas_per_governance
+
+      rows.group_by { |row| Governance.new(name: row["governance_name"]).governance_type }.map do |type, governances|
+        {
+          type => governances.map { |row|
+            {
+              id:              row["governance_id"].to_i,
+              name:            row["governance_name"],
+              governance_type: Governance.new(name: row["governance_name"]).governance_type,
+              pas_count:       row["count"].to_i,
+              pas_percentage:  row["percentage"].to_f.round(2)
+            }
+          }
+        }
+      end
+    else
+      country.protected_areas_per_governance.map do |row|
+        {
+          id:              row["governance_id"].to_i,
+          name:            row["governance_name"],
+          governance_type: Governance.new(name: row["governance_name"]).governance_type,
+          pas_count:       row["count"].to_i,
+          pas_percentage:  row["percentage"].to_f.round(2)
+        }
+      end
     end
   end
 end

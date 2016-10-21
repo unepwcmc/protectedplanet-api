@@ -20,6 +20,9 @@ class Governance < ActiveRecord::Base
     "Governance by Indigenous Peoples and Local Communities" => [
       "Indigenous peoples",
       "Local communities"
+    ],
+    "Not Reported" => [
+      "Not Reported"
     ]
   }
   def governance_type
