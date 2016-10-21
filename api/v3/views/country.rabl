@@ -107,11 +107,13 @@ if @current_user.access_to?(Country, :governances)
 
 
       [
-        "Governance by government",
+        "Governance by Government",
+        "Shared Governance",
         "Private Governance",
-        "Governance by indigenous peoples and local communities",
+        "Governance by Indigenous Peoples and Local Communities",
         "Not Reported"
       ].map do |type|
+        next unless grouped[type]
         {
           type => grouped[type].sort_by { |row| row["governance_name"] }.map { |row|
             {
@@ -123,7 +125,7 @@ if @current_user.access_to?(Country, :governances)
             }
           }
         }
-      end
+      end.compact
     else
       country.protected_areas_per_governance.map do |row|
         {
