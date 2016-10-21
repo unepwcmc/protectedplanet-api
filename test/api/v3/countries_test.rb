@@ -93,7 +93,7 @@ class API::V3::CountriesTest < MiniTest::Test
 
   def test_get_countries_WES_returns_governances_with_counts
     country = create(:country, name: "Zubrowka", iso_3: "WES", bounding_box: "POINT(-122 47)")
-    governance = create(:governance, name: "Subnational")
+    governance = create(:governance, name: "Joint governance")
     create(:protected_area, name: "Grand Budapest", countries: [country], governance: governance)
 
     get_with_rabl "/v3/countries/wes"
@@ -101,7 +101,8 @@ class API::V3::CountriesTest < MiniTest::Test
     assert last_response.ok?
     assert_equal([{
       "id" => governance.id,
-      "name" => "Subnational",
+      "name" => "Joint governance",
+      "governance_type" => "Shared Governance",
       "pas_count" => 1,
       "pas_percentage" => 100
     }], @json_response["country"]["governances"])
