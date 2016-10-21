@@ -20,6 +20,7 @@ class API::V3::Countries < Grape::API
 
     @with_geometry = params[:with_geometry]
     @iucn_category_long_names = params[:iucn_category_long_names]
+    @group_governances = params[:group_governances]
     @countries = paginate(collection)
   end
 
@@ -36,6 +37,7 @@ class API::V3::Countries < Grape::API
   get ":iso_3", rabl: "v3/views/country" do
     @with_geometry = params[:with_geometry]
     @iucn_category_long_names = params[:iucn_category_long_names]
+    @group_governances = params[:group_governances]
 
     if params[:iso_3].length == 2
       @country = Country.find_by_iso(params[:iso_3].upcase) or error!(:not_found, 404)
