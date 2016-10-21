@@ -112,20 +112,18 @@ if @current_user.access_to?(Country, :governances)
         "Private Governance",
         "Governance by Indigenous Peoples and Local Communities",
         "Not Reported"
-      ].map do |type|
+      ].each_with_object({}) do |type, hash|
         next unless grouped[type]
-        {
-          type => grouped[type].sort_by { |row| row["governance_name"] }.map { |row|
-            {
-              id:              row["governance_id"].to_i,
-              name:            row["governance_name"],
-              governance_type: Governance.new(name: row["governance_name"]).governance_type,
-              pas_count:       row["count"].to_i,
-              pas_percentage:  row["percentage"].to_f.round(2)
-            }
+        hash[type] = grouped[type].sort_by { |row| row["governance_name"] }.map { |row|
+          {
+            id:              row["governance_id"].to_i,
+            name:            row["governance_name"],
+            governance_type: Governance.new(name: row["governance_name"]).governance_type,
+            pas_count:       row["count"].to_i,
+            pas_percentage:  row["percentage"].to_f.round(2)
           }
         }
-      end.compact
+      end
     else
       country.protected_areas_per_governance.map do |row|
         {
