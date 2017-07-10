@@ -17,7 +17,7 @@ end
 
 if @current_user.access_to?(ProtectedArea, :marine)
   node :marine do |pa|
-    pa.marine == "t"
+    pa.marine
   end
 end
 
