@@ -194,6 +194,10 @@ iucn_category (Integer)
   If set, returns all protected areas with the given IUCN category `id`, paginated.
   By default, this is unset: protected areas with all IUCN categories are returned.
 
+with_geometry (Boolean)
+  If set, returns the geojson representation of the geometry of the protected areas.
+  Defaults to false.
+
 page (Number)
   Controls the returned page. Defaults to 1.
 
