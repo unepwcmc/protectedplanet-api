@@ -37,6 +37,7 @@ class API::V3::ProtectedAreas < Grape::API
     optional :jurisdiction, type: Integer
     optional :governance, type: Integer
     optional :iucn_category, type: Integer
+    optional :with_geometry, default: false, type: Boolean
     at_least_one_of :country, :marine, :designation,
       :jurisdiction, :governance, :iucn_category
   end
@@ -44,6 +45,8 @@ class API::V3::ProtectedAreas < Grape::API
   #########
   get :search, rabl: "v3/views/protected_areas" do
     collection = ProtectedArea.search(declared(params, include_missing: false))
+
+    @with_geometry   = params[:with_geometry]
     @protected_areas = paginate(collection)
   end
 
