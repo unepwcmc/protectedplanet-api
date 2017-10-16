@@ -22,6 +22,6 @@
     "tests"
   ],
   "dependencies": {
-    "protectedplanet-frontend": "latest"
+    "protectedplanet-frontend": "master"
   }
 }
