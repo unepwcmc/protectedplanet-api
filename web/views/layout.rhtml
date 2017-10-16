@@ -18,34 +18,11 @@
   <main class="body-container">
   <header>
     <nav class="navbar">
-      <div class="navbar__element navbar__element--bigger">
-        <a href="http://www.protectedplanet.net" class="protectedplanet-logo">protected planet</a>
-      </div>
-
-      <div class="navbar__element navbar__element--right"><a href="http://www.protectedplanet.net/c/about">About</a></div>
-      <div class="navbar__element navbar__element--right">
-        <a href="http://www.protectedplanet.net/resources?category_id=1">
-          Resources <i class="fa fa-chevron-down"></i>
-          </button>
-      </div>
-      <div class="navbar__element navbar__element--right"><a href="http://www.protectedplanet.net/c/terms-and-conditions">Terms & Conditions</a></div>
-      <div class="navbar__element navbar__element--right js-thematic-areas js-navbar-actionable">
-        <button class="js-trigger">
-          Thematic Areas <i class="fa fa-chevron-down"></i>
-        </button>
-
-        <div class="u-hide js-target dropdown">
-          <div class="dropdown__inner">
-            <a class="dropdown__element" href="http://wcmc.io/WDPA_Manual">WDPA</a>
-            <a class="dropdown__element" href="http://parcc.protectedplanet.net/">PARCC</a>
-            <a class="dropdown__element" href="http://www.iccaregistry.org">ICCA</a>
-            <a class="dropdown__element" href="http://wcmc.io/pame-report">PAME</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="navbar__element navbar__element--with-separator navbar__element--right">
-        <a href="http://www.protectedplanet.net" class="link-with-icon link-with-icon--no-color"> <i class="fa fa-search"></i> Search</a>
+      
+      <div class="navbar__element--bigger">
+        <a class="protectedplanet-logo" href="http://www.protectedplanet.net">
+          protected planet<sup class="protectedplanet-logo__registered">®</sup>
+        </a>
       </div>
     </nav>
 
@@ -56,17 +33,18 @@
 
   <footer class="footer">
     <p class="footer__element">
-    <i class="fa fa-copyright"></i> ProtectedPlanet 2014-2016. All rights reserved
+      <i class="fa fa-copyright"></i> ProtectedPlanet 2014-<%= Date.today.year %>. All rights reserved
     </p>
 
-    <div class="footer__element footer__element--right">
-      <a class="iucn-logo" href="http://www.iucn.org"></a>
+    <div class="footer__element footer__element--logos flex-row align-items-center">
       <a class="unepwcmc-logo" href="http://www.unep-wcmc.org"></a>
-    </div>
-    <div class="footer__element footer__element--right footer__element--no-push footer__element--with-separator">
-      <a class="uservoice uservoice--no-color uservoice--bold" href="mailto:protectedareas@unep-wcmc.org" data-uv-trigger>
-        <i class="uservoice__icon fa fa-comment"></i>Send Feedback
-      </a>
+      <a class="iucn-logo" href="http://www.iucn.org"></a>
+    
+      <div class="u-only-desktop footer__element footer__element--with-separator">
+        <a class="uservoice uservoice--no-color uservoice--bold" href="mailto:protectedareas@unep-wcmc.org" data-uv-trigger>
+          <i class="uservoice__icon fa fa-comment"></i>Send Feedback
+        </a>
+      </div>
     </div>
   </footer>
 
