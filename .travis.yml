@@ -1,6 +1,11 @@
 language: ruby
 before_install:
-    - sudo apt-get install Postgresql-9.3-postgis -f
+  - sudo apt-get install Postgresql-9.3-postgis -f
+  - psql -c 'create database pp_test' -U postgres
+  - psql -c 'CREATE EXTENSION postgis;' -U postgres -d pp_test
+  - psql -c 'CREATE EXTENSION postgis_topology;' -U postgres -d pp_test
+  - sudo ln -s /usr/lib/libgeos-`geos-config --version`.so /usr/lib/libgeos.so
+
 before_script:
   - RACK_ENV=test bundle exec rake db:create db:migrate
 addons:
