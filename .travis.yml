@@ -3,3 +3,4 @@ before_script:
   - RACK_ENV=test bundle exec rake db:create db:migrate
 addons:
   postgresql: 9.3
+  postgis: 2.3
