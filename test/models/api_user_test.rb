@@ -47,6 +47,16 @@ class ApiUserTest < MiniTest::Test
     refute api_user.access_to?(ProtectedArea, :designation)
   end
 
+  def test_access_to_returns_true_if_user_has_attribute_access
+    api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "is_green_list"]})
+    assert api_user.access_to?(ProtectedArea, :is_green_list)
+  end
+
+  def test_access_to_returns_false_if_user_has_no_attribute_access
+    api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "is_green_list"]})
+    refute api_user.access_to?(ProtectedArea, :designation)
+  end
+
   def test_access_to_with_model_instance
     api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "marine"]})
     protected_area = create(:protected_area)
@@ -54,4 +64,3 @@ class ApiUserTest < MiniTest::Test
     assert api_user.access_to?(protected_area, :marine)
   end
 end
-
