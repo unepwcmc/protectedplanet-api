@@ -21,6 +21,12 @@ if @current_user.access_to?(ProtectedArea, :marine)
   end
 end
 
+if @current_user.access_to?(ProtectedArea, :is_green_list)
+  node :is_green_list do |pa|
+    pa.is_green_list
+  end
+end
+
 # Relations
 if @current_user.access_to?(ProtectedArea, :countries)
   child :countries, object_root: false do
