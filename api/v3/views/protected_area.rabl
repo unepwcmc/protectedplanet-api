@@ -2,9 +2,7 @@ object @protected_area
 
 # Basic
 attribute :wdpa_id => :id
-attributes :name, :original_name, :wdpa_id,
-           :reported_marine_area, :reported_area, :legal_status_updated_at,
-           :management_plan
+attributes :name, :original_name, :wdpa_id
 
 node :links do |pa|
   if @current_user.access_to?(ProtectedArea, :link_to_pp)
@@ -20,6 +18,30 @@ end
 if @current_user.access_to?(ProtectedArea, :marine)
   node :marine do |pa|
     pa.marine
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :reported_marine_area)
+  node :reported_marine_area do |pa|
+    pa.reported_marine_area
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :reported_area)
+  node :reported_area do |pa|
+    pa.reported_area
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :legal_status_updated_at)
+  node :legal_status_updated_at do |pa|
+    pa.legal_status_updated_at
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :management_plan)
+  node :management_plan do |pa|
+    pa.management_plan
   end
 end
 
