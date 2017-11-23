@@ -8,7 +8,7 @@ class ProtectedArea < ActiveRecord::Base
   self.api_attributes = [
     :wdpa_id,
     :name, :original_name,
-    :geometry, :marine,
+    :geometry, :marine, :is_green_list,
     :countries, :sublocation,
     :iucn_category, :designation,
     :link_to_pp, :no_take_status,
@@ -30,6 +30,7 @@ class ProtectedArea < ActiveRecord::Base
   SEARCHES = {
     country:       -> (scope, value) { scope.joins(:countries).where("countries.iso_3 = ?", value.upcase) },
     marine:        -> (scope, value) { scope.where(marine: value) },
+    is_green_list: -> (scope, value) { scope.where(is_green_list: value) },
     designation:   -> (scope, value) { scope.where(designation_id: value) },
     jurisdiction:  -> (scope, value) { scope.joins(:designation).where("designations.jurisdiction_id = ?", value) },
     governance:    -> (scope, value) { scope.where(governance_id: value) },

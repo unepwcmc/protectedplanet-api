@@ -50,7 +50,7 @@ class ApiUserTest < MiniTest::Test
   ATTRIBUTES = [
     "no_take_status", "legal_status", "management_authority",
     "reported_area", "reported_marine_area", "legal_status_updated_at",
-    "management_plan"
+    "management_plan", "is_green_list"
   ]
   ATTRIBUTES.each do |attribute|
     define_method("test_access_to_return_true_if_user_has_#{attribute}_attribute_access") do
@@ -71,4 +71,3 @@ class ApiUserTest < MiniTest::Test
     assert api_user.access_to?(protected_area, :marine)
   end
 end
-
