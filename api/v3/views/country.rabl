@@ -47,7 +47,7 @@ if @current_user.access_to?(Country, :country_statistic)
       :ts_area, :pa_land_area, :pa_marine_area, :percentage_pa_land_cover,
       :percentage_pa_eez_cover, :percentage_pa_ts_cover, :land_area, :percentage_pa_cover,
       :pa_eez_area, :pa_ts_area, :percentage_pa_marine_cover, :marine_area,
-      :polygons_count, :points_count, :is_green_list
+      :polygons_count, :points_count
   end
 end
 
