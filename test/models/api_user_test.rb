@@ -47,7 +47,12 @@ class ApiUserTest < MiniTest::Test
     refute api_user.access_to?(ProtectedArea, :designation)
   end
 
-  ["no_take_status", "legal_status", "management_authority"].each do |attribute|
+  ATTRIBUTES = [
+    "no_take_status", "legal_status", "management_authority",
+    "reported_area", "reported_marine_area", "legal_status_updated_at",
+    "management_plan"
+  ]
+  ATTRIBUTES.each do |attribute|
     define_method("test_access_to_return_true_if_user_has_#{attribute}_attribute_access") do
       api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", attribute]})
       assert api_user.access_to?(ProtectedArea, attribute.to_sym)
