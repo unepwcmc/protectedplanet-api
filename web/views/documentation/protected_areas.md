@@ -82,7 +82,22 @@ Sample response:
                   name: "National"
                 }
             },
-            "marine": false
+            "no_take_status": {
+              "id": 11874,
+              "name": "Not Applicable"
+            },
+            "legal_status": {
+              "id": 1,
+              "name": "Designated"
+            },
+           "management_authority": {
+              "id": 6,
+              "name": "Not Reported"
+            },
+            "marine": false,
+            "legal_status_updated_at": "01/01/1998",
+            "management_plan": "Not Reported",
+            "is_green_list": false
         }
     ]
 }
@@ -156,7 +171,22 @@ Sample response:
               name: "National"
             }
         },
-        "marine": false
+        "no_take_status": {
+          "id": 11874,
+          "name": "Not Applicable"
+        },
+        "legal_status": {
+          "id": 1,
+          "name": "Designated"
+        },
+       "management_authority": {
+          "id": 6,
+          "name": "Not Reported"
+        },
+        "marine": false,
+        "legal_status_updated_at": "01/01/1998",
+        "management_plan": "Not Reported",
+        "is_green_list": false
     }
 }
 ~~~
@@ -169,6 +199,11 @@ search is possible on the `marine` attribute and on the country ISO.
 The accepted parameters are:
 
 ~~~
+is_green_list (Boolean)
+  If set to true, returns all green listed protected areas, paginated.
+  If set to false, returns all non-green listed protected areas, paginated.
+  By default, this is unset: both green listed and non-green listed protected areas are returned.
+
 marine (Boolean)
   If set to true, returns all marine protected areas, paginated.
   If set to false, returns all terrestrial protected areas, paginated.
@@ -269,7 +304,22 @@ Sample response:
                   name: "National"
                 }
             },
-            "marine": false
+            "no_take_status": {
+              "id": 11874,
+              "name": "Not Applicable"
+            },
+            "legal_status": {
+              "id": 1,
+              "name": "Designated"
+            },
+           "management_authority": {
+              "id": 6,
+              "name": "Not Reported"
+            },
+            "marine": false,
+            "legal_status_updated_at": "01/01/1998",
+            "management_plan": "Not Reported",
+            "is_green_list": false
         }
     ]
 }
