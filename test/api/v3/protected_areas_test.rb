@@ -83,7 +83,17 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
     assert_equal("Darjeeling", @json_response["protected_areas"][0]["name"])
   end
 
-  def test_get_protected_areas_search_with_marine_returns_marine_pas
+  def test_get_protected_areas_with_mrine_unset_returns_all_pas
+    create(:protected_area, name: "Darjeeling", marine: true)
+    create(:protected_area, name: "Not Marine", marine: false)
+
+    get_with_rabl "/v3/protected_areas"
+
+    assert last_response.ok?
+    assert_equal(2, @json_response["protected_areas"].size)
+  end
+
+  def test_get_protected_areas_search_with_is_green_list_returns_green_listed_pas
     create(:protected_area, name: "Darjeeling", is_green_list: true)
     create(:protected_area, name: "Not Marine", is_green_list: false)
 
@@ -92,6 +102,16 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
     assert last_response.ok?
     assert_equal(1, @json_response["protected_areas"].size)
     assert_equal("Darjeeling", @json_response["protected_areas"][0]["name"])
+  end
+
+  def test_get_protected_areas_with_is_green_list_unset_returns_all_pas
+    create(:protected_area, name: "Darjeeling", is_green_list: true)
+    create(:protected_area, name: "Not Marine", is_green_list: false)
+
+    get_with_rabl "/v3/protected_areas"
+
+    assert last_response.ok?
+    assert_equal(2, @json_response["protected_areas"].size)
   end
 
   def test_get_protected_areas_search_wants_at_least_one_param
