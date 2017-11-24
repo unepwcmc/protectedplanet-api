@@ -35,7 +35,7 @@ end
 
 if @current_user.access_to?(ProtectedArea, :legal_status_updated_at)
   node :legal_status_updated_at do |pa|
-    pa.legal_status_updated_at
+    pa.legal_status_updated_at&.strftime("%d/%m/%Y")
   end
 end
 
