@@ -21,6 +21,30 @@ if @current_user.access_to?(ProtectedArea, :marine)
   end
 end
 
+if @current_user.access_to?(ProtectedArea, :reported_marine_area)
+  node :reported_marine_area do |pa|
+    pa.reported_marine_area
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :reported_area)
+  node :reported_area do |pa|
+    pa.reported_area
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :legal_status_updated_at)
+  node :legal_status_updated_at do |pa|
+    pa.legal_status_updated_at
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :management_plan)
+  node :management_plan do |pa|
+    pa.management_plan
+  end
+end
+
 if @current_user.access_to?(ProtectedArea, :is_green_list)
   node :is_green_list do |pa|
     pa.is_green_list
@@ -53,5 +77,23 @@ if @current_user.access_to?(ProtectedArea, :designation)
     child :jurisdiction do
       attribute :id, :name
     end
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :no_take_status)
+  child :no_take_status, object_root: false do
+    attributes :id, :name
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :legal_status)
+  child :legal_status, object_root: false do
+    attributes :id, :name
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :management_authority)
+  child :management_authority, object_root: false do
+    attributes :id, :name
   end
 end

@@ -11,13 +11,17 @@ class ProtectedArea < ActiveRecord::Base
     :geometry, :marine, :is_green_list,
     :countries, :sublocation,
     :iucn_category, :designation,
-    :link_to_pp
+    :link_to_pp, :no_take_status,
+    :legal_status, :legal_status_updated_at,
+    :management_plan, :management_authority
   ]
 
   belongs_to :iucn_category
   belongs_to :designation
   belongs_to :legal_status
   belongs_to :governance
+  belongs_to :no_take_status
+  belongs_to :management_authority
   has_and_belongs_to_many :countries, -> { select(:id, :name, :iso_3) }
   has_and_belongs_to_many :sub_locations
 

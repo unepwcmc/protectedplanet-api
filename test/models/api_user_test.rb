@@ -37,24 +37,31 @@ class ApiUserTest < MiniTest::Test
     refute_equal api_user.token, "a token"
   end
 
-  def test_access_to_returns_true_if_user_has_attribute_access
+  def test_access_to_return_true_if_user_has_attribute_access
     api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "marine"]})
     assert api_user.access_to?(ProtectedArea, :marine)
   end
 
-  def test_access_to_returns_false_if_user_has_no_attribute_access
+  def test_access_to_return_false_if_user_has_no_attribute_access
     api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "marine"]})
     refute api_user.access_to?(ProtectedArea, :designation)
   end
 
-  def test_access_to_returns_true_if_user_has_attribute_access
-    api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "is_green_list"]})
-    assert api_user.access_to?(ProtectedArea, :is_green_list)
-  end
+  ATTRIBUTES = [
+    "no_take_status", "legal_status", "management_authority",
+    "reported_area", "reported_marine_area", "legal_status_updated_at",
+    "management_plan", "is_green_list"
+  ]
+  ATTRIBUTES.each do |attribute|
+    define_method("test_access_to_return_true_if_user_has_#{attribute}_attribute_access") do
+      api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", attribute]})
+      assert api_user.access_to?(ProtectedArea, attribute.to_sym)
+    end
 
-  def test_access_to_returns_false_if_user_has_no_attribute_access
-    api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "is_green_list"]})
-    refute api_user.access_to?(ProtectedArea, :designation)
+    define_method("test_access_to_return_false_if_user_has_not_#{attribute}_attribute_access") do
+      api_user = create(:api_user, permissions: {"ProtectedArea" => ["name", "marine"]})
+      refute api_user.access_to?(ProtectedArea, attribute.to_sym)
+    end
   end
 
   def test_access_to_with_model_instance
