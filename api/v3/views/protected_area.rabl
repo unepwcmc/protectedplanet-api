@@ -82,7 +82,7 @@ end
 
 if @current_user.access_to?(ProtectedArea, :no_take_status)
   child :no_take_status, object_root: false do
-    attributes :id, :name
+    attributes :id, :name, :area
   end
 end
 
@@ -102,4 +102,8 @@ if @current_user.access_to?(ProtectedArea, :governance)
   child :governance, object_root: false do
     attributes :id, :governance_type
   end
+end
+
+if @current_user.access_to?(ProtectedArea, :owner_type)
+  attribute :owner_type
 end

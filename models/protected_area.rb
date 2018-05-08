@@ -14,7 +14,8 @@ class ProtectedArea < ActiveRecord::Base
     :link_to_pp, :no_take_status,
     :legal_status, :legal_status_updated_at,
     :management_plan, :management_authority,
-    :governance
+    :governance, :reported_area, :reported_marine_area,
+    :owner_type
   ]
 
   belongs_to :iucn_category
