@@ -97,3 +97,9 @@ if @current_user.access_to?(ProtectedArea, :management_authority)
     attributes :id, :name
   end
 end
+
+if @current_user.access_to?(ProtectedArea, :governance)
+  child :governance, object_root: false do
+    attributes :id, :governance_type
+  end
+end

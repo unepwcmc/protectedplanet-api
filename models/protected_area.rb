@@ -13,7 +13,8 @@ class ProtectedArea < ActiveRecord::Base
     :iucn_category, :designation,
     :link_to_pp, :no_take_status,
     :legal_status, :legal_status_updated_at,
-    :management_plan, :management_authority
+    :management_plan, :management_authority,
+    :governance
   ]
 
   belongs_to :iucn_category
