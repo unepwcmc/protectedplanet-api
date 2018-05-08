@@ -16,21 +16,15 @@ if @current_user.access_to?(ProtectedArea, :geometry)
 end
 
 if @current_user.access_to?(ProtectedArea, :marine)
-  node :marine do |pa|
-    pa.marine
-  end
+  attribute :marine
 end
 
 if @current_user.access_to?(ProtectedArea, :reported_marine_area)
-  node :reported_marine_area do |pa|
-    pa.reported_marine_area
-  end
+  attribute :reported_marine_area
 end
 
 if @current_user.access_to?(ProtectedArea, :reported_area)
-  node :reported_area do |pa|
-    pa.reported_area
-  end
+  attribute :reported_area
 end
 
 if @current_user.access_to?(ProtectedArea, :legal_status_updated_at)
@@ -40,15 +34,11 @@ if @current_user.access_to?(ProtectedArea, :legal_status_updated_at)
 end
 
 if @current_user.access_to?(ProtectedArea, :management_plan)
-  node :management_plan do |pa|
-    pa.management_plan
-  end
+  attribute :management_plan
 end
 
 if @current_user.access_to?(ProtectedArea, :is_green_list)
-  node :is_green_list do |pa|
-    pa.is_green_list
-  end
+  attribute :is_green_list
 end
 
 # Relations
