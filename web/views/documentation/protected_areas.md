@@ -52,7 +52,22 @@ Sample response:
                   name: "National"
                 }
             },
-            "marine": false
+            "no_take_status": {
+              id: 11851,
+              name: "Not Applicable",
+              area: "0.0"
+            }
+            "marine": false,
+            "reported_area": "0.3933",
+            "reported_marine_area": "0.0",
+            "legal_status_updated_at": "01/01/1998",
+            "management_plan": "Not Reported",
+            "is_green_list": false,
+            "governance": {
+              "id": 1,
+              "governance_type": "Governance by Government"
+            },
+            "owner_type": "Not Reported"
         },
         {
             "id": 64700,
@@ -83,8 +98,9 @@ Sample response:
                 }
             },
             "no_take_status": {
-              "id": 11874,
-              "name": "Not Applicable"
+              "id": 13537,
+              "name": "Not Applicable",
+              "area": "0.0"
             },
             "legal_status": {
               "id": 1,
@@ -95,9 +111,16 @@ Sample response:
               "name": "Not Reported"
             },
             "marine": false,
-            "legal_status_updated_at": "01/01/1998",
+            "reported_area": "5.1867",
+            "reported_marine_area": "0.0",
+            "legal_status_updated_at": "01/01/1948",
             "management_plan": "Not Reported",
-            "is_green_list": false
+            "is_green_list": false,
+            "governance": {
+              "id": 1,
+              "governance_type": "Governance by Government"
+            },
+            "owner_type": "Not Reported"
         }
     ]
 }
@@ -173,7 +196,8 @@ Sample response:
         },
         "no_take_status": {
           "id": 11874,
-          "name": "Not Applicable"
+          "name": "Not Applicable",
+          "area": "0.0"
         },
         "legal_status": {
           "id": 1,
@@ -184,9 +208,16 @@ Sample response:
           "name": "Not Reported"
         },
         "marine": false,
+        "reported_area": "106.25",
+        "reported_marine_area": "0.0",
         "legal_status_updated_at": "01/01/1998",
         "management_plan": "Not Reported",
-        "is_green_list": false
+        "is_green_list": false,
+        "governance": {
+          "id": 1,
+          "governance_type": "Governance by Government"
+        },
+        "owner_type": "Not Reported"
     }
 }
 ~~~
@@ -305,8 +336,9 @@ Sample response:
                 }
             },
             "no_take_status": {
-              "id": 11874,
+              "id": 2634,
               "name": "Not Applicable"
+              "area": "0.0"
             },
             "legal_status": {
               "id": 1,
@@ -317,9 +349,16 @@ Sample response:
               "name": "Not Reported"
             },
             "marine": false,
-            "legal_status_updated_at": "01/01/1998",
+            "reported_area": "230.46",
+            "reported_marine_area": "46.66",
+            "legal_status_updated_at": "01/01/1977",
             "management_plan": "Not Reported",
-            "is_green_list": false
+            "is_green_list": false,
+            "governance": {
+              "id": 2,
+              "governance_type": "Not Reported"
+            },
+            "owner_type: "Not Reported"
         }
     ]
 }
