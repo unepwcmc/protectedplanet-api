@@ -15,7 +15,7 @@ class ProtectedArea < ActiveRecord::Base
     :legal_status, :legal_status_updated_at,
     :management_plan, :management_authority,
     :governance, :reported_area, :reported_marine_area,
-    :owner_type
+    :owner_type, :pame_evaluations
   ]
 
   belongs_to :iucn_category
@@ -26,6 +26,7 @@ class ProtectedArea < ActiveRecord::Base
   belongs_to :management_authority
   has_and_belongs_to_many :countries, -> { select(:id, :name, :iso_3) }
   has_and_belongs_to_many :sub_locations
+  has_many :pame_evaluations
 
   delegate :jurisdiction, to: :designation, allow_nil: true
 

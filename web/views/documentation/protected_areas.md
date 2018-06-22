@@ -67,7 +67,14 @@ Sample response:
               "id": 1,
               "governance_type": "Governance by Government"
             },
-            "owner_type": "Not Reported"
+            "owner_type": "Not Reported",
+            "pame_evaluations": [
+              {
+                "id": 1,
+                "method": "METT",
+                "year": 2018
+              }
+            ]
         },
         {
             "id": 64700,

@@ -40,3 +40,21 @@ $ rackup
 ```
 
 Now fire up your browser at `localhost:9292`!
+
+## Development
+
+The `rails c` of the rack world...
+
+```
+bundle exec rack-console
+```
+
+Then make an api user (assuming you also have the PP database set up)
+
+```
+user = ApiUser.create(email: "test@test.com", full_name: "Test")
+user.activate!
+```
+
+Retrieve your token with `user.token`
+

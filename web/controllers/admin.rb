@@ -1,6 +1,7 @@
 module Web; end
 require "web/helpers"
 require "lib/admin_csv_generator"
+require 'sinatra'
 
 class Web::AdminController < Sinatra::Base
   helpers Web::Helpers
