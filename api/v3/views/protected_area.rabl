@@ -72,7 +72,7 @@ end
 
 if @current_user.access_to?(ProtectedArea, :pame_evaluations)
   child :pame_evaluations, object_root: false do
-    attributes :id, :method, :year
+    attributes :id, :methodology, :year
   end
 end
 

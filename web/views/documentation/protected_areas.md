@@ -71,7 +71,7 @@ Sample response:
             "pame_evaluations": [
               {
                 "id": 1,
-                "method": "METT",
+                "methodology": "METT",
                 "year": 2018
               }
             ]
