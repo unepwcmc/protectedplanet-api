@@ -38,7 +38,7 @@ group :test, :development do
   gem "minitest"
   gem "minitest-around", "~> 0.3.2"
   gem "database_cleaner", "~> 1.5.1"
-  gem "factory_girl", "~> 4.0"
+  gem "factory_bot", '~> 4.10.0'
   gem "rack-test", "~> 0.6.3"
 end
 

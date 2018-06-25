@@ -1,6 +1,6 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :protected_area do
     sequence(:wdpa_id) { |n| n }
     legal_status_updated_at Date.new(2014,1,1)
