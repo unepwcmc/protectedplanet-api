@@ -26,6 +26,7 @@ class ProtectedArea < ActiveRecord::Base
   belongs_to :management_authority
   has_and_belongs_to_many :countries, -> { select(:id, :name, :iso_3) }
   has_and_belongs_to_many :sub_locations
+  has_many :pame_evaluations
 
   delegate :jurisdiction, to: :designation, allow_nil: true
 
