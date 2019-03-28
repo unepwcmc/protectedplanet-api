@@ -3,7 +3,7 @@ set :stage, :staging
 set :branch, "migration_deploy"
 
 
-server "new-web.pp-staging.linode.protectedplanet.net", user: 'wcmc', roles: %w{app web db}
+server "new-web.pp-staging.linode.protectedplanet.net", user: 'wcmc', roles: %w{web}
 
 set :application, "api"
 set :server_name, "api.new-web.pp-staging.linode.protectedplanet.net"

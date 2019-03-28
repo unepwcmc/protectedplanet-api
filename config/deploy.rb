@@ -9,7 +9,7 @@ set :repo_url, 'git@github.com:unepwcmc/protectedplanet-api.git'
 
 set :nvm_type, :user # or :system, depends on your nvm setup
 set :nvm_node, 'v10.15.1'
-set :nvm_map_bins, %w{node npm yarn}
+set :nvm_map_bins, %w{node npm yarn bower}
 
 set :deploy_user, 'wcmc'
 
@@ -22,8 +22,40 @@ set :backup_path, "/home/#{fetch(:deploy_user)}/Backup"
 set :deploy_to, "/home/#{fetch(:deploy_user)}/#{fetch(:application)}"
 
 # Default value for :scm is :git
-set :scm, :git
-set :scm_username, "unepwcmc-read"
+#set :scm, :git
+#set :scm_username, "unepwcmc-read"
+
+
+
+
+
+set :nvm_type, :user # or :system, depends on your nvm setup
+set :nvm_node, 'v10.15.1'
+set :nvm_map_bins, %w{node npm yarn}
+
+
+namespace :bower do
+  desc 'Install dependencies with npm'
+  task :install do
+    on roles(:web) do
+      within release_path do
+        execute "bash -c 'source ~/.nvm/nvm.sh && cd '#{release_path}' && bower install'"
+      end
+    end
+  end
+end
+
+
+
+before 'deploy:started', 'bower:install'
+
+
+
+
+
+
+
+
 
 
 set :rvm_type, :user
