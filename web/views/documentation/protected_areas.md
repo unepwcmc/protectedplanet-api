@@ -349,9 +349,6 @@ Sample response:
         "name": "Kaniabizo",
         "original_name": "Kaniabizo",
         "wdpa_id": 40366,
-        "links": {
-            "protected_planet": "http://protectedplanet.net/40366"
-        },
         "geojson": {
             "type": "Feature",
             "properties": {
@@ -365,15 +362,36 @@ Sample response:
                 "type": "Polygon",
                 "coordinates": [
                     [
-                        [ 29.785, -0.692 ],
-                        [ 29.782, -0.687 ],
-                        [ 29.785, -0.683 ],
-                        [ 29.789, -0.688 ],
-                        [ 29.785, -0.692 ]
+                        [
+                            29.785,
+                            -0.692
+                        ],
+                        [
+                            29.782,
+                            -0.687
+                        ],
+                        [
+                            29.785,
+                            -0.683
+                        ],
+                        [
+                            29.789,
+                            -0.688
+                        ],
+                        [
+                            29.785,
+                            -0.692
+                        ]
                     ]
                 ]
             }
         },
+        "marine": false,
+        "reported_marine_area": "0.0",
+        "reported_area": "0.3933",
+        "management_plan": "Not Reported",
+        "is_green_list": false,
+        "owner_type": "Not Reported",
         "countries": [
             {
                 "name": "Uganda",
@@ -381,43 +399,40 @@ Sample response:
                 "id": "UGA"
             }
         ],
-        "sublocations": {},
         "iucn_category": {
             "id": 8,
             "name": "Not Reported"
         },
         "designation": {
-            "id": 3,
+            "id": 12,
             "name": "Forest Reserve",
-            jurisdiction: {
-              id: 1,
-              name: "National"
+            "jurisdiction": {
+                "id": 1,
+                "name": "National"
             }
         },
         "no_take_status": {
-          "id": 11874,
-          "name": "Not Applicable",
-          "area": "0.0"
+            "id": 11851,
+            "name": "Not Applicable",
+            "area": "0.0"
         },
         "legal_status": {
-          "id": 1,
-          "name": "Designated"
+            "id": 1,
+            "name": "Designated"
         },
-       "management_authority": {
-          "id": 6,
-          "name": "Not Reported"
+        "management_authority": {
+            "id": 6,
+            "name": "Not Reported"
         },
-        "marine": false,
-        "reported_area": "106.25",
-        "reported_marine_area": "0.0",
-        "legal_status_updated_at": "01/01/1998",
-        "management_plan": "Not Reported",
-        "is_green_list": false,
         "governance": {
-          "id": 1,
-          "governance_type": "Governance by Government"
+            "id": 1,
+            "governance_type": "Governance by Government"
         },
-        "owner_type": "Not Reported"
+        "pame_evaluations": [],
+        "links": {
+            "protected_planet": "http://protectedplanet.net/40366"
+        },
+        "legal_status_updated_at": "01/01/1998"
     }
 }
 ~~~
