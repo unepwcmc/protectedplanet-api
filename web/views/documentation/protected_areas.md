@@ -497,9 +497,233 @@ Sample response:
             "name": "Keti Bunder South",
             "original_name": "Keti Bunder South",
             "wdpa_id": 6722,
-            "links": {
-                "protected_planet": "http://protectedplanet.net/6722"
+            "geojson": {
+                "type": "Feature",
+                "properties": {
+                    "fill-opacity": 0.7,
+                    "stroke-width": 0.05,
+                    "stroke": "#2E5387",
+                    "fill": "#3E7BB6",
+                    "marker-color": "#2B3146"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                67.917,
+                                24.054
+                            ],
+                            [
+                                67.937,
+                                24.053
+                            ],
+                            [
+                                67.989,
+                                24.036
+                            ],
+                            [
+                                68.008,
+                                24.044
+                            ],
+                            [
+                                68.024,
+                                24.035
+                            ],
+                            [
+                                68.059,
+                                24.001
+                            ],
+                            [
+                                68.08,
+                                23.994
+                            ],
+                            [
+                                68.115,
+                                23.998
+                            ],
+                            [
+                                68.134,
+                                23.99
+                            ],
+                            [
+                                68.158,
+                                23.947
+                            ],
+                            [
+                                68.161,
+                                23.92
+                            ],
+                            [
+                                68.161,
+                                23.906
+                            ],
+                            [
+                                68.147,
+                                23.866
+                            ],
+                            [
+                                68.141,
+                                23.875
+                            ],
+                            [
+                                68.15,
+                                23.903
+                            ],
+                            [
+                                68.142,
+                                23.91
+                            ],
+                            [
+                                68.144,
+                                23.893
+                            ],
+                            [
+                                68.133,
+                                23.868
+                            ],
+                            [
+                                68.141,
+                                23.843
+                            ],
+                            [
+                                68.121,
+                                23.845
+                            ],
+                            [
+                                68.108,
+                                23.858
+                            ],
+                            [
+                                68.11,
+                                23.88
+                            ],
+                            [
+                                68.1,
+                                23.869
+                            ],
+                            [
+                                68.105,
+                                23.846
+                            ],
+                            [
+                                68.086,
+                                23.837
+                            ],
+                            [
+                                68.041,
+                                23.832
+                            ],
+                            [
+                                68.041,
+                                23.792
+                            ],
+                            [
+                                67.999,
+                                23.789
+                            ],
+                            [
+                                67.986,
+                                23.794
+                            ],
+                            [
+                                67.971,
+                                23.812
+                            ],
+                            [
+                                67.957,
+                                23.817
+                            ],
+                            [
+                                67.951,
+                                23.815
+                            ],
+                            [
+                                67.936,
+                                23.84
+                            ],
+                            [
+                                67.921,
+                                23.853
+                            ],
+                            [
+                                67.919,
+                                23.846
+                            ],
+                            [
+                                67.928,
+                                23.831
+                            ],
+                            [
+                                67.871,
+                                23.861
+                            ],
+                            [
+                                67.838,
+                                23.863
+                            ],
+                            [
+                                67.835,
+                                23.823
+                            ],
+                            [
+                                67.82,
+                                23.814
+                            ],
+                            [
+                                67.798,
+                                23.816
+                            ],
+                            [
+                                67.736,
+                                23.84
+                            ],
+                            [
+                                67.749,
+                                23.974
+                            ],
+                            [
+                                67.758,
+                                23.996
+                            ],
+                            [
+                                67.775,
+                                24.011
+                            ],
+                            [
+                                67.813,
+                                24.105
+                            ],
+                            [
+                                67.831,
+                                24.137
+                            ],
+                            [
+                                67.853,
+                                24.139
+                            ],
+                            [
+                                67.88,
+                                24.109
+                            ],
+                            [
+                                67.906,
+                                24.057
+                            ],
+                            [
+                                67.917,
+                                24.054
+                            ]
+                        ]
+                    ]
+                }
             },
+            "marine": true,
+            "reported_marine_area": "46.66",
+            "reported_area": "230.46",
+            "management_plan": "Not Reported",
+            "is_green_list": false,
+            "owner_type": "Not Reported",
             "countries": [
                 {
                     "name": "Pakistan",
@@ -507,29 +731,153 @@ Sample response:
                     "id": "PAK"
                 }
             ],
-            "sublocations": {},
             "iucn_category": {
                 "id": 8,
                 "name": "Not Reported"
             },
             "designation": {
-                "id": 3,
-                "name": "Forest Reserve",
-                jurisdiction: {
-                  id: 1,
-                  name: "National"
+                "id": 41,
+                "name": "Wildlife Sanctuary",
+                "jurisdiction": {
+                    "id": 1,
+                    "name": "National"
                 }
             },
-            "marine": false
+            "no_take_status": {
+                "id": 2700,
+                "name": "Not Reported",
+                "area": "0.0"
+            },
+            "legal_status": {
+                "id": 1,
+                "name": "Designated"
+            },
+            "management_authority": {
+                "id": 6,
+                "name": "Not Reported"
+            },
+            "governance": {
+                "id": 2,
+                "governance_type": "Not Reported"
+            },
+            "pame_evaluations": [],
+            "links": {
+                "protected_planet": "http://protectedplanet.net/6722"
+            },
+            "legal_status_updated_at": "01/01/1977"
         },
         {
             "id": 166899,
             "name": "Kyliiske Mouth",
             "original_name": "Kyliiske Mouth",
             "wdpa_id": 166899,
-            "links": {
-                "protected_planet": "http://protectedplanet.net/166899"
+            "geojson": {
+                "type": "Feature",
+                "properties": {
+                    "fill-opacity": 0.7,
+                    "stroke-width": 0.05,
+                    "stroke": "#2E5387",
+                    "fill": "#3E7BB6",
+                    "marker-color": "#2B3146"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                29.542,
+                                45.541
+                            ],
+                            [
+                                29.552,
+                                45.532
+                            ],
+                            [
+                                29.595,
+                                45.557
+                            ],
+                            [
+                                29.624,
+                                45.538
+                            ],
+                            [
+                                29.738,
+                                45.495
+                            ],
+                            [
+                                29.745,
+                                45.426
+                            ],
+                            [
+                                29.775,
+                                45.308
+                            ],
+                            [
+                                29.755,
+                                45.28
+                            ],
+                            [
+                                29.749,
+                                45.246
+                            ],
+                            [
+                                29.714,
+                                45.25
+                            ],
+                            [
+                                29.676,
+                                45.218
+                            ],
+                            [
+                                29.661,
+                                45.255
+                            ],
+                            [
+                                29.679,
+                                45.29
+                            ],
+                            [
+                                29.665,
+                                45.327
+                            ],
+                            [
+                                29.612,
+                                45.375
+                            ],
+                            [
+                                29.588,
+                                45.413
+                            ],
+                            [
+                                29.579,
+                                45.45
+                            ],
+                            [
+                                29.51,
+                                45.502
+                            ],
+                            [
+                                29.489,
+                                45.543
+                            ],
+                            [
+                                29.517,
+                                45.564
+                            ],
+                            [
+                                29.542,
+                                45.541
+                            ]
+                        ]
+                    ]
+                }
             },
+            "marine": true,
+            "reported_marine_area": "0.0",
+            "reported_area": "328.0",
+            "management_plan": "Management plan is not implented but is available",
+            "is_green_list": false,
+            "owner_type": "Not Reported",
             "countries": [
                 {
                     "name": "Ukraine",
@@ -537,44 +885,42 @@ Sample response:
                     "id": "UKR"
                 }
             ],
-            "sublocations": {},
             "iucn_category": {
                 "id": 8,
                 "name": "Not Reported"
             },
             "designation": {
-                "id": 3,
-                "name": "Forest Reserve",
-                jurisdiction: {
-                  id: 1,
-                  name: "National"
+                "id": 256,
+                "name": "Ramsar Site, Wetland of International Importance",
+                "jurisdiction": {
+                    "id": 2,
+                    "name": "International"
                 }
             },
             "no_take_status": {
-              "id": 2634,
-              "name": "Not Applicable"
-              "area": "0.0"
+                "id": 41349,
+                "name": "Not Reported",
+                "area": "0.0"
             },
             "legal_status": {
-              "id": 1,
-              "name": "Designated"
+                "id": 1,
+                "name": "Designated"
             },
-           "management_authority": {
-              "id": 6,
-              "name": "Not Reported"
+            "management_authority": {
+                "id": 6,
+                "name": "Not Reported"
             },
-            "marine": false,
-            "reported_area": "230.46",
-            "reported_marine_area": "46.66",
-            "legal_status_updated_at": "01/01/1977",
-            "management_plan": "Not Reported",
-            "is_green_list": false,
             "governance": {
-              "id": 2,
-              "governance_type": "Not Reported"
+                "id": 2,
+                "governance_type": "Not Reported"
             },
-            "owner_type: "Not Reported"
+            "pame_evaluations": [],
+            "links": {
+                "protected_planet": "http://protectedplanet.net/166899"
+            },
+            "legal_status_updated_at": "01/01/1976"
         }
+
     ]
 }
 ~~~
