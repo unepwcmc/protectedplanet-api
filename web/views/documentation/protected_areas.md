@@ -29,98 +29,298 @@ Sample response:
             "name": "Kaniabizo",
             "original_name": "Kaniabizo",
             "wdpa_id": 40366,
+            "geojson": {
+                "type": "Feature",
+                "properties": {
+                    "fill-opacity": 0.7,
+                    "stroke-width": 0.05,
+                    "stroke": "#40541b",
+                    "fill": "#83ad35",
+                    "marker-color": "#2B3146"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                29.785,
+                                -0.692
+                            ],
+                            [
+                                29.782,
+                                -0.687
+                            ],
+                            [
+                                29.785,
+                                -0.683
+                            ],
+                            [
+                                29.789,
+                                -0.688
+                            ],
+                            [
+                                29.785,
+                                -0.692
+                            ]
+                        ]
+                    ]
+                }
+            },
+            "marine": false,
+            "reported_marine_area": "0.0",
+            "reported_area": "0.3933",
+            "management_plan": "Not Reported",
+            "is_green_list": false,
+            "owner_type": "Not Reported",
+            "countries": [
+                {
+                    "name": "Uganda",
+                    "iso_3": "UGA",
+                    "id": "UGA"
+                }
+            ],
+            "iucn_category": {
+                "id": 8,
+                "name": "Not Reported"
+            },
+            "designation": {
+                "id": 12,
+                "name": "Forest Reserve",
+                "jurisdiction": {
+                    "id": 1,
+                    "name": "National"
+                }
+            },
+            "no_take_status": {
+                "id": 11851,
+                "name": "Not Applicable",
+                "area": "0.0"
+            },
+            "legal_status": {
+                "id": 1,
+                "name": "Designated"
+            },
+            "management_authority": {
+                "id": 6,
+                "name": "Not Reported"
+            },
+            "governance": {
+                "id": 1,
+                "governance_type": "Governance by Government"
+            },
+            "pame_evaluations": [],
             "links": {
                 "protected_planet": "http://protectedplanet.net/40366"
             },
-            "countries": [
-                {
-                    "name": "Uganda",
-                    "iso_3": "UGA",
-                    "id": "UGA"
-                }
-            ],
-            "sublocations": {},
-            "iucn_category": {
-                "id": 8,
-                "name": "Not Reported"
-            },
-            "designation": {
-                "id": 3,
-                "name": "Forest Reserve",
-                jurisdiction: {
-                  id: 1,
-                  name: "National"
-                }
-            },
-            "no_take_status": {
-              id: 11851,
-              name: "Not Applicable",
-              area: "0.0"
-            }
-            "marine": false,
-            "reported_area": "0.3933",
-            "reported_marine_area": "0.0",
-            "legal_status_updated_at": "01/01/1998",
-            "management_plan": "Not Reported",
-            "is_green_list": false,
-            "governance": {
-              "id": 1,
-              "governance_type": "Governance by Government"
-            },
-            "owner_type": "Not Reported"
+            "legal_status_updated_at": "01/01/1998"
         },
         {
-            "id": 64700,
-            "name": "Otzi",
-            "original_name": "Otzi (East and West)",
-            "wdpa_id": 64700,
-            "links": {
-                "protected_planet": "http://protectedplanet.net/64700"
+            "id": 555547509,
+            "name": "Al-Hoceima National Park",
+            "original_name": "Al-Hoceima National Park",
+            "wdpa_id": 555547509,
+            "geojson": {
+                "type": "Feature",
+                "properties": {
+                    "fill-opacity": 0.7,
+                    "stroke-width": 0.05,
+                    "stroke": "#2E5387",
+                    "fill": "#3E7BB6",
+                    "marker-color": "#2B3146"
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [
+                                -3.965,
+                                35.245
+                            ],
+                            [
+                                -3.963,
+                                35.242
+                            ],
+                            [
+                                -3.972,
+                                35.235
+                            ],
+                            [
+                                -3.97,
+                                35.231
+                            ],
+                            [
+                                -3.984,
+                                35.221
+                            ],
+                            [
+                                -3.975,
+                                35.204
+                            ],
+                            [
+                                -3.981,
+                                35.199
+                            ],
+                            [
+                                -3.979,
+                                35.195
+                            ],
+                            [
+                                -3.987,
+                                35.194
+                            ],
+                            [
+                                -3.995,
+                                35.184
+                            ],
+                            [
+                                -3.992,
+                                35.168
+                            ],
+                            [
+                                -3.976,
+                                35.156
+                            ],
+                            [
+                                -3.993,
+                                35.141
+                            ],
+                            [
+                                -4.045,
+                                35.134
+                            ],
+                            [
+                                -4.134,
+                                35.14
+                            ],
+                            [
+                                -4.17,
+                                35.122
+                            ],
+                            [
+                                -4.188,
+                                35.107
+                            ],
+                            [
+                                -4.202,
+                                35.104
+                            ],
+                            [
+                                -4.215,
+                                35.112
+                            ],
+                            [
+                                -4.247,
+                                35.112
+                            ],
+                            [
+                                -4.278,
+                                35.122
+                            ],
+                            [
+                                -4.337,
+                                35.116
+                            ],
+                            [
+                                -4.353,
+                                35.131
+                            ],
+                            [
+                                -4.372,
+                                35.132
+                            ],
+                            [
+                                -4.377,
+                                35.138
+                            ],
+                            [
+                                -4.375,
+                                35.148
+                            ],
+                            [
+                                -4.379,
+                                35.154
+                            ],
+                            [
+                                -4.369,
+                                35.203
+                            ],
+                            [
+                                -4.255,
+                                35.237
+                            ],
+                            [
+                                -3.993,
+                                35.286
+                            ],
+                            [
+                                -3.965,
+                                35.245
+                            ]
+                        ]
+                    ]
+                }
             },
+            "marine": true,
+            "reported_marine_area": "196.0",
+            "reported_area": "484.6",
+            "management_plan": "Not Reported",
+            "is_green_list": false,
+            "owner_type": "Not Reported",
             "countries": [
                 {
-                    "name": "Uganda",
-                    "iso_3": "UGA",
-                    "id": "UGA"
+                    "name": "Morocco",
+                    "iso_3": "MAR",
+                    "id": "MAR"
                 }
             ],
-            "sublocations": {},
             "iucn_category": {
-                "id": 8,
-                "name": "Not Reported"
+                "id": 10,
+                "name": "Not Assigned"
             },
             "designation": {
-                "id": 3,
-                "name": "Forest Reserve",
-                jurisdiction: {
-                  id: 1,
-                  name: "National"
+                "id": 526,
+                "name": "Specially Protected Areas of Mediterranean Importance (Barcelona Convention)",
+                "jurisdiction": {
+                    "id": 3,
+                    "name": "Regional"
                 }
             },
             "no_take_status": {
-              "id": 13537,
-              "name": "Not Applicable",
-              "area": "0.0"
+                "id": 157133,
+                "name": "Not Reported",
+                "area": "0.0"
             },
             "legal_status": {
-              "id": 1,
-              "name": "Designated"
+                "id": 5,
+                "name": "Adopted"
             },
-           "management_authority": {
-              "id": 6,
-              "name": "Not Reported"
+            "management_authority": {
+                "id": 6,
+                "name": "Not Reported"
             },
-            "marine": false,
-            "reported_area": "5.1867",
-            "reported_marine_area": "0.0",
-            "legal_status_updated_at": "01/01/1948",
-            "management_plan": "Not Reported",
-            "is_green_list": false,
             "governance": {
-              "id": 1,
-              "governance_type": "Governance by Government"
+                "id": 1,
+                "governance_type": "Governance by Government"
             },
-            "owner_type": "Not Reported"
+            "pame_evaluations": [
+                {
+                    "id": 55317,
+                    "metadata_id": 42,
+                    "url": "Not Reported",
+                    "year": 2018,
+                    "methodology": "IMET",
+                    "source": {
+                        "data_title": "List of protected areas assessed with the Integrated Management Effectiveness Tool (IMET)",
+                        "resp_party": "European Commission",
+                        "year": 2019,
+                        "language": "English"
+                    }
+                }
+            ],
+            "links": {
+                "protected_planet": "http://protectedplanet.net/555547509"
+            },
+            "legal_status_updated_at": "01/01/2009"
         }
     ]
 }
