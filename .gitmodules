@@ -1,3 +1,4 @@
 [submodule "db"]
-	path = db
-	url = https://github.com/unepwcmc/protectedplanet-db
+    path = db
+    url = https://github.com/unepwcmc/protectedplanet-db
+    branch = develop
