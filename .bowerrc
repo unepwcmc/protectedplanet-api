@@ -1,3 +1,4 @@
 {
-  "directory" : "web/public"
+  "directory" : "web/public",
+  "registry": "https://registry.bower.io"
 }
