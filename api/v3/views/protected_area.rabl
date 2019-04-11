@@ -97,3 +97,15 @@ end
 if @current_user.access_to?(ProtectedArea, :owner_type)
   attribute :owner_type
 end
+
+if @current_user.access_to?(ProtectedArea, :pame_evaluations)
+  child :pame_evaluations do
+    attributes :id, :metadata_id,
+      :url, :year,
+      :methodology
+    child :pame_source => :source do
+      attributes :data_title, :resp_party,
+      :year, :language
+    end
+  end
+end

@@ -1,3 +1,9 @@
+### 0.1.1
+
+**Add new fields to Protected Areas JSON**
+
+* Added pame_evaluations
+
 ### 0.1.0
 
 **Add new fields to Protected Areas JSON**
