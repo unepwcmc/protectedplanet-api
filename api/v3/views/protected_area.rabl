@@ -70,6 +70,12 @@ if @current_user.access_to?(ProtectedArea, :designation)
   end
 end
 
+if @current_user.access_to?(ProtectedArea, :pame_evaluations)
+  child :pame_evaluations, object_root: false do
+    attributes :id, :method, :year
+  end
+end
+
 if @current_user.access_to?(ProtectedArea, :no_take_status)
   child :no_take_status, object_root: false do
     attributes :id, :name, :area

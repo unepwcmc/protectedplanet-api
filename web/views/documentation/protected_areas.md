@@ -108,10 +108,16 @@ Sample response:
                 "id": 1,
                 "governance_type": "Governance by Government"
             },
-            "pame_evaluations": [],
             "links": {
                 "protected_planet": "http://protectedplanet.net/40366"
             },
+            "pame_evaluations": [
+              {
+                "id": 1,
+                "method": "METT",
+                "year": 2018
+              }
+            ],
             "legal_status_updated_at": "01/01/1998"
         },
         {

@@ -1,6 +1,6 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :sub_location do
     english_name "MyString"
     local_name "MyString"

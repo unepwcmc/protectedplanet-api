@@ -5,6 +5,7 @@ gem "grape", "~> 0.17.0"
 gem "grape-rabl", "~> 0.4.1"
 gem "grape-kaminari", "~> 0.1.8"
 gem "grape_logging", '~> 1.3.0'
+gem "kaminari", "0.16.3"
 gem "sinatra", "~> 1.4.6"
 gem "kramdown", "~> 1.9.0"
 
@@ -33,16 +34,17 @@ gem "activesupport", "~> 4.2.5"
 
 # Testing
 group :test, :development do
+  gem "rack-console", '~> 1.3.1'
   gem "minitest"
   gem "minitest-around", "~> 0.3.2"
   gem "database_cleaner", "~> 1.5.1"
-  gem "factory_girl", "~> 4.0"
+  gem "factory_bot", '~> 4.10.0'
   gem "rack-test", "~> 0.6.3"
 end
 
 # Deploy
 group :development do
-  gem 'capistrano', '~> 3.4', require: false
+  gem 'capistrano', '~> 3.4.1', require: false
   gem 'capistrano-bundler', '~> 1.1.4', require: false
   gem 'capistrano-rvm',   '~> 0.1', require: false
   gem 'capistrano-maintenance', '~> 1.0', require: false
