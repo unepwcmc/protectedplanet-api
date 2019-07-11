@@ -53,6 +53,20 @@ class API::V3::ProtectedAreas < Grape::API
 
   # == annotations
   ################
+  desc "Get ACP countries protected areas."
+  params { optional :with_geometry, default: false, type: Boolean }
+  # == body
+  #########
+  get :biopama, rabl: "v3/views/protected_areas" do
+    collection = ProtectedArea.biopama.with_pame_evaluations
+    collection = collection.without_geometry unless params[:with_geometry]
+
+    @with_geometry   = params[:with_geometry]
+    @protected_areas = collection
+  end
+
+  # == annotations
+  ################
   desc "Get a protected area via its wdpa_id."
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
