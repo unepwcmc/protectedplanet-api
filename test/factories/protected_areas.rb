@@ -9,7 +9,7 @@ FactoryGirl.define do
     association :legal_status, factory: :legal_status, name: 'My legal status'
     association :governance, factory: :governance, name: 'My governance'
 
-    trait :acp_country do
+    trait :biopama_country do
       after(:create) do |protected_area|
         create(:country, protected_areas: [protected_area], is_biopama: true)
       end

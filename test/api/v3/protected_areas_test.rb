@@ -122,8 +122,8 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
 
   def test_get_protected_areas_biopama_returns_only_acp_countries_areas
     create(:protected_area, :with_pame_evaluation, name: "Mandalia Plains")
-    create(:protected_area, :acp_country, :with_pame_evaluation, name: "Darjeeling")
-    create(:protected_area, :acp_country, :with_pame_evaluation, name: "Not Marine")
+    create(:protected_area, :biopama_country, :with_pame_evaluation, name: "Darjeeling")
+    create(:protected_area, :biopama_country, :with_pame_evaluation, name: "Not Marine")
 
     get_with_rabl "/v3/protected_areas/biopama"
 
@@ -132,9 +132,9 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
   end
 
   def test_get_protected_areas_biopama_returns_only_acp_countries_areas_with_pame_evaluations
-    create(:protected_area, :acp_country, name: "Mandalia Plains")
-    create(:protected_area, :acp_country, :with_pame_evaluation, name: "Darjeeling")
-    create(:protected_area, :acp_country, :with_pame_evaluation, name: "Not Marine")
+    create(:protected_area, :biopama_country, name: "Mandalia Plains")
+    create(:protected_area, :biopama_country, :with_pame_evaluation, name: "Darjeeling")
+    create(:protected_area, :biopama_country, :with_pame_evaluation, name: "Not Marine")
 
     get_with_rabl "/v3/protected_areas/biopama"
 
