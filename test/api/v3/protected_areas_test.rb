@@ -119,4 +119,26 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
     refute last_response.ok?
     assert last_response.status == 400
   end
+
+  def test_get_protected_areas_biopama_returns_only_acp_countries_areas
+    create(:protected_area, :with_pame_evaluation, name: "Mandalia Plains")
+    create(:protected_area, :biopama_country, :with_pame_evaluation, name: "Darjeeling")
+    create(:protected_area, :biopama_country, :with_pame_evaluation, name: "Not Marine")
+
+    get_with_rabl "/v3/protected_areas/biopama"
+
+    assert last_response.ok?
+    assert_equal(2, @json_response["protected_areas"].size)
+  end
+
+  def test_get_protected_areas_biopama_returns_only_acp_countries_areas_with_pame_evaluations
+    create(:protected_area, :biopama_country, name: "Mandalia Plains")
+    create(:protected_area, :biopama_country, :with_pame_evaluation, name: "Darjeeling")
+    create(:protected_area, :biopama_country, :with_pame_evaluation, name: "Not Marine")
+
+    get_with_rabl "/v3/protected_areas/biopama"
+
+    assert last_response.ok?
+    assert_equal(2, @json_response["protected_areas"].size)
+  end
 end

@@ -30,6 +30,9 @@ class ProtectedArea < ActiveRecord::Base
 
   delegate :jurisdiction, to: :designation, allow_nil: true
 
+  scope :biopama, -> { joins(:countries).where("countries.is_biopama IS TRUE").distinct }
+  scope :with_pame_evaluations, -> { joins(:pame_evaluations).where("pame_evaluations.id IS NOT NULL").distinct }
+
   SEARCHES = {
     country:       -> (scope, value) { scope.joins(:countries).where("countries.iso_3 = ?", value.upcase) },
     marine:        -> (scope, value) { scope.where(marine: value) },
