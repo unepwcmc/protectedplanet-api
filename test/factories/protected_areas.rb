@@ -8,5 +8,17 @@ FactoryGirl.define do
     association :iucn_category, factory: :iucn_category, name: 'My IUCN category'
     association :legal_status, factory: :legal_status, name: 'My legal status'
     association :governance, factory: :governance, name: 'My governance'
+
+    trait :biopama_country do
+      after(:create) do |protected_area|
+        create(:country, protected_areas: [protected_area], is_biopama: true)
+      end
+    end
+
+    trait :with_pame_evaluation do
+      after(:create) do |protected_area|
+        create(:pame_evaluation, protected_area: protected_area)
+      end
+    end
   end
 end

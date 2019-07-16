@@ -1,3 +1,13 @@
+### 0.2.0
+
+**Features**
+
+* Add new endpoint for ACP countries (BIOPAMA) protected areas
+
+**Bug fixes**
+
+* Make sure Travis build passes by specifying 'trusty' distribution
+
 ### 0.1.1
 
 **Add new fields to Protected Areas JSON**
