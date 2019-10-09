@@ -927,7 +927,7 @@ Sample response:
 ---
 
 ## `GET /v3/protected_areas/biopama`
-Returns all protected areas within the ACP countries which have PAME Evaluations.
+Returns all protected areas within the BIOPAMA ACP countries which have PAME Evaluations.
 Accepts a `with_geometry` parameter.
 
 The accepted parameters are:
