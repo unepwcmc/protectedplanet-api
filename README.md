@@ -45,7 +45,7 @@ Now fire up your browser at `localhost:9292`!
 
 This example demonstrates accessing an api_user from the terminal using irb.
 ```
-$ RAILS_ENV=production bundle exec irb
+$ RAILS_ENV=development bundle exec irb
 
 > $LOAD_PATH.unshift("#{File.dirname(__FILE__)}"); require 'config/environment.rb'; require 'lib/mailer.rb'
 
