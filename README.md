@@ -40,3 +40,16 @@ $ rackup
 ```
 
 Now fire up your browser at `localhost:9292`!
+
+## Further hints
+
+This example demonstrates accessing an api_user from the terminal using irb.
+```
+$ RAILS_ENV=development bundle exec irb
+
+> $LOAD_PATH.unshift("#{File.dirname(__FILE__)}"); require 'config/environment.rb'; require 'lib/mailer.rb'
+
+=> true
+
+2.3.0 :002 > ApiUser.first
+```
