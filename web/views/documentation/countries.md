@@ -36,19 +36,10 @@ Sample response:
             "pas_regional_count": 0,
             "pas_international_count": 11,
             "statistics": {
-                "pa_area": 51844.34889409,
-                "percentage_cover_pas": null,
-                "eez_area": null,
-                "ts_area": 298762.86,
                 "pa_land_area": 32739.84,
                 "pa_marine_area": 19104.50889409,
                 "percentage_pa_land_cover": 10.96,
-                "percentage_pa_eez_cover": null,
-                "percentage_pa_ts_cover": null,
                 "land_area": 298762.86,
-                "percentage_pa_cover": 12,
-                "pa_eez_area": null,
-                "pa_ts_area": null,
                 "percentage_pa_marine_cover": 1.04,
                 "marine_area": 1829405.068391,
                 "polygons_count": 16,
@@ -57,9 +48,10 @@ Sample response:
             "pame_statistics": {
                 "assessments": 39,
                 "assessed_pas": 18,
-                "average_score": 0.496317020061398,
-                "total_area_assessed": 9884.5502680511,
-                "percentage_area_assessed": 13.1224063174949
+                "pame_pa_land_area": 5807.692147,
+                "pame_percentage_pa_land_cover": 1.943835,
+                "pame_pa_marine_area": 1523.50019,
+                "pame_percentage_pa_marine_cover": 0.083023
             },
             "region": {
                 "name": "Asia",
@@ -126,19 +118,10 @@ Sample response:
             "pas_regional_count": 0,
             "pas_international_count": 11,
             "statistics": {
-                "pa_area": 4104.71,
-                "percentage_cover_pas": null,
-                "eez_area": null,
-                "ts_area": 41355.27,
                 "pa_land_area": 4104.71,
                 "pa_marine_area": null,
                 "percentage_pa_land_cover": 9.93,
-                "percentage_pa_eez_cover": null,
-                "percentage_pa_ts_cover": null,
                 "land_area": 41355.27,
-                "percentage_pa_cover": 9.93,
-                "pa_eez_area": null,
-                "pa_ts_area": null,
                 "percentage_pa_marine_cover": null,
                 "marine_area": null,
                 "polygons_count": 0,
@@ -147,9 +130,10 @@ Sample response:
             "pame_statistics": {
                 "assessments": 20,
                 "assessed_pas": 14,
-                "average_score": 0.780597953216374,
-                "total_area_assessed": 1266.50166158781,
-                "percentage_area_assessed": 21.5681993197221
+                "pame_pa_land_area": 2610.795789,
+                "pame_percentage_pa_land_cover": 6.313091,
+                "pame_pa_marine_area": 0,
+                "pame_percentage_pa_marine_cover": 0
             },
             "region": {
                 "name": "Europe",
@@ -239,19 +223,10 @@ Sample response:
             }
         },
         "statistics": {
-            "pa_area": 2565883.979754,
-            "percentage_cover_pas": null,
-            "eez_area": null,
-            "ts_area": 9336666.44,
             "pa_land_area": 1294475.95,
             "pa_marine_area": 1271408.029754,
             "percentage_pa_land_cover": 13.86,
-            "percentage_pa_eez_cover": null,
-            "percentage_pa_ts_cover": null,
             "land_area": 9336666.44,
-            "percentage_pa_cover": 26.32,
-            "pa_eez_area": null,
-            "pa_ts_area": null,
             "percentage_pa_marine_cover": 12.46,
             "marine_area": 10201208.33913,
             "polygons_count": 1,
@@ -260,9 +235,10 @@ Sample response:
         "pame_statistics": {
             "assessments": 101,
             "assessed_pas": 79,
-            "average_score": 0.621947365828616,
-            "total_area_assessed": 517805.948887391,
-            "percentage_area_assessed": 18.834276817517
+            "pame_pa_land_area": 154799.8198,
+            "pame_percentage_pa_land_cover": 1.631122,
+            "pame_pa_marine_area": 1537642.023,
+            "pame_percentage_pa_marine_cover": 17.89726
         },
         "region": {
             "name": "North America",
