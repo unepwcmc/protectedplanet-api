@@ -53,8 +53,10 @@ end
 if @current_user.access_to?(Country, :pame_statistic)
   child :pame_statistic => :pame_statistics do
     attributes :assessments, :assessed_pas,
-      :average_score, :total_area_assessed,
-      :percentage_area_assessed
+      :pame_pa_land_area,
+      :pame_percentage_pa_land_cover,
+      :pame_pa_marine_area,
+      :pame_percentage_pa_marine_cover
   end
 end
 
