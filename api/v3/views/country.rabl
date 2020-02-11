@@ -43,10 +43,9 @@ end
 # Relations
 if @current_user.access_to?(Country, :country_statistic)
   child :country_statistic => :statistics do
-    attributes :pa_area, :percentage_cover_pas, :eez_area,
-      :ts_area, :pa_land_area, :pa_marine_area, :percentage_pa_land_cover,
-      :percentage_pa_eez_cover, :percentage_pa_ts_cover, :land_area, :percentage_pa_cover,
-      :pa_eez_area, :pa_ts_area, :percentage_pa_marine_cover, :marine_area,
+    attributes :pa_land_area, :pa_marine_area,
+      :land_area, :percentage_pa_cover,
+      :percentage_pa_marine_cover, :marine_area,
       :polygons_count, :points_count
   end
 end
