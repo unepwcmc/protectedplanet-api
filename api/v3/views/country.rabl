@@ -44,7 +44,7 @@ end
 if @current_user.access_to?(Country, :country_statistic)
   child :country_statistic => :statistics do
     attributes :pa_land_area, :pa_marine_area,
-      :land_area, :percentage_pa_cover,
+      :land_area, :percentage_pa_land_cover,
       :percentage_pa_marine_cover, :marine_area,
       :polygons_count, :points_count
   end
