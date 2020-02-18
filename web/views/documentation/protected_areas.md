@@ -924,3 +924,97 @@ Sample response:
     ]
 }
 ~~~
+---
+
+## `GET /v3/protected_areas/biopama`
+Returns all protected areas within the BIOPAMA ACP countries which have PAME Evaluations.
+Accepts a `with_geometry` parameter.
+
+The accepted parameters are:
+
+~~~
+with_geometry (Boolean)
+  If set, returns the geojson representation of the geometry of the protected areas.
+  Defaults to false.
+~~~
+
+Sample response:
+
+~~~
+{
+    "protected_areas": [
+        {
+            "id": 24,
+            "name": "Inagua National Park",
+            "original_name": "Inagua National Park",
+            "wdpa_id": 24,
+            "marine": false,
+            "reported_marine_area": "0.0",
+            "reported_area": "773.430147925",
+            "management_plan": "http://www.bnt.bs//_m1731/The-National-Parks-of-The-Bahamas/Inagua-National-Park",
+            "is_green_list": false,
+            "owner_type": "Not Reported",
+            "countries": [
+                {
+                    "name": "Bahamas",
+                    "iso_3": "BHS",
+                    "id": "BHS"
+                }
+            ],
+            "iucn_category": {
+                "id": 8,
+                "name": "Not Reported"
+            },
+            "designation": {
+                "id": 4,
+                "name": "National Park",
+                "jurisdiction": {
+                    "id": 1,
+                    "name": "National"
+                }
+            },
+            "no_take_status": {
+                "id": 21,
+                "name": "Not Applicable",
+                "area": "0.0"
+            },
+            "legal_status": {
+                "id": 1,
+                "name": "Designated"
+            },
+            "management_authority": {
+                "id": 4,
+                "name": "Bahamas National Trust"
+            },
+            "governance": {
+                "id": 2,
+                "governance_type": "Not Reported"
+            },
+            "pame_evaluations": [
+                {
+                    "id": 9829,
+                    "metadata_id": 25,
+                    "url": "Not reported",
+                    "year": 2018,
+                    "methodology": "METT-RAPPAM",
+                    "source": {
+                        "data_title": "The Bahamas management effectiveness information",
+                        "resp_party": "Department of Marine Resources",
+                        "year": 2018,
+                        "language": "English"
+                    }
+                }
+            ],
+            "links": {
+                "protected_planet": "http://protectedplanet.net/24"
+            },
+            "legal_status_updated_at": "01/01/1997"
+        },
+        {
+            "id": 180,
+            "name": "Cotubanamá (Del Este)",
+            "original_name": "Cotubanamá (Del Este)"
+        }
+    ]
+}
+~~~

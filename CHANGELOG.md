@@ -1,3 +1,9 @@
+### 0.3.0
+
+* Remove obsolete fields returned by the endpoints
+* Fix sidebar search endopoint link and add BIOPAMA link
+* Add BIOPAMA endpoint to documentation
+
 ### 0.2.0
 
 **Features**
