@@ -45,5 +45,23 @@ class API::V3::Countries < Grape::API
       @country = Country.find_by_iso_3(params[:iso_3].upcase) or error!(:not_found, 404)
     end
   end
+
+  # == annotations
+  ################
+  desc "Get countries, with geometry, given an ACP region"
+  params {
+    optional :with_geometry, default: true, type: Boolean
+    optional :iucn_category_long_names, default: false, type: Boolean
+    optional :group_governances, default: false, type: Boolean
+  }
+  # == body
+  #########
+  get "acp/:region", rabl: "v3/views/countries" do
+    @with_geometry = params[:with_geometry]
+    @iucn_category_long_names = params[:iucn_category_long_names]
+    @group_governances = params[:group_governances]
+
+    @countries = Country.where(acp_region: params[:region].downcase) or error!(:not_found, 404)
+  end
 end
 

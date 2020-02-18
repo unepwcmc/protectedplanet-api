@@ -11,7 +11,13 @@ FactoryGirl.define do
 
     trait :biopama_country do
       after(:create) do |protected_area|
-        create(:country, protected_areas: [protected_area], is_biopama: true)
+        create(:country, protected_areas: [protected_area], acp_region: 'ivalice')
+      end
+    end
+
+    trait :biopama_country_pacific do
+      after(:create) do |protected_area|
+        create(:country, protected_areas: [protected_area], acp_region: 'pacific')
       end
     end
 

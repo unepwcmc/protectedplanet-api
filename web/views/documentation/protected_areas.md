@@ -936,6 +936,8 @@ The accepted parameters are:
 with_geometry (Boolean)
   If set, returns the geojson representation of the geometry of the protected areas.
   Defaults to false.
+acp_region (String)
+  If set, returns protected areas within the given ACP region only.
 ~~~
 
 Sample response:

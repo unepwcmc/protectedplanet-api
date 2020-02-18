@@ -137,4 +137,26 @@ class API::V3::CountriesTest < MiniTest::Test
       "pas_percentage" => 100
     }], @json_response["country"]["iucn_categories"])
   end
+
+  def test_get_acp_countries_returns_given_acp_region_countries_only
+    skip('Need to update ActiveRecord gems to be able to process 5.0 migrations')
+    create(:country, name: "Zubrowka", iso_3: "WES", bounding_box: "POINT(-122 47)")
+    create(:country, name: "Lothlorien", iso_3: "LOT", bounding_box: "POINT(-122 47)", acp_region: 'middleearth')
+
+    get_with_rabl "/v3/countries/acp/middleearth"
+
+    assert last_response.ok?
+    assert_equal(1, @json_response["countries"].size)
+  end
+
+  def test_get_acp_countries_returns_no_results_with_non_existing_acp_region
+    skip('Need to update ActiveRecord gems to be able to process 5.0 migrations')
+    create(:country, name: "Zubrowka", iso_3: "WES", bounding_box: "POINT(-122 47)")
+    create(:country, name: "Lothlorien", iso_3: "LOT", bounding_box: "POINT(-122 47)", acp_region: 'middleearth')
+
+    get_with_rabl "/v3/countries/acp/ivalice"
+
+    assert last_response.ok?
+    assert_equal(0, @json_response["countries"].size)
+  end
 end

@@ -30,7 +30,7 @@ class ProtectedArea < ActiveRecord::Base
 
   delegate :jurisdiction, to: :designation, allow_nil: true
 
-  scope :biopama, -> { joins(:countries).where("countries.is_biopama IS TRUE").distinct }
+  scope :biopama, -> { joins(:countries).where("countries.acp_region IS NOT NULL").distinct }
   scope :with_pame_evaluations, -> { joins(:pame_evaluations).where("pame_evaluations.id IS NOT NULL").distinct }
 
   SEARCHES = {
@@ -40,7 +40,8 @@ class ProtectedArea < ActiveRecord::Base
     designation:   -> (scope, value) { scope.where(designation_id: value) },
     jurisdiction:  -> (scope, value) { scope.joins(:designation).where("designations.jurisdiction_id = ?", value) },
     governance:    -> (scope, value) { scope.where(governance_id: value) },
-    iucn_category: -> (scope, value) { scope.where(iucn_category_id: value) }
+    iucn_category: -> (scope, value) { scope.where(iucn_category_id: value) },
+    acp_region:    -> (scope, value) { scope.joins(:countries).where("countries.acp_region = ?", value.downcase) }
   }
 
   def self.search params
