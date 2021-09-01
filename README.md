@@ -53,3 +53,9 @@ $ RAILS_ENV=development bundle exec irb
 
 2.3.0 :002 > ApiUser.first
 ```
+
+## Troubleshooting
+
+**An error occurred while installing pg (0.18.4), and Bundler cannot continue.**
+
+Try running: `gem install pg -v '0.18.1' -- --with-cflags="-Wno-error=implicit-function-declaration"`
