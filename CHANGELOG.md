@@ -1,3 +1,7 @@
+### 0.3.1
+
+* Update missing readme with missing details about setup
+* Update the text about commercial use
 ### 0.3.0
 
 * Remove obsolete fields returned by the endpoints
