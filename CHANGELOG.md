@@ -2,6 +2,7 @@
 
 * Update the introduction text
 * Update the alternatives alert
+* Updated capistrano gems
 
 ### 0.3.1
 
