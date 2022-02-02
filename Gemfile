@@ -31,7 +31,7 @@ gem "exception_notification", "~> 4.1.4"
 gem "appsignal", "~> 1.1.0.beta.5"
 
 # Support
-gem "rake", "~> 10.5.0"
+gem "rake", "~> 12.3.3"
 gem "activesupport", "~> 4.2.5"
 
 # Testing
