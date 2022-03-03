@@ -15,7 +15,9 @@ class ProtectedArea < ActiveRecord::Base
     :legal_status, :legal_status_updated_at,
     :management_plan, :management_authority,
     :governance, :reported_area, :reported_marine_area,
-    :owner_type, :pame_evaluations
+    :owner_type, :pame_evaluations, :sub_locations,
+    :green_list_status, :is_oecm, :supplementary_info,
+    :conservation_objectives, :green_list_url
   ]
 
   belongs_to :iucn_category
@@ -24,6 +26,7 @@ class ProtectedArea < ActiveRecord::Base
   belongs_to :governance
   belongs_to :no_take_status
   belongs_to :management_authority
+  belongs_to :green_list_status
   has_and_belongs_to_many :countries, -> { select(:id, :name, :iso_3) }
   has_and_belongs_to_many :sub_locations
   has_many :pame_evaluations
@@ -55,5 +58,9 @@ class ProtectedArea < ActiveRecord::Base
 
   def link_to_pp
     File.join($secrets[:host], self.wdpa_id.to_s)
+  end
+
+  def is_green_list
+    green_list_status_id.present?
   end
 end
