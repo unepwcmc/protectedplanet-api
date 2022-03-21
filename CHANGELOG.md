@@ -1,3 +1,9 @@
+### 0.4.0
+
+**Add new fields to Protected Areas JSON**
+* Add :green_list_status, :is_oecm, :supplementary_info, :conservation_objectives, and :green_list_url
+* Update documentation
+
 ### 0.3.2
 
 * Update the introduction text
