@@ -41,6 +41,22 @@ if @current_user.access_to?(ProtectedArea, :is_green_list)
   attribute :is_green_list
 end
 
+if @current_user.access_to?(ProtectedArea, :is_oecm)
+  attribute :is_oecm
+end
+
+if @current_user.access_to?(ProtectedArea, :supplementary_info)
+  attribute :supplementary_info
+end
+
+if @current_user.access_to?(ProtectedArea, :conservation_objectives)
+  attribute :conservation_objectives
+end
+
+if @current_user.access_to?(ProtectedArea, :green_list_url)
+  attribute :green_list_url
+end
+
 # Relations
 if @current_user.access_to?(ProtectedArea, :countries)
   child :countries, object_root: false do
@@ -49,8 +65,8 @@ if @current_user.access_to?(ProtectedArea, :countries)
   end
 end
 
-if @current_user.access_to?(ProtectedArea, :sublocations)
-  child :sublocations, object_root: false do
+if @current_user.access_to?(ProtectedArea, :sub_locations)
+  child :sub_locations, object_root: false do
     attributes :id, :english_name
   end
 end
@@ -107,5 +123,11 @@ if @current_user.access_to?(ProtectedArea, :pame_evaluations)
       attributes :data_title, :resp_party,
       :year, :language
     end
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :green_list_status)
+  child :green_list_status, object_root: false do
+    attributes :id, :status, :expiry_date
   end
 end
