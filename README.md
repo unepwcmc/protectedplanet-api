@@ -28,15 +28,17 @@ Finally, the `db` folder is a git submodule, linked to [protectedplanet-db](http
 
 ## Installation
 
-The installation process is quite standard:
+- Install correct ruby version using rbenv (see `.ruby-version`)
+- Install bower `npm install -g bower`
 
 ```
-$ git clone git@github.com:unepwcmc/protectedplanet-api.git
-$ cd protectedplanet-api
-$ bundle install
-[…]
-$ rake db:create db:migrate # does nothing if db is already present
-$ rackup
+- `git clone git@github.com:unepwcmc/protectedplanet-api.git`
+- `cd protectedplanet-api`
+- `bundle install`
+- `bower install`
+- Create .env file and copy contents from LastPass
+- `rake db:create db:migrate` # does nothing if db is already present
+- `rackup`
 ```
 
 Now fire up your browser at `localhost:9292`!
@@ -53,3 +55,9 @@ $ RAILS_ENV=development bundle exec irb
 
 2.3.0 :002 > ApiUser.first
 ```
+
+## Troubleshooting
+
+**An error occurred while installing pg (0.18.4), and Bundler cannot continue.**
+
+Try running: `gem install pg -v '0.18.1' -- --with-cflags="-Wno-error=implicit-function-declaration"`

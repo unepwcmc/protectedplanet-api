@@ -1,4 +1,5 @@
 set :stage, :staging
+set :branch, "develop"
 server "stage.protectedplanet.net", user: "wcmc", roles: %w{app web db}
 
 set :domain, "protectedplanet-api-staging.protectedplanet.net"
