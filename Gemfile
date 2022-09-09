@@ -6,7 +6,7 @@ gem "grape-rabl", "~> 0.4.1"
 gem "grape-kaminari", "~> 0.1.8"
 gem "grape_logging", '~> 1.3.0'
 gem "sinatra", "~> 1.4.6"
-gem "kramdown", "~> 1.9.0"
+gem "kramdown", "~> 2.3.0"
 
 # Security
 gem "rack_csrf", "~> 2.5.0"
