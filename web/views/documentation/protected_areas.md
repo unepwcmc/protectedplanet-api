@@ -71,6 +71,10 @@ Sample response:
             "reported_area": "0.3933",
             "management_plan": "Not Reported",
             "is_green_list": false,
+            "is_oecm": false,
+            "supplementary_info": "Not Applicable",
+            "conservation_objectives": "Not Applicable",
+            "green_list_url": null,
             "owner_type": "Not Reported",
             "countries": [
                 {
@@ -79,12 +83,13 @@ Sample response:
                     "id": "UGA"
                 }
             ],
+            "sub_locations": [],
             "iucn_category": {
                 "id": 8,
                 "name": "Not Reported"
             },
             "designation": {
-                "id": 12,
+                "id": 13,
                 "name": "Forest Reserve",
                 "jurisdiction": {
                     "id": 1,
@@ -92,7 +97,7 @@ Sample response:
                 }
             },
             "no_take_status": {
-                "id": 11851,
+                "id": 11293,
                 "name": "Not Applicable",
                 "area": "0.0"
             },
@@ -109,6 +114,7 @@ Sample response:
                 "governance_type": "Governance by Government"
             },
             "pame_evaluations": [],
+            "green_list_status": null,
             "links": {
                 "protected_planet": "http://protectedplanet.net/40366"
             },
@@ -265,6 +271,10 @@ Sample response:
             "reported_area": "484.6",
             "management_plan": "Not Reported",
             "is_green_list": false,
+            "is_oecm": false,
+            "supplementary_info": "Not Applicable",
+            "conservation_objectives": "Not Applicable",
+            "green_list_url": null,
             "owner_type": "Not Reported",
             "countries": [
                 {
@@ -273,6 +283,7 @@ Sample response:
                     "id": "MAR"
                 }
             ],
+            "sub_locations": [],
             "iucn_category": {
                 "id": 10,
                 "name": "Not Assigned"
@@ -286,12 +297,12 @@ Sample response:
                 }
             },
             "no_take_status": {
-                "id": 157133,
+                "id": 148453,
                 "name": "Not Reported",
                 "area": "0.0"
             },
             "legal_status": {
-                "id": 5,
+                "id": 6,
                 "name": "Adopted"
             },
             "management_authority": {
@@ -304,19 +315,20 @@ Sample response:
             },
             "pame_evaluations": [
                 {
-                    "id": 55317,
-                    "metadata_id": 42,
-                    "url": "Not Reported",
+                    "id": 29653,
+                    "metadata_id": 27,
+                    "url": "Not reported",
                     "year": 2018,
                     "methodology": "IMET",
                     "source": {
-                        "data_title": "List of protected areas assessed with the Integrated Management Effectiveness Tool (IMET)",
-                        "resp_party": "European Commission",
+                        "data_title": "JRC IMET information",
+                        "resp_party": "JRC",
                         "year": 2019,
                         "language": "English"
                     }
                 }
             ],
+            "green_list_status": null,
             "links": {
                 "protected_planet": "http://protectedplanet.net/555547509"
             },
@@ -391,6 +403,10 @@ Sample response:
         "reported_area": "0.3933",
         "management_plan": "Not Reported",
         "is_green_list": false,
+        "is_oecm": false,
+        "supplementary_info": "Not Applicable",
+        "conservation_objectives": "Not Applicable",
+        "green_list_url": null,
         "owner_type": "Not Reported",
         "countries": [
             {
@@ -399,12 +415,13 @@ Sample response:
                 "id": "UGA"
             }
         ],
+        "sub_locations": [],
         "iucn_category": {
             "id": 8,
             "name": "Not Reported"
         },
         "designation": {
-            "id": 12,
+            "id": 13,
             "name": "Forest Reserve",
             "jurisdiction": {
                 "id": 1,
@@ -412,7 +429,7 @@ Sample response:
             }
         },
         "no_take_status": {
-            "id": 11851,
+            "id": 11293,
             "name": "Not Applicable",
             "area": "0.0"
         },
@@ -429,6 +446,7 @@ Sample response:
             "governance_type": "Governance by Government"
         },
         "pame_evaluations": [],
+        "green_list_status": null,
         "links": {
             "protected_planet": "http://protectedplanet.net/40366"
         },
