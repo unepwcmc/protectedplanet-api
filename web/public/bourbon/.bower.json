@@ -1,0 +1,14 @@
+{
+  "name": "bourbon",
+  "homepage": "https://github.com/thoughtbot/bourbon",
+  "version": "7.2.0",
+  "_release": "7.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v7.2.0",
+    "commit": "bc96c23fd25550ccde884fb741a0b341e7c62092"
+  },
+  "_source": "https://github.com/thoughtbot/bourbon.git",
+  "_target": ">=4.0",
+  "_originalSource": "bourbon"
+}
