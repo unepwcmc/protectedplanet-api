@@ -1,4 +1,4 @@
 [submodule "db"]
     path = db
     url = https://github.com/unepwcmc/protectedplanet-db
-    branch = feat/add-point/polygons-count-to-country-statistic-for-OECM/PAs
+    branch = master
