@@ -43,7 +43,11 @@ Sample response:
                 "percentage_pa_marine_cover": 1.04,
                 "marine_area": 1829405.068391,
                 "polygons_count": 16,
-                "points_count": 16
+                "points_count": 16,
+                "percentage_oecms_pa_marine_cover": 3.628933257,
+                "oecms_pa_land_area": 51650.29769,
+                "oecms_pa_marine_area": 66591.94832,
+                "percentage_oecms_pa_land_cover": 17.28736145
             },
             "pame_statistics": {
                 "assessments": 39,
@@ -230,7 +234,11 @@ Sample response:
             "percentage_pa_marine_cover": 12.46,
             "marine_area": 10201208.33913,
             "polygons_count": 1,
-            "points_count": 37
+            "points_count": 37,
+            "percentage_oecms_pa_marine_cover": 3.628933257,
+            "oecms_pa_land_area": 51650.29769,
+            "oecms_pa_marine_area": 66591.94832,
+            "percentage_oecms_pa_land_cover": 17.28736145
         },
         "pame_statistics": {
             "assessments": 101,
