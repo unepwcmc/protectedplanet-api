@@ -47,10 +47,10 @@ if @current_user.access_to?(Country, :country_statistic)
       :land_area, :percentage_pa_land_cover,
       :percentage_pa_marine_cover, :marine_area,
       :polygons_count, :points_count,
-      :percentage_oecms_pa_marine_cover, :oecms_pa_land_area,
-      :oecms_pa_marine_area, :percentage_oecms_pa_land_cover,
       :oecm_polygon_count, :oecm_point_count,
-      :protected_area_polygon_count, :protected_area_point_count
+      :protected_area_polygon_count, :protected_area_point_count,
+      :percentage_oecms_pa_marine_cover, :oecms_pa_land_area,
+      :oecms_pa_marine_area, :percentage_oecms_pa_land_cover
   end
 end
 
