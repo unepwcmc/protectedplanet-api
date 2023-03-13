@@ -1,3 +1,7 @@
+### 0.4.1
+**Add new fields to Countries JSON**
+* Add :percentage_oecms_pa_marine_cover, :oecms_pa_land_area, :oecms_pa_marine_area, :percentage_oecms_pa_land_cover
+* Update documentation
 ### 0.4.0
 
 **Add new fields to Protected Areas JSON**
