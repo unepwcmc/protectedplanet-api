@@ -1,5 +1,4 @@
 default: &default
-  host: localhost
   encoding: unicode
   adapter: postgis
   pool: 5
@@ -9,6 +8,8 @@ default: &default
 
 development:
   <<: *default
+  host: "<%= ENV['POSTGRES_HOST'] || 'localhost' %>"
+  password: "<%= ENV['POSTGRES_PASSWORD'] %>"
 
 test:
   <<: *default
