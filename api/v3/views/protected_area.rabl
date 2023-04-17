@@ -2,7 +2,10 @@ object @protected_area
 
 # Basic
 attribute :wdpa_id => :id
-attributes :name, :original_name, :wdpa_id
+attributes :name, :original_name, :wdpa_id,
+          :wdpa_parent_id, :international_criteria,
+          :verif, :parent_iso3, :marine_type,
+          :gis_marine_area, :gis_area
 
 node :links do |pa|
   if @current_user.access_to?(ProtectedArea, :link_to_pp)
@@ -130,4 +133,8 @@ if @current_user.access_to?(ProtectedArea, :green_list_status)
   child :green_list_status, object_root: false do
     attributes :id, :status, :expiry_date
   end
+end
+
+child :sources, object_root: false do
+  attributes :id, :title, :responsible_party, :year_updated
 end
