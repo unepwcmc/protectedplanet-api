@@ -3,7 +3,7 @@ object @protected_area
 # Basic
 attribute :wdpa_id => :id
 attributes :name, :original_name, :wdpa_id,
-          :wdpa_parent_id, :international_criteria,
+          :wdpa_pid, :international_criteria,
           :verif, :parent_iso3, :marine_type,
           :gis_marine_area, :gis_area
 

@@ -7,7 +7,7 @@ class ProtectedArea < ActiveRecord::Base
 
   self.api_attributes = [
     :wdpa_id,
-    :wdpa_parent_id,
+    :wdpa_pid,
     :international_criteria,
     :gis_marine_area,
     :gis_area,
@@ -70,5 +70,9 @@ class ProtectedArea < ActiveRecord::Base
 
   def is_green_list
     green_list_status_id.present?
+  end
+
+  def wdpa_pid
+    wdpa_parent_id
   end
 end
