@@ -7,6 +7,13 @@ class ProtectedArea < ActiveRecord::Base
 
   self.api_attributes = [
     :wdpa_id,
+    :wdpa_pid,
+    :international_criteria,
+    :gis_marine_area,
+    :gis_area,
+    :verif,
+    :parent_iso3,
+    :marine_type,
     :name, :original_name,
     :geometry, :marine, :is_green_list,
     :countries, :sublocation,
@@ -30,6 +37,7 @@ class ProtectedArea < ActiveRecord::Base
   has_and_belongs_to_many :countries, -> { select(:id, :name, :iso_3) }
   has_and_belongs_to_many :sub_locations
   has_many :pame_evaluations
+  has_and_belongs_to_many :sources
 
   delegate :jurisdiction, to: :designation, allow_nil: true
 
@@ -62,5 +70,9 @@ class ProtectedArea < ActiveRecord::Base
 
   def is_green_list
     green_list_status_id.present?
+  end
+
+  def wdpa_pid
+    wdpa_parent_id
   end
 end
