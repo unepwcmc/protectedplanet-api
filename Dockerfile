@@ -1,21 +1,15 @@
 FROM ubuntu:18.04
-RUN apt-get update
 
 RUN apt-get update && apt-get install -y \
   autoconf \
   bison \
   build-essential \
   curl \
-  gcc-6 \
   git \
-  libffi-dev \
-  libgdbm-dev \
-  libgdbm5 \
-  libncurses5-dev \
+  libreadline-dev \
+  libssl1.0-dev \
   libpq-dev \
-  libreadline6-dev \
-  libssl-dev \
-  libyaml-dev \
+  nodejs \
   zlib1g-dev
 
 ENV RBENV_ROOT /usr/local/src/rbenv
