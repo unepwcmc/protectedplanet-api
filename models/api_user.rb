@@ -1,6 +1,6 @@
 class ApiUser < ActiveRecord::Base
   include Sinatra::Helpers
-  before_create :set_permissions
+  before_create :set_permissions, :set_gdpr_consent
 
   def activate!
     return if self.active
@@ -43,5 +43,10 @@ class ApiUser < ActiveRecord::Base
     $api_objects.each do |api_object|
       self.permissions[api_object] = api_object.api_attributes
     end
+  end
+
+  def set_gdpr_consent
+    self.gdpr_consent = true
+    self.gdpr_check_due = DateTime.now.next_year
   end
 end
