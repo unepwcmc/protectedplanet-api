@@ -9,3 +9,12 @@
   border-right: solid 1px #aaa;
   margin: 0 1.25rem 0 1rem;
 }
+
+.gdpr-checkbox input {
+  min-width: 0;
+  min-height: 0;
+}
+
+.gdpr-checkbox label {
+  display: inline
+}
