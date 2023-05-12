@@ -1,9 +1,31 @@
-FROM ruby:2.3.0
-# Install node for asset building
-RUN apt-get update -qq && apt-get install -y --force-yes build-essential libpq-dev nodejs
+FROM ubuntu:18.04
+
+RUN apt-get update && apt-get install -y \
+  autoconf \
+  bison \
+  build-essential \
+  curl \
+  git \
+  libreadline-dev \
+  libssl1.0-dev \
+  libpq-dev \
+  nodejs \
+  zlib1g-dev
+
+ENV RBENV_ROOT /usr/local/src/rbenv
+
+ENV PATH ${RBENV_ROOT}/bin:${RBENV_ROOT}/shims:$PATH
+
+RUN git clone https://github.com/rbenv/rbenv.git ${RBENV_ROOT} \
+  && git clone https://github.com/rbenv/ruby-build.git \
+    ${RBENV_ROOT}/plugins/ruby-build \
+  && ${RBENV_ROOT}/plugins/ruby-build/install.sh \
+  && echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh
+RUN rbenv install 2.3.0 \
+    && rbenv global 2.3.0
+
 # install npm
 RUN apt-get install -y --force-yes -qq npm
-RUN ln -s /usr/bin/nodejs /usr/bin/node
 # install bower
 RUN npm install --global bower
 RUN mkdir /ProtectedPlanetApi
