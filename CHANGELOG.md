@@ -1,3 +1,7 @@
+### 0.5.0
+* Add GDPR question to User sign up
+* Add new API fields: :wdpa_pid, :international_criteria, :verif, :parent_iso3, :marine_type, :gis_marine_area, :gis_area
+
 ### 0.4.2
 **Add new fields to Countries JSON**
 * Add :oecm_polygon_count, :oecm_point_count, :protected_area_polygon_count, :protected_area_point_count
