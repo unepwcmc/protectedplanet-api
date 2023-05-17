@@ -1,9 +1,9 @@
 set :stage, :production
-set :branch, "main"
-server "web-production-linode.protectedplanet.net", user: "wcmc", roles: %w{app web db}
+set :branch, :main
+server "new-web.pp-production.linode.protectedplanet.net", user: "wcmc", roles: %w{app web db}
 
-set :domain, "api.protectedplanet.net"
-set :server_name, "web-production-linode.protectedplanet.net"
+set :domain, "protectedplanet-api-new-web.pp-production.linode.protectedplanet.net"
+set :server_name, "new-web.pp-production.linode.protectedplanet.net"
 
 set :sudo_user, "wcmc"
 set :app_port, "80"
