@@ -1,9 +1,9 @@
 set :stage, :staging
-set :branch, "develop"
-server "stage.protectedplanet.net", user: "wcmc", roles: %w{app web db}
+set :branch, 'point-at-new-staging-server'
+server "new-web.pp-staging.linode.protectedplanet.net", user: "wcmc", roles: %w{app web db}
 
-set :domain, "protectedplanet-api-staging.protectedplanet.net"
-set :server_name, "stage.protectedplanet.net"
+set :domain, "protectedplanet-api-new-web.pp-staging.linode.protectedplanet.net"
+set :server_name, "new-web.pp-staging.linode.protectedplanet.net"
 
 set :sudo_user, "wcmc"
 set :app_port, "80"
