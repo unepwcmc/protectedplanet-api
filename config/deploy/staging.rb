@@ -1,5 +1,5 @@
 set :stage, :staging
-set :branch, :develop
+set :branch, 'feat/puma'
 server "new-web.pp-staging.linode.protectedplanet.net", user: "wcmc", roles: %w{app web db}
 
 set :domain, "protectedplanet-api-new-web.pp-staging.linode.protectedplanet.net"
