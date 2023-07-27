@@ -34,6 +34,8 @@ gem "appsignal", "~> 1.1.0.beta.5"
 gem "rake", "~> 10.5.0"
 gem "activesupport", "~> 4.2.5"
 
+gem 'puma', '5.6.6'
+
 # Testing
 group :test, :development do
   gem "minitest"
@@ -49,6 +51,7 @@ group :development do
   gem 'capistrano-bundler', '~> 2.0.1', require: false
   gem 'capistrano-rvm',   '~> 0.1.2', require: false
   gem 'capistrano-maintenance', '~> 1.0', require: false
-  gem 'capistrano-passenger', '~> 0.2.1', require: false
+  # gem 'capistrano-passenger', '~> 0.2.1', require: false
+  gem 'capistrano3-puma', '~> 5.2', require: false
   gem 'byebug', '~> 3.1.2'
 end
