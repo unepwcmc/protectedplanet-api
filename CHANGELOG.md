@@ -1,3 +1,6 @@
+### 0.6.0
+* Confugure to use Puma as application server instead of phusion passenger
+
 ### 0.5.0
 * Add GDPR question to User sign up
 * Add new API fields: :wdpa_pid, :international_criteria, :verif, :parent_iso3, :marine_type, :gis_marine_area, :gis_area
