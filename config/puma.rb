@@ -1,3 +1,6 @@
+# We have switched back to Passenger, but leaving this here for reference
+# and in case we need to switch back to Puma in the future.
+# https://github.com/unepwcmc/protectedplanet-api/pull/58
 workers 4
 threads 4, 4
 
