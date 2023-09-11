@@ -1,3 +1,6 @@
+### 0.6.1
+* switch back to passenger
+
 ### 0.6.0
 * Confugure to use Puma as application server instead of phusion passenger
 
