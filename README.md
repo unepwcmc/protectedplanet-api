@@ -43,6 +43,14 @@ Finally, the `db` folder is a git submodule, linked to [protectedplanet-db](http
 
 Now fire up your browser at `localhost:9292`!
 
+## ProtectedPlanet-db fetch
+if your db is not up to date then 
+- cd inside db folder
+- git fetch
+- git merge origin/master
+- You should now have the latest db repo
+
+
 ## Further hints
 
 This example demonstrates accessing an api_user from the terminal using irb.
