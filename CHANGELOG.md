@@ -1,3 +1,7 @@
+### 0.6.2
+- Update db
+- Make return iso3 not iso with 2 digits
+
 ### 0.6.1
 * switch back to passenger
 
