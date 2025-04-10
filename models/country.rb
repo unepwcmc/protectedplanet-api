@@ -22,7 +22,7 @@ class Country < ActiveRecord::Base
   has_many :designations, -> { uniq }, through: :protected_areas
 
   def link_to_pp
-    File.join($secrets[:host], "country", self.iso)
+    File.join($secrets[:host], "country", self.iso_3)
   end
 
   def designations_per_jurisdiction
