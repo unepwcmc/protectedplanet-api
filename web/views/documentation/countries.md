@@ -29,7 +29,7 @@ Sample response:
             "iso_3": "PHL",
             "id": "PHL",
             "links": {
-                "protected_planet": "http://protectedplanet.net/country/PH"
+                "protected_planet": "http://protectedplanet.net/country/PHL"
             },
             "pas_count": 558,
             "pas_national_count": 547,
@@ -119,7 +119,7 @@ Sample response:
             "iso_3": "CHE",
             "id": "CHE",
             "links": {
-                "protected_planet": "http://protectedplanet.net/country/CH"
+                "protected_planet": "http://protectedplanet.net/country/CHE"
             },
             "pas_count": 558,
             "pas_national_count": 547,
@@ -206,7 +206,7 @@ Sample response:
         "iso_3": "USA",
         "id": "USA",
         "links": {
-            "protected_planet": "http://protectedplanet.net/country/US"
+            "protected_planet": "http://protectedplanet.net/country/USA"
         },
         "pas_count": 558,
         "pas_national_count": 547,
