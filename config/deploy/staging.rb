@@ -2,7 +2,7 @@ set :stage, :staging
 set :branch, :develop
 server "new-web.pp-staging.linode.protectedplanet.net", user: "wcmc", roles: %w{app web db}
 
-set :domain, "protectedplanet-api-new-web.pp-staging.linode.protectedplanet.net"
+set :domain, "api.new-web.pp-staging.linode.protectedplanet.net"
 set :server_name, "new-web.pp-staging.linode.protectedplanet.net"
 
 set :sudo_user, "wcmc"
