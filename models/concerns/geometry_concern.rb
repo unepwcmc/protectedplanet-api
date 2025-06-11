@@ -23,20 +23,48 @@ module GeometryConcern
   end
 
   def geojson
-    geojson = ActiveRecord::Base.connection.select_value("""
-      SELECT ST_AsGeoJSON(ST_SimplifyPreserveTopology(ST_MakeValid(#{main_geom_column}), 0.003), 3)
-      FROM #{self.class.table_name}
+    geom_size = ActiveRecord::Base.connection.select_value("""
+      SELECT ST_MemSize(#{main_geom_column}) 
+      FROM #{self.class.table_name} 
       WHERE id = #{id}
     """.squish)
 
-    return nil unless geojson.present?
-    geometry = JSON.parse(geojson)
+    return nil if geom_size.nil?
 
-    {
-      "type" => "Feature",
-      "properties" => geometry_properties,
-      "geometry" => geometry
-    }
+    # This figure is based on testing SITE_ID 555592567 which already took 22 seconds to return 
+    # https://unep-wcmc.codebasehq.com/projects/protected-planet-support-and-maintenance/tickets/353
+    sql_query = if geom_size.to_i > 26_900_000
+                  # If too large then don't use ST_MakeValid and capture errors (geom is not valid, nil etc...)
+                  # ST_MakeValid is resource expensive method
+                  <<~SQL.squish
+                    SELECT ST_AsGeoJSON(ST_Simplify(#{main_geom_column}, 0.03), 3)
+                    FROM #{self.class.table_name}
+                    WHERE id = #{id}
+                  SQL
+                else
+                  # use ST_MakeValid to fix any protential errors if geom_size is not ridiculous
+                  <<~SQL.squish
+                    SELECT ST_AsGeoJSON(ST_SimplifyPreserveTopology(ST_MakeValid(#{main_geom_column}), 0.003), 3)
+                    FROM #{self.class.table_name}
+                    WHERE id = #{id}
+                  SQL
+                end
+
+    begin
+      geojson = ActiveRecord::Base.connection.select_value(sql_query)
+      return nil if geojson.nil?
+
+      geometry = JSON.parse(geojson)
+      return nil unless geometry.present?
+
+      {
+        "type" => "Feature",
+        "properties" => geometry_properties,
+        "geometry" => geometry
+      }
+    rescue
+      nil
+    end
   end
 
   private
