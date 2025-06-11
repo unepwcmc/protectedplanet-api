@@ -29,7 +29,7 @@ module GeometryConcern
       WHERE id = #{id}
     """.squish)
 
-    return nil if geom_size.nil?
+    return nil if geom_size.nil? # Ideally this should never happen
 
     # This figure is based on testing SITE_ID 555592567 which already took 22 seconds to return 
     # https://unep-wcmc.codebasehq.com/projects/protected-planet-support-and-maintenance/tickets/353
@@ -52,17 +52,28 @@ module GeometryConcern
 
     begin
       geojson = ActiveRecord::Base.connection.select_value(sql_query)
-      return nil if geojson.nil?
+
+      if geojson.nil?
+        Appsignal.send_error(RuntimeError.new("GeoJSON is nil for SITE_ID: #{wdpa_id}"))
+        return nil 
+      end
 
       geometry = JSON.parse(geojson)
-      return nil unless geometry.present?
-
+      unless geometry.present?
+        Appsignal.send_error(
+          RuntimeError.new("Parsed geometry is empty for SITE_ID: #{wdpa_id}")
+        )
+        return nil
+      end
+      
       {
         "type" => "Feature",
         "properties" => geometry_properties,
         "geometry" => geometry
       }
-    rescue
+    rescue => e
+      context_message = "GeoJSON error for SITE_ID #{wdpa_id} (model: #{self.class.name}): #{e.message}"
+      Appsignal.send_error(RuntimeError.new(context_message))
       nil
     end
   end
