@@ -36,8 +36,8 @@ Finally, the `db` folder is a git submodule, linked to [protectedplanet-db](http
 - `cd protectedplanet-api`
 - `bundle install`
 - `bower install`
-- Create .env file and copy contents from LastPass
-- `rake db:create db:migrate` # does nothing if db is already present
+- Create .env file and copy contents from Keeper
+- Make sure all migrations are run in protectedplanet (rails) as we can't run migration (none-rails) in this folder anymore
 - `rackup`
 ```
 
