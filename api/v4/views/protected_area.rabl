@@ -1,11 +1,54 @@
 object @protected_area
 
 # Basic
-attribute :wdpa_id => :id
-attributes :name, :original_name, :wdpa_id,
-          :wdpa_pid, :international_criteria,
-          :verif, :parent_iso3, :marine_type,
-          :gis_marine_area, :gis_area
+attribute :site_id => :id
+attribute :name => :name_english
+attribute :original_name => :name
+attributes :name, :original_name, :site_id,
+           :site_pid, :international_criteria,
+           :verif, :parent_iso3,
+           :gis_marine_area, :gis_area, :site_type
+# Check with NC if they want to keep the attributes above avaliable for everyone or also set permissions
+# At the moment they are available for everyone
+# if @current_user.access_to?(ProtectedArea, :site_id)
+#   attribute :site_id => :id
+# end
+
+# if @current_user.access_to?(ProtectedArea, :name_english)
+#   attribute :name => :name_english
+# end
+
+# if @current_user.access_to?(ProtectedArea, :name)
+#   attribute :original_name => :name
+# end
+
+# if @current_user.access_to?(ProtectedArea, :site_pid)
+#   attribute :site_pid
+# end
+
+# if @current_user.access_to?(ProtectedArea, :international_criteria)
+#   attribute :international_criteria
+# end
+
+# if @current_user.access_to?(ProtectedArea, :verif)
+#   attribute :verif
+# end
+
+# if @current_user.access_to?(ProtectedArea, :parent_iso3)
+#   attribute :parent_iso3
+# end
+
+# if @current_user.access_to?(ProtectedArea, :gis_marine_area)
+#   attribute :gis_marine_area
+# end
+
+# if @current_user.access_to?(ProtectedArea, :gis_area)
+#   attribute :gis_area
+# end
+
+# if @current_user.access_to?(ProtectedArea, :site_type)
+#   attribute :site_type
+# end
 
 node :links do |pa|
   if @current_user.access_to?(ProtectedArea, :link_to_pp)
@@ -133,6 +176,8 @@ if @current_user.access_to?(ProtectedArea, :green_list_status)
   end
 end
 
-child :sources, object_root: false do
-  attributes :id, :title, :responsible_party, :year_updated
+if @current_user.access_to?(ProtectedArea, :sources)
+  child :sources, object_root: false do
+    attributes :id, :title, :responsible_party, :year_updated
+  end
 end
