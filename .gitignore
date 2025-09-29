@@ -44,3 +44,7 @@ build/
 
 # Appsignal
 appsignal.log
+/web/public
+
+# ctags
+tags
