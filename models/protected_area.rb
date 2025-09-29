@@ -75,6 +75,7 @@ class ProtectedArea < ActiveRecord::Base
   def wdpa_pid
     wdpa_id
   end
+
   # This is only used for API v3 and can be removed when we drop API v3
   def sub_locations
     []
