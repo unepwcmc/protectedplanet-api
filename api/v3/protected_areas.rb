@@ -7,6 +7,10 @@ class API::V3::ProtectedAreas < Grape::API
     authenticate!
   end
 
+  after do
+    set_v3_deprecation_headers
+  end
+
   rescue_from Grape::Exceptions::ValidationErrors do |e|
     error! e, 400
   end
@@ -73,8 +77,8 @@ class API::V3::ProtectedAreas < Grape::API
   #########
   get ":wdpa_id", rabl: "v3/views/protected_area" do
     @with_geometry = params[:with_geometry]
-    @protected_area = ProtectedArea.find_by_wdpa_id(
+    @protected_area = ProtectedArea.find_by_site_id(
       params[:wdpa_id]
-    ) or error!(:not_found, 404)
+      ) or error!(:not_found, 404)
   end
 end

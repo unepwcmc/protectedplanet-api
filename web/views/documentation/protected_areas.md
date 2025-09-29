@@ -83,7 +83,7 @@ Sample response:
                     "id": "UGA"
                 }
             ],
-            "sub_locations": [],
+            "sub_locations": [], // This will be always empty list in v3 and will be removed in v4
             "iucn_category": {
                 "id": 8,
                 "name": "Not Reported"
@@ -283,7 +283,7 @@ Sample response:
                     "id": "MAR"
                 }
             ],
-            "sub_locations": [],
+            "sub_locations": [], // This will be always empty list in v3 and will be removed in v4
             "iucn_category": {
                 "id": 10,
                 "name": "Not Assigned"
@@ -415,7 +415,7 @@ Sample response:
                 "id": "UGA"
             }
         ],
-        "sub_locations": [],
+        "sub_locations": [], // This will be always empty list in v3 and will be removed in v4
         "iucn_category": {
             "id": 8,
             "name": "Not Reported"

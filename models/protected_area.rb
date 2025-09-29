@@ -6,25 +6,34 @@ class ProtectedArea < ActiveRecord::Base
   include ApiObject
 
   self.api_attributes = [
-    :wdpa_id,
-    :wdpa_pid,
+    :site_id,
+    :site_pid,
+    :site_type,
     :international_criteria,
     :gis_marine_area,
     :gis_area,
     :verif,
     :parent_iso3,
-    :marine_type,
-    :name, :original_name,
-    :geometry, :marine, :is_green_list,
+    :marine, :realm,
+    :name, :name_english, :original_name,
+    :geometry, :is_green_list,
     :countries,
     :iucn_category, :designation,
     :link_to_pp, :no_take_status,
     :legal_status, :legal_status_updated_at,
     :management_plan, :management_authority,
-    :governance, :reported_area, :reported_marine_area,
-    :owner_type, :pame_evaluations, :sub_locations,
-    :green_list_status, :is_oecm, :supplementary_info,
-    :conservation_objectives, :green_list_url
+    :governance, :governance_subtype, 
+    :reported_area, :reported_marine_area,
+    :owner_type, :ownership_subtype, 
+    :pame_evaluations,
+    :green_list_status, :green_list_url,
+    :is_oecm, :supplementary_info,
+    :conservation_objectives,
+    :inland_waters,
+    :oecm_assessment,
+  
+    # To be removed when we drop API v3
+    :wdpa_id, :wdpa_pid, :marine_type, :sub_locations
   ]
 
   belongs_to :iucn_category
@@ -71,13 +80,31 @@ class ProtectedArea < ActiveRecord::Base
     green_list_status_id.present?
   end
 
+  def name_english
+    name
+  end
+
+  ###### 
+  ###### Anything below this line is only used for API v3 and can be removed when we drop API v3
+  ######
+
+  # This is only used for API v3 and can be removed when we drop API v3
+  def wdpa_id
+    site_id
+  end
+
   # This is only used for API v3 and can be removed when we drop API v3
   def wdpa_pid
-    wdpa_id
+    # In v3 wdpa_pid is basically wdpa_id (site_id) so keep it to return site_id
+    site_id
   end
 
   # This is only used for API v3 and can be removed when we drop API v3
   def sub_locations
     []
   end
+
+  ######
+  ###### Only put anything below this line for API v3 and can be removed when we drop API v3
+  ######
 end

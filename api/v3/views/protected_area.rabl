@@ -1,11 +1,12 @@
 object @protected_area
 
 # Basic
-attribute :wdpa_id => :id
-attributes :name, :original_name, :wdpa_id,
-          :wdpa_pid, :international_criteria,
-          :verif, :parent_iso3, :marine_type,
-          :gis_marine_area, :gis_area
+attribute   :wdpa_id => :id
+attributes  :site_id, :site_pid, :wdpa_id, :wdpa_pid,
+            :name, :original_name, 
+            :international_criteria,
+            :verif, :parent_iso3, :marine_type,
+            :gis_marine_area, :gis_area
 
 node :links do |pa|
   if @current_user.access_to?(ProtectedArea, :link_to_pp)

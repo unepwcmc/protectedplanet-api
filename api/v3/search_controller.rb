@@ -10,7 +10,7 @@ class API::V3::Search < Grape::API
 
   def by_point
     dirty_query = """
-      SELECT p.id, p.wdpa_id, p.name, p.the_geom_latitude, p.the_geom_longitude
+      SELECT p.id, p.site_id as wdpa_id, p.name, p.the_geom_latitude, p.the_geom_longitude
       FROM protected_areas p
       WHERE ST_DWithin(p.the_geom, ST_GeomFromText('POINT(? ?)',4326), 0.0000001)
       LIMIT 1;
