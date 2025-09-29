@@ -16,7 +16,7 @@ class ProtectedArea < ActiveRecord::Base
     :marine_type,
     :name, :original_name,
     :geometry, :marine, :is_green_list,
-    :countries, :sublocation,
+    :countries,
     :iucn_category, :designation,
     :link_to_pp, :no_take_status,
     :legal_status, :legal_status_updated_at,
@@ -35,7 +35,6 @@ class ProtectedArea < ActiveRecord::Base
   belongs_to :management_authority
   belongs_to :green_list_status
   has_and_belongs_to_many :countries, -> { select(:id, :name, :iso_3) }
-  has_and_belongs_to_many :sub_locations
   has_many :pame_evaluations
   has_and_belongs_to_many :sources
 
@@ -72,7 +71,12 @@ class ProtectedArea < ActiveRecord::Base
     green_list_status_id.present?
   end
 
+  # This is only used for API v3 and can be removed when we drop API v3
   def wdpa_pid
-    wdpa_parent_id
+    wdpa_id
+  end
+  # This is only used for API v3 and can be removed when we drop API v3
+  def sub_locations
+    []
   end
 end

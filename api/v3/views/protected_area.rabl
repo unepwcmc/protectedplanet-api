@@ -69,9 +69,7 @@ if @current_user.access_to?(ProtectedArea, :countries)
 end
 
 if @current_user.access_to?(ProtectedArea, :sub_locations)
-  child :sub_locations, object_root: false do
-    attributes :id, :english_name
-  end
+  attribute :sub_locations
 end
 
 if @current_user.access_to?(ProtectedArea, :iucn_category)
