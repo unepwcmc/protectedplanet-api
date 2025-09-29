@@ -72,7 +72,8 @@ class ProtectedArea < ActiveRecord::Base
     green_list_status_id.present?
   end
 
+  # This is only used for API v3 and can be removed when we drop API v3
   def wdpa_pid
-    wdpa_parent_id
+    wdpa_id
   end
 end
