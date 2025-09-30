@@ -64,6 +64,23 @@ $ RAILS_ENV=development bundle exec irb
 2.3.0 :002 > ApiUser.first
 ```
 
+## API Development
+
+### Adding New API Attributes
+
+When adding new attributes to the `api_attributes` array in any model (e.g., `ProtectedArea`), you **must** run the following rake task (on servers) to reset permissions for all API users:
+
+```bash
+bundle exec rake api_users:reset_permissions
+```
+
+This ensures that all existing API users have access to the newly added/changed fields. Without running this task, existing users will not be able to access the new attributes through the API.
+
+**Important**: This task should be run after:
+- Adding new fields to `api_attributes` in any model
+- Modifying existing field permissions
+- After database migrations that add new columns to API-exposed tables
+
 ## Troubleshooting
 
 **An error occurred while installing pg (0.18.4), and Bundler cannot continue.**

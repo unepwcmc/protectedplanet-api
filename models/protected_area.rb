@@ -5,19 +5,16 @@ class ProtectedArea < ActiveRecord::Base
   include GeometryConcern
   include ApiObject
 
+  # IMPORTANT: When adding/removing/modifying attributes in this array,
+  # you MUST run `bundle exec rake api_users:reset_permissions` on all servers
+  # to ensure existing API users have access to the new/changed fields.
+  # 
+  # NOTE: Basic attributes exposed in RABL views (api/vx/views/protected_area.rabl) without permission checks
+  # (like site_id, site_pid, name, etc.) should NOT be included here.
   self.api_attributes = [
-    :site_id,
-    :site_pid,
-    :site_type,
-    :international_criteria,
-    :gis_marine_area,
-    :gis_area,
-    :verif,
-    :parent_iso3,
     :marine, :realm,
-    :name, :name_english, :original_name,
     :geometry, :is_green_list,
-    :countries,
+    :countries, :sources,
     :iucn_category, :designation,
     :link_to_pp, :no_take_status,
     :legal_status, :legal_status_updated_at,
@@ -31,9 +28,6 @@ class ProtectedArea < ActiveRecord::Base
     :conservation_objectives,
     :inland_waters,
     :oecm_assessment,
-  
-    # To be removed when we drop API v3
-    :wdpa_id, :wdpa_pid, :marine_type, :sub_locations
   ]
 
   belongs_to :iucn_category

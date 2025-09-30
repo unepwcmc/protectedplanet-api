@@ -1,12 +1,15 @@
 object @protected_area
 
-# Basic
+# Basic that can be available for everyone no need to check permissions
+# If they are here then they shouldn't be in the api_attributes array models/protected_area.rb 
 attribute   :wdpa_id => :id
 attributes  :site_id, :site_pid, :wdpa_id, :wdpa_pid,
-            :name, :original_name, 
+            :name, :original_name,
             :international_criteria,
             :verif, :parent_iso3, :marine_type,
-            :gis_marine_area, :gis_area
+            :gis_marine_area, :gis_area, :sub_locations
+
+# All fields below must be in api_attributes models/protected_area.rb and have a permission check
 
 node :links do |pa|
   if @current_user.access_to?(ProtectedArea, :link_to_pp)
@@ -67,10 +70,6 @@ if @current_user.access_to?(ProtectedArea, :countries)
     attributes :name, :iso_3
     attribute :iso_3 => :id
   end
-end
-
-if @current_user.access_to?(ProtectedArea, :sub_locations)
-  attribute :sub_locations
 end
 
 if @current_user.access_to?(ProtectedArea, :iucn_category)

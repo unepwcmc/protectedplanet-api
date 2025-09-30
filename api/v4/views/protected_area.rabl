@@ -1,54 +1,18 @@
 object @protected_area
 
-# Basic
-attribute :site_id => :id
-attribute :name => :name_english
-attribute :original_name => :name
-attributes :name, :original_name, :site_id,
-           :site_pid, :international_criteria,
-           :verif, :parent_iso3,
-           :gis_marine_area, :gis_area, :site_type
-# Check with NC if they want to keep the attributes above avaliable for everyone or also set permissions
-# At the moment they are available for everyone
-# if @current_user.access_to?(ProtectedArea, :site_id)
-#   attribute :site_id => :id
-# end
+# Basic that can be available for everyone no need to check permissions
+# If they are here then they shouldn't be in the api_attributes array models/protected_area.rb 
+attribute   :site_id => :id
+attribute   :name => :name_english
+attribute   :original_name => :name
+attributes  :site_id, :site_pid,
+            :international_criteria,
+            :verif, :parent_iso3,
+            :gis_marine_area, :gis_area, 
+            :site_type
 
-# if @current_user.access_to?(ProtectedArea, :name_english)
-#   attribute :name => :name_english
-# end
 
-# if @current_user.access_to?(ProtectedArea, :name)
-#   attribute :original_name => :name
-# end
-
-# if @current_user.access_to?(ProtectedArea, :site_pid)
-#   attribute :site_pid
-# end
-
-# if @current_user.access_to?(ProtectedArea, :international_criteria)
-#   attribute :international_criteria
-# end
-
-# if @current_user.access_to?(ProtectedArea, :verif)
-#   attribute :verif
-# end
-
-# if @current_user.access_to?(ProtectedArea, :parent_iso3)
-#   attribute :parent_iso3
-# end
-
-# if @current_user.access_to?(ProtectedArea, :gis_marine_area)
-#   attribute :gis_marine_area
-# end
-
-# if @current_user.access_to?(ProtectedArea, :gis_area)
-#   attribute :gis_area
-# end
-
-# if @current_user.access_to?(ProtectedArea, :site_type)
-#   attribute :site_type
-# end
+# All fields below must be in api_attributes models/protected_area.rb and have a permission check
 
 node :links do |pa|
   if @current_user.access_to?(ProtectedArea, :link_to_pp)
@@ -111,10 +75,6 @@ if @current_user.access_to?(ProtectedArea, :countries)
   end
 end
 
-if @current_user.access_to?(ProtectedArea, :sub_locations)
-  attribute :sub_locations
-end
-
 if @current_user.access_to?(ProtectedArea, :iucn_category)
   child :iucn_category, object_root: false do
     attributes :id, :name
@@ -154,8 +114,24 @@ if @current_user.access_to?(ProtectedArea, :governance)
   end
 end
 
+if @current_user.access_to?(ProtectedArea, :governance_subtype)
+  attributes :governance_subtype
+end
+
 if @current_user.access_to?(ProtectedArea, :owner_type)
   attribute :owner_type
+end
+
+if @current_user.access_to?(ProtectedArea, :ownership_subtype)
+  attribute :ownership_subtype
+end
+
+if @current_user.access_to?(ProtectedArea, :inland_waters)
+  attribute :inland_waters
+end
+
+if @current_user.access_to?(ProtectedArea, :oecm_assessment)
+  attribute :oecm_assessment
 end
 
 if @current_user.access_to?(ProtectedArea, :pame_evaluations)
