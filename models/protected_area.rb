@@ -34,6 +34,7 @@ class ProtectedArea < ActiveRecord::Base
   belongs_to :designation
   belongs_to :legal_status
   belongs_to :governance
+  belongs_to :realm
   belongs_to :no_take_status
   belongs_to :management_authority
   belongs_to :green_list_status

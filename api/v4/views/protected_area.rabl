@@ -157,3 +157,10 @@ if @current_user.access_to?(ProtectedArea, :sources)
     attributes :id, :title, :responsible_party, :year_updated
   end
 end
+
+if @current_user.access_to?(ProtectedArea, :realm)
+  child :realm, object_root: false do
+    attributes :id, :name
+  end
+end
+
