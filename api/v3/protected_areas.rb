@@ -71,7 +71,7 @@ class API::V3::ProtectedAreas < Grape::API
 
   # == annotations
   ################
-  desc "Get a protected area via its wdpa_id."
+  desc "Get a protected area via its wdpa_id (site_id)."
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########

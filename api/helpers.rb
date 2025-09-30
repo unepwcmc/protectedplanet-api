@@ -18,7 +18,7 @@ module API
 
     def set_v3_deprecation_headers
       header 'deprecated', 'true'
-      header 'description', 'API v3 is deprecated. Please migrate to v4. Visit the Protected Planet API website https://api.protectedplanet.net for v4 documentation.'
+      header 'description', 'API v3 is deprecated and will be removed on 1st/May/2026. Please migrate to v4. Visit the Protected Planet API website https://api.protectedplanet.net for v4 documentation.'
     end
   end
 end
