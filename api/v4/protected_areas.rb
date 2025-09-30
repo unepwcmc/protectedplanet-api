@@ -67,14 +67,14 @@ class API::V4::ProtectedAreas < Grape::API
 
   # == annotations
   ################
-  desc "Get a protected area via its wdpa_id."
+  desc "Get a protected area via its site_id."
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########
-  get ":wdpa_id", rabl: "v4/views/protected_area" do
+  get ":site_id", rabl: "v4/views/protected_area" do
     @with_geometry = params[:with_geometry]
-    @protected_area = ProtectedArea.find_by_wdpa_id(
-      params[:wdpa_id]
+    @protected_area = ProtectedArea.find_by_site_id(
+      params[:site_id]
     ) or error!(:not_found, 404)
   end
 end

@@ -27,7 +27,7 @@ class ProtectedArea < ActiveRecord::Base
     :is_oecm, :supplementary_info,
     :conservation_objectives,
     :inland_waters,
-    :oecm_assessment,
+    :oecm_assessment
   ]
 
   belongs_to :iucn_category
@@ -68,7 +68,7 @@ class ProtectedArea < ActiveRecord::Base
   end
 
   def link_to_pp
-    File.join($secrets[:host], self.wdpa_id.to_s)
+    File.join($secrets[:host], self.site_id.to_s)
   end
 
   def is_green_list
