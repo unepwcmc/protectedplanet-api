@@ -74,32 +74,4 @@ class ProtectedArea < ActiveRecord::Base
   def is_green_list
     green_list_status_id.present?
   end
-
-  def name_english
-    name
-  end
-
-  ###### 
-  ###### Anything below this line is only used for API v3 and can be removed when we drop API v3
-  ######
-
-  # This is only used for API v3 and can be removed when we drop API v3
-  def wdpa_id
-    site_id
-  end
-
-  # This is only used for API v3 and can be removed when we drop API v3
-  def wdpa_pid
-    # In v3 wdpa_pid is basically wdpa_id (site_id) so keep it to return site_id
-    site_id
-  end
-
-  # This is only used for API v3 and can be removed when we drop API v3
-  def sub_locations
-    []
-  end
-
-  ######
-  ###### Only put anything below this line for API v3 and can be removed when we drop API v3
-  ######
 end
