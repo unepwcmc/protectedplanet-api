@@ -73,6 +73,7 @@ class API::V4::ProtectedAreas < Grape::API
   #########
   get ":site_id", rabl: "v4/views/protected_area" do
     @with_geometry = params[:with_geometry]
+    
     @protected_area = ProtectedArea.find_by_site_id(
       params[:site_id]
     ) or error!(:not_found, 404)

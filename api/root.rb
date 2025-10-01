@@ -69,6 +69,10 @@ module API
         mount API::V4::ProtectedAreas
       end
 
+      resources :protected_area_parcels do
+        mount API::V4::ProtectedAreaParcels
+      end
+
       resources :countries do
         mount API::V4::Countries
       end

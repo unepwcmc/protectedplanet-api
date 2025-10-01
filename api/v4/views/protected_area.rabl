@@ -1,8 +1,7 @@
 object @protected_area
 
 # Basic that can be available for everyone no need to check permissions
-# If they are here then they shouldn't be in the api_attributes array models/protected_area.rb 
-attribute   :site_id => :id
+# If they are here then they shouldn't be in the api_attributes array models/protected_area.rb
 attribute   :name => :name_english
 attribute   :original_name => :name
 attributes  :site_id, :site_pid,
@@ -161,6 +160,12 @@ end
 if @current_user.access_to?(ProtectedArea, :realm)
   child :realm, object_root: false do
     attributes :id, :name
+  end
+end
+
+if @current_user.access_to?(ProtectedArea, :protected_area_parcels)
+  child :protected_area_parcels, object_root: false do
+    extends "v4/views/protected_area_parcel"
   end
 end
 
