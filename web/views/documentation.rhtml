@@ -7,15 +7,5 @@
     Documentation
   </div>
 
-  <%= erb "documentation/_sidebar".to_sym %>
-
-  <div class="three-fourths article">
-    <h1 class="article__title">API Documentation</h1>
-    <article class="s-article">
-      <%= markdown "documentation/introduction".to_sym %>
-      <%= markdown "documentation/authentication".to_sym %>
-      <%= markdown "documentation/countries".to_sym %>
-      <%= markdown "documentation/protected_areas".to_sym %>
-    </article>
-  </div>
+  <%= erb "documentation/v4/_documentation".to_sym %>
 </div>

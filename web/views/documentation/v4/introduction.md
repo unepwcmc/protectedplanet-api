@@ -1,0 +1,1 @@
+The Protected Planet API v4 is the latest version of the official API for accessing data from the *WDPA* (World Database on Protected Areas), maintained by [UNEP-WCMC](http://www.unep-wcmc.org) in Cambridge, UK.

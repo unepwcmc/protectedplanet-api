@@ -1,0 +1,26 @@
+<div class="container--profile container--push-bottom">
+  <div class="breadcrumbs">
+    <a class="breadcrumbs__link" href="http://www.protectedplanet.net">Home</a>
+    >
+    <a class="breadcrumbs__link" href="/">Protected Planet API</a>
+    >
+    <a class="breadcrumbs__link" href="/documentation">Documentation</a>
+    >
+    v3
+  </div>
+
+  <%= erb "documentation/v3/_sidebar".to_sym %>
+
+  <div class="three-fourths article">
+    <h1 class="article__title">V3 API Documentation (Archived)</h1>
+    
+    <%= erb "shared/_v3_depreciated_announcement".to_sym %>
+    
+    <article class="s-article">
+      <%= markdown "documentation/v3/introduction".to_sym %>
+      <%= markdown "documentation/v3/authentication".to_sym %>
+      <%= markdown "documentation/v3/countries".to_sym %>
+      <%= markdown "documentation/v3/protected_areas".to_sym %>
+    </article>
+  </div>
+</div>
