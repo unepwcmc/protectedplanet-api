@@ -22,7 +22,7 @@ class ProtectedArea < ActiveRecord::Base
     :governance, :governance_subtype, 
     :reported_area, :reported_marine_area,
     :owner_type, :ownership_subtype, 
-    :pame_evaluations,
+    :pame_evaluations, :protected_area_parcels,
     :green_list_status, :green_list_url,
     :is_oecm, :supplementary_info,
     :conservation_objectives,
@@ -41,6 +41,7 @@ class ProtectedArea < ActiveRecord::Base
   has_and_belongs_to_many :countries, -> { select(:id, :name, :iso_3) }
   has_many :pame_evaluations
   has_and_belongs_to_many :sources
+  has_many :protected_area_parcels, foreign_key: 'site_id', primary_key: 'site_id'
 
   delegate :jurisdiction, to: :designation, allow_nil: true
 
@@ -50,7 +51,7 @@ class ProtectedArea < ActiveRecord::Base
   SEARCHES = {
     country:       -> (scope, value) { scope.joins(:countries).where("countries.iso_3 = ?", value.upcase) },
     marine:        -> (scope, value) { scope.where(marine: value) },
-    is_green_list: -> (scope, value) { scope.where(is_green_list: value) },
+    is_green_list: -> (scope, value) { where.not(green_list_status_id: nil) },
     designation:   -> (scope, value) { scope.where(designation_id: value) },
     jurisdiction:  -> (scope, value) { scope.joins(:designation).where("designations.jurisdiction_id = ?", value) },
     governance:    -> (scope, value) { scope.where(governance_id: value) },
