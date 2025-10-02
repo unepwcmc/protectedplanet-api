@@ -567,6 +567,9 @@ html {
   overflow: hidden;
 }
 .side-bar__inner {
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
   background-color: #f8f8f8;
   font-family: 'MuseoSans';
   font-weight: 500;
@@ -849,8 +852,7 @@ html {
   left: -1rem;
 }
 .container--profile {
-  max-width: 80rem;
-  width: 80%;
+  max-width: 90rem;
   margin: auto;
 }
 @media only screen and (max-width: 768px) {
@@ -1172,14 +1174,6 @@ sup {
 
 .gap-1 {
   gap: 1rem;
-}
-
-.sticky {
-  position: sticky;
-}
-
-.max-h-screen {
-  max-height: 100vh;
 }
 
 .margin-top-1 {
