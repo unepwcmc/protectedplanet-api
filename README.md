@@ -1,88 +1,183 @@
 # Protected Planet API
 
-This is the repository for the official Protected Planet API. If you are interested in consuming the API, head to [the API documentation](http://api.protectedplanet.net/documentation). If you are a developer and intend contributing to the API codebase, keep reading.
+The official API for accessing global protected area data from the World Database on Protected Areas (WDPA).
 
-## The stack
+## 🌍 For API Users
 
-The Protected Planet API is a Rack application, written in Ruby. It is composed of two sections, each handled by a different framework.
+If you want to **use** the API to access protected area data, visit our [API Documentation](http://api.protectedplanet.net/documentation) to get started.
 
-* `/api/**/*`: [Grape](https://github.com/ruby-grape/grape)
-* `/web/**/*`: [Sinatra](http://www.sinatrarb.com/)
+## 🛠️ For Developers
 
-The two frameworks are then cascaded inside Rack, in the [config.ru](/config.ru) file:
+This guide is for developers who want to **contribute** to the API codebase or run it locally.
 
+## Architecture Overview
+
+The Protected Planet API is built as a **Ruby Rack application** with two main components:
+
+| Component | Framework | Purpose |
+|-----------|-----------|---------|
+| `/api/**/*` | [Grape](https://github.com/ruby-grape/grape) | RESTful API endpoints |
+| `/web/**/*` | [Sinatra](http://www.sinatrarb.com/) | Documentation website |
+
+### How it works:
+1. Both frameworks are combined using **Rack::Cascade** in [`config.ru`](/config.ru)
+2. They share **ActiveRecord models** that are tailored for API usage:
+   - Based on [ProtectedPlanet models](https://github.com/unepwcmc/ProtectedPlanet/tree/master/app/models) but optimized for API responses
+   - **Important:** Always cross-reference with ProtectedPlanet when making changes
+   - **For new models:** Copy from ProtectedPlanet first, then adapt for API needs
+3. API responses use **RABL templates** for JSON formatting
+4. Documentation is rendered using **ERB and Markdown**
+
+### Database:
+The `db/` folder is a **git submodule** linked to [protectedplanet-db](https://github.com/unepwcmc/protectedplanet-db), which contains all database schemas and migrations.
+
+## 🚀 Getting Started
+
+### Option 1: Docker Setup (Recommended)
+
+The easiest way to run the API locally:
+
+1. **Use the docker-compose setup** from the main protectedplanet repository
+2. **Create environment file:**
+   ```bash
+   # Create .env file and copy contents from Keeper (internal password manager)
+   touch .env
+   ```
+3. **Run database migrations** in the main protectedplanet Rails app first
+   ```bash
+   # Note: We can't run migrations directly in this repo (non-Rails)
+   # Run this in the main protectedplanet repository:
+   bundle exec rails db:migrate
+   ```
+4. **Start the server:**
+   ```bash
+   docker-compose up
+   ```
+5. **Access the API:** Open your browser to `http://localhost:9292`
+
+### Option 2: Local Ruby Setup
+
+⚠️ **Not recommended** - use Docker instead for easier setup.
+
+<details>
+<summary>Click to expand local setup instructions</summary>
+
+1. **Install Ruby version** (check `.ruby-version` file):
+   ```bash
+   rbenv install $(cat .ruby-version)
+   rbenv local $(cat .ruby-version)
+   ```
+
+2. **Clone and setup:**
+   ```bash
+   git clone git@github.com:unepwcmc/protectedplanet-api.git
+   cd protectedplanet-api
+   bundle install
+   ```
+
+3. **Configure environment:**
+   ```bash
+   # Create .env file and copy contents from Keeper
+   touch .env
+   ```
+
+4. **Run migrations** (in main protectedplanet Rails app)
+
+5. **Start server:**
+   ```bash
+   rackup
+   ```
+
+6. **Access:** `http://localhost:9292`
+
+</details>
+
+## 🔄 Updating Database Schema
+
+The database schema is managed as a git submodule. To get the latest database updates:
+
+```bash
+# Navigate to the database submodule
+cd db/
+
+# Fetch and merge latest changes
+git fetch
+git merge origin/master
+
+# Return to project root
+cd ..
 ```
-require ‘api/root’
-require ‘web/root’
-[…]
-run Rack::Cascade.new [Web::Root, API::Root]
+
+## 🧪 Development Console
+
+Access the Rails console to interact with models and test functionality:
+
+```bash
+# Start IRB with the application environment loaded
+RAILS_ENV=development bundle exec irb
+
+# Load the application
+$LOAD_PATH.unshift("#{File.dirname(__FILE__)}")
+require 'config/environment.rb'
+require 'lib/mailer.rb'
+
+# Now you can interact with models
+ApiUser.first
+ProtectedArea.count
 ```
 
-Both frameworks share a bunch of`ActiveRecord` models, which form a subset of the [ProtectedPlanet models](https://github.com/unepwcmc/ProtectedPlanet/tree/master/app/models), with the addition of the `ApiUser` model.
-
-The API uses [RABL](https://github.com/nesquena/rabl) and [grape-rabl](https://github.com/ruby-grape/grape-rabl/) for views, while Sinatra renders ERB and markdown for the documentation.
-
-The design is implemented in the bower package [protectedplanet-frontend](https://github.com/unepwcmc/protectedplanet-frontend), which makes possible to share exactly the same style between this project and ProtectedPlanet itself.
-
-Finally, the `db` folder is a git submodule, linked to [protectedplanet-db](https://github.com/unepwcmc/protectedplanet-db). More on this in the _Development_ section.
-
-## Installation
-
-- Install correct ruby version using rbenv (see `.ruby-version`)
-- Install bower `npm install -g bower`
-
-```
-- `git clone git@github.com:unepwcmc/protectedplanet-api.git`
-- `cd protectedplanet-api`
-- `bundle install`
-- `bower install`
-- Create .env file and copy contents from Keeper
-- Make sure all migrations are run in protectedplanet (rails) as we can't run migration (none-rails) in this folder anymore
-- `rackup`
-```
-
-Now fire up your browser at `localhost:9292`!
-
-## ProtectedPlanet-db fetch
-if your db is not up to date then 
-- cd inside db folder
-- git fetch
-- git merge origin/master
-- You should now have the latest db repo
-
-
-## Further hints
-
-This example demonstrates accessing an api_user from the terminal using irb.
-```
-$ RAILS_ENV=development bundle exec irb
-
-> $LOAD_PATH.unshift("#{File.dirname(__FILE__)}"); require 'config/environment.rb'; require 'lib/mailer.rb'
-
-=> true
-
-2.3.0 :002 > ApiUser.first
-```
-
-## API Development
+## 🔧 API Development
 
 ### Adding New API Attributes
 
-When adding new attributes to the `api_attributes` array in any model (e.g., `ProtectedArea`), you **must** run the following rake task (on servers) to reset permissions for all API users:
+When you add new fields to the API, you need to update user permissions:
 
+#### Step 1: Add the attribute to the model
+```ruby
+# In models/protected_area.rb (or other model)
+def api_attributes
+  [
+    'name', 'wdpa_id', 'designation',
+    'your_new_field'  # Add your new field here
+  ]
+end
+```
+
+#### Step 2: Reset user permissions
 ```bash
+# Run this rake task on servers after adding new attributes
 bundle exec rake api_users:reset_permissions
 ```
 
-This ensures that all existing API users have access to the newly added/changed fields. Without running this task, existing users will not be able to access the new attributes through the API.
+#### ⚠️ Important Notes:
+- **Always run the rake task** after modifying `api_attributes`
+- This ensures existing API users can access new fields
+- **Required after:**
+  - Adding new fields to `api_attributes` arrays
+  - Modifying existing field permissions  
+  - Database migrations that add API-exposed columns
 
-**Important**: This task should be run after:
-- Adding new fields to `api_attributes` in any model
-- Modifying existing field permissions
-- After database migrations that add new columns to API-exposed tables
+## 🐛 Troubleshooting
 
-## Troubleshooting
+### PostgreSQL Installation Issues
 
-**An error occurred while installing pg (0.18.4), and Bundler cannot continue.**
+**Error:** `An error occurred while installing pg (0.18.4), and Bundler cannot continue.`
 
-Try running: `gem install pg -v '0.18.1' -- --with-cflags="-Wno-error=implicit-function-declaration"`
+**Solution:**
+```bash
+gem install pg -v '0.18.1' -- --with-cflags="-Wno-error=implicit-function-declaration"
+```
+
+### Common Issues
+
+- **Database connection errors:** Ensure the main protectedplanet Rails app database is running
+- **Missing migrations:** Run migrations in the main protectedplanet repository first
+- **Environment variables:** Check that your `.env` file contains all required variables from Keeper
+
+---
+
+## 📚 Additional Resources
+
+- [API Documentation](http://api.protectedplanet.net/documentation) - For API users
+- [ProtectedPlanet Main Repository](https://github.com/unepwcmc/ProtectedPlanet) - Main Rails application
+- [ProtectedPlanet Database](https://github.com/unepwcmc/protectedplanet-db) - Database schemas and migrations
