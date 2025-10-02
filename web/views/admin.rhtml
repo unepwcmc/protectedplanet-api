@@ -1,107 +1,16 @@
 <div class="container--profile container--push-bottom">
-  <section class="hero">
-    <div class="hero__top">
-      <h1 class="hero__title hero__title--article">API Users</h1>
-      <div class="article__paragraph">
-        <a href="/admin/export" class="tooltip__trigger js-trigger link-with-icon link-with-icon--bold">
-          <i class="link-with-icon__icon fa fa-download"></i>Export as CSV
-        </a>
-        <span class="divider"></span>
-        <a href="/admin/archived" class="tooltip__trigger js-trigger link-with-icon link-with-icon--bold">
-          <i class="link-with-icon__icon fa fa-archive"></i>Archived users
-        </a>
-        <span class="divider"></span>
-        <a href="/admin/sign_out" class="tooltip__trigger js-trigger link-with-icon link-with-icon--bold">
-          <i class="link-with-icon__icon fa fa-sign-out"></i>Sign out
-        </a>
-      </div>
-    </div>
-  </section>
+  <%= erb :'shared/admin/_error_banner' %>
+
+  <%= erb :'shared/admin/hero/_index', locals: { title: 'Active Users' } %>
 
   <section class="list">
-    <% ApiUser.order(created_at: :desc).where(archived: false).each do |api_user| %>
-      <div class="row accordion js-accordion">
-        <h3 class="js-trigger accordion__header">
-          <% if api_user.active %>
-            <i class="fa fa-check u-link-color" title="Active user"></i>
-          <% else %>
-            <i class="fa fa-close" title="User disabled"></i>
-          <% end %>
-
-          <%= api_user.email %>
-          <i class="accordion__switch js-switch accordion__switch is-closed"></i>
-        </h3>
-
-        <div class="js-target accordion__body u-hide">
-          <aside class="row alert alert--flex">
-            <span class="fa-stack alert__icon alert__icon--info">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-info alert__icon-inner alert__icon-inner--info fa-stack-1x"></i>
-            </span>
-
-            <div>
-              <h4 class="alert__title alert__title--info"> Token: <%= api_user.token %> </h4>
-              <ul class="alert__body">
-                <li>Name: <%= api_user.full_name %></li>
-                <li>Email: <%= api_user.email %></li>
-                <li>Company: <%= api_user.company %></li>
-                <li>Type of User: <%= api_user.kind %></li>
-                <li>Has licence? <%= api_user.has_licence %></li>
-                <li>Licence Number: <%= api_user.licence_number || "N/A" %></li>
-                <li>Reason for using the api: <%= api_user.reason %></li>
-              </ul>
-            </div>
-          </aside>
-
-          <form method="POST" action="/admin/api_users/<%= api_user.id %>">
-            <%= Rack::Csrf.csrf_tag(env) %>
-
-            <div class="row">
-              <label class="u-alt-font">Active</label>
-              <input name="api_user[active]" type="checkbox" value="1" <%= api_user.active ? "checked" : nil %>>
-            </div>
-            <div class="row">
-              <label class="u-alt-font">Archived</label>
-              <input name="api_user[archived]" type="checkbox" value="1" <%= api_user.archived ? "checked" : nil %>>
-            </div>
-
-            <h4 class="article__title--paragraph">Permissions</h4>
-            <div class="u-flex">
-              <% $api_objects.each do |api_object| %>
-                <div class="row one-fourths">
-                  <h4 class="article__title--subparagraph"><%= api_object.name %></h4>
-                  <table class="table">
-                    <% api_object.api_attributes.each do |attribute| %>
-                      <tr>
-                        <td><label class="u-alt-font"><%= attribute %> </label></td>
-                        <td><input
-                            name="api_user[permissions][<%= api_object.name %>][<%= attribute %>]"
-                            type="checkbox"
-                            value="1"
-                            <%= api_user.access_to?(api_object, attribute) ? "checked" : nil %>
-                        ></td>
-                      </tr>
-                    <% end %>
-                  </table>
-                </div>
-              <% end %>
-            </div>
-
-            <button name="save" class="big-button" type="submit">
-              Save
-            </button>
-            <button onclick="return confirm('Are you sure?');" name="destroy" class="big-button--danger big-button" type="submit">
-              Delete user
-            </button>
-
-          </form>
-        </div>
-      </div>
+    <% ApiUser.order(created_at: :desc).where(archived: false, active: true).each do |api_user| %>
+      <%= erb :'shared/admin/user/_user_accordion', locals: { api_user: api_user } %>
     <% end%>
   </section>
 
   <p class="u-full-width u-center article__paragraph--bigger">
-    <%= ApiUser.count %> API users, <%= ApiUser.where(active: true).count %> of which active
+    <%= ApiUser.count %> API users, <%= ApiUser.where(archived: false, active: true).count %> of which active
   </p>
 </div>
 

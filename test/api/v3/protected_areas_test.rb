@@ -30,8 +30,8 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
     assert_equal(EXPECTED_GEOJSON, @json_response["protected_areas"][0]["geojson"])
   end
 
-  def test_get_protected_areas_123_returns_protected_area_with_wdpa_id_123
-    create(:protected_area, name: "Darjeeling", wdpa_id: 123)
+  def test_get_protected_areas_123_returns_protected_area_with_site_id_123
+    create(:protected_area, name: "Darjeeling", site_id: 123)
     get_with_rabl "/v3/protected_areas/123"
 
     assert last_response.ok?
@@ -41,7 +41,7 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
   end
 
   def test_get_protected_areas_123_with_geometry_returns_protected_area_123_with_geojson
-    create(:protected_area, name: "Darjeeling", wdpa_id: 123, the_geom: "POINT(-122 47)")
+    create(:protected_area, name: "Darjeeling", site_id: 123, the_geom: "POINT(-122 47)")
     get_with_rabl "/v3/protected_areas/123"
 
     assert last_response.ok?

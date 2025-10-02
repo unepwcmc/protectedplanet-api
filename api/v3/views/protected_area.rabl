@@ -1,11 +1,23 @@
 object @protected_area
 
-# Basic
-attribute :wdpa_id => :id
-attributes :name, :original_name, :wdpa_id,
-          :wdpa_pid, :international_criteria,
-          :verif, :parent_iso3, :marine_type,
-          :gis_marine_area, :gis_area
+# Basic that can be available for everyone no need to check permissions
+# If they are here then they shouldn't be in the api_attributes array models/protected_area.rb 
+# In v3 wdpa_pid is basically wdpa_id (site_id) so keep it to return value of site_id
+attribute   :site_id => :id
+attribute   :site_id => :wdpa_id
+attribute   :site_id => :wdpa_pid
+attributes  :site_id, :site_pid,
+            :name, :original_name,
+            :international_criteria,
+            :verif, :parent_iso3, :marine_type,
+            :gis_marine_area, :gis_area
+
+# Always return empty array for sub_locations (legacy v3 compatibility)
+node :sub_locations do |pa|
+  []
+end
+
+# All fields below must be in api_attributes models/protected_area.rb and have a permission check
 
 node :links do |pa|
   if @current_user.access_to?(ProtectedArea, :link_to_pp)
@@ -65,12 +77,6 @@ if @current_user.access_to?(ProtectedArea, :countries)
   child :countries, object_root: false do
     attributes :name, :iso_3
     attribute :iso_3 => :id
-  end
-end
-
-if @current_user.access_to?(ProtectedArea, :sub_locations)
-  child :sub_locations, object_root: false do
-    attributes :id, :english_name
   end
 end
 

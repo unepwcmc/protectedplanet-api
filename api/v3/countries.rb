@@ -3,6 +3,10 @@ require 'models/country'
 class API::V3::Countries < Grape::API
   include Grape::Kaminari
 
+  after do
+    set_v3_deprecation_headers
+  end
+
   # == annotations
   ################
   desc "Get all countries, paginated."

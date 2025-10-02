@@ -5,39 +5,43 @@ class ProtectedArea < ActiveRecord::Base
   include GeometryConcern
   include ApiObject
 
+  # IMPORTANT: When adding/removing/modifying attributes in this array,
+  # you MUST run `bundle exec rake api_users:reset_permissions` on all servers
+  # to ensure existing API users have access to the new/changed fields.
+  # 
+  # NOTE: Basic attributes exposed in RABL views (api/vx/views/protected_area.rabl) without permission checks
+  # (like site_id, site_pid, name, etc.) should NOT be included here.
   self.api_attributes = [
-    :wdpa_id,
-    :wdpa_pid,
-    :international_criteria,
-    :gis_marine_area,
-    :gis_area,
-    :verif,
-    :parent_iso3,
-    :marine_type,
-    :name, :original_name,
-    :geometry, :marine, :is_green_list,
-    :countries, :sublocation,
+    :marine, :realm,
+    :geometry, :is_green_list,
+    :countries, :sources,
     :iucn_category, :designation,
     :link_to_pp, :no_take_status,
     :legal_status, :legal_status_updated_at,
     :management_plan, :management_authority,
-    :governance, :reported_area, :reported_marine_area,
-    :owner_type, :pame_evaluations, :sub_locations,
-    :green_list_status, :is_oecm, :supplementary_info,
-    :conservation_objectives, :green_list_url
+    :governance, :governance_subtype, 
+    :reported_area, :reported_marine_area,
+    :owner_type, :ownership_subtype, 
+    :pame_evaluations, :protected_area_parcels,
+    :green_list_status, :green_list_url,
+    :is_oecm, :supplementary_info,
+    :conservation_objectives,
+    :inland_waters,
+    :oecm_assessment
   ]
 
   belongs_to :iucn_category
   belongs_to :designation
   belongs_to :legal_status
   belongs_to :governance
+  belongs_to :realm
   belongs_to :no_take_status
   belongs_to :management_authority
   belongs_to :green_list_status
   has_and_belongs_to_many :countries, -> { select(:id, :name, :iso_3) }
-  has_and_belongs_to_many :sub_locations
   has_many :pame_evaluations
   has_and_belongs_to_many :sources
+  has_many :protected_area_parcels, foreign_key: 'site_id', primary_key: 'site_id'
 
   delegate :jurisdiction, to: :designation, allow_nil: true
 
@@ -47,7 +51,7 @@ class ProtectedArea < ActiveRecord::Base
   SEARCHES = {
     country:       -> (scope, value) { scope.joins(:countries).where("countries.iso_3 = ?", value.upcase) },
     marine:        -> (scope, value) { scope.where(marine: value) },
-    is_green_list: -> (scope, value) { scope.where(is_green_list: value) },
+    is_green_list: -> (scope, value) { where.not(green_list_status_id: nil) },
     designation:   -> (scope, value) { scope.where(designation_id: value) },
     jurisdiction:  -> (scope, value) { scope.joins(:designation).where("designations.jurisdiction_id = ?", value) },
     governance:    -> (scope, value) { scope.where(governance_id: value) },
@@ -65,15 +69,10 @@ class ProtectedArea < ActiveRecord::Base
   end
 
   def link_to_pp
-    File.join($secrets[:host], self.wdpa_id.to_s)
+    File.join($secrets[:host], self.site_id.to_s)
   end
 
   def is_green_list
     green_list_status_id.present?
-  end
-
-  # This is only used for API v3 and can be removed when we drop API v3
-  def wdpa_pid
-    wdpa_id
   end
 end
