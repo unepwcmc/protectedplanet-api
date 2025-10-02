@@ -31,6 +31,44 @@ The Protected Planet API is built as a **Ruby Rack application** with two main c
 ### Database:
 The `db/` folder is a **git submodule** linked to [protectedplanet-db](https://github.com/unepwcmc/protectedplanet-db), which contains all database schemas and migrations.
 
+## 📋 Available Tasks
+
+The API includes several rake tasks for maintenance and development:
+
+### User Management Tasks
+
+#### Reset API User Permissions
+```bash
+bundle exec rake api_users:reset_permissions
+```
+- **Purpose:** Reset permissions for all API users
+- **When to use:** After adding new fields to `api_attributes` arrays
+- **Required after:** Database migrations that add API-exposed columns
+
+#### Remove API Users
+```bash
+# Remove inactive users only
+bundle exec rake api_users:remove[inactive]
+
+# Remove archived users only  
+bundle exec rake api_users:remove[archived]
+
+# Remove both inactive and archived users
+bundle exec rake api_users:remove[archived_or_inactive]
+```
+- **Purpose:** Clean up inactive or archived API users
+- **Safety:** Includes confirmation prompt before deletion
+- **Preview:** Shows which users will be deleted before asking for confirmation
+
+### Other Tasks
+```bash
+# List all available tasks
+bundle exec rake -T
+
+# List only api_users tasks
+bundle exec rake -T api_users
+```
+
 ## 🚀 Getting Started
 
 ### Option 1: Docker Setup (Recommended)
@@ -144,10 +182,7 @@ end
 ```
 
 #### Step 2: Reset user permissions
-```bash
-# Run this rake task on servers after adding new attributes
-bundle exec rake api_users:reset_permissions
-```
+- Use the **Reset API User Permissions** task mentioned in the [📋 Available Tasks](#-available-tasks) section
 
 #### ⚠️ Important Notes:
 - **Always run the rake task** after modifying `api_attributes`
