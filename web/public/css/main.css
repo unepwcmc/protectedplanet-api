@@ -1,4 +1,6 @@
 @charset "UTF-8";
+@import url("fonts.css");
+
 html {
   box-sizing: border-box;
 }
@@ -11,96 +13,6 @@ html {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
-}
-@font-face {
-  font-family: 'MuseoSans';
-  font-weight: 700;
-  font-style: normal;
-  src: url("../fonts/MuseoSans-700.eot") format("oet"), url("../fonts/MuseoSans-700.ttf") format("ttf"), url("../fonts/MuseoSans-700.woff") format("woff");
-}
-@font-face {
-  font-family: 'MuseoSans';
-  font-weight: 300;
-  font-style: normal;
-  src: url("../fonts/MuseoSans-300.eot") format("oet"), url("../fonts/MuseoSans-300.ttf") format("ttf"), url("../fonts/MuseoSans-300.woff") format("woff");
-}
-@font-face {
-  font-family: 'MuseoSans';
-  font-weight: 500;
-  font-style: normal;
-  src: url("../fonts/MuseoSans-500.eot") format("oet"), url("../fonts/MuseoSans-500.ttf") format("ttf"), url("../fonts/MuseoSans-500.woff") format("woff");
-}
-@font-face {
-  font-family: 'MuseoSans';
-  font-weight: 100;
-  font-style: normal;
-  src: url("../fonts/MuseoSans-100.eot") format("oet"), url("../fonts/MuseoSans-100.ttf") format("ttf"), url("../fonts/MuseoSans-100.woff") format("woff");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 900;
-  font-style: normal;
-  src: url("../fonts/MuseoSlab-900.otf") format("opentype");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 700;
-  font-style: normal;
-  src: url("../fonts/MuseoSlab-700.otf") format("opentype");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 500;
-  font-style: normal;
-  src: url("../fonts/MuseoSlab-500.eot") format("oet"), url("../fonts/MuseoSlab-500.ttf") format("ttf"), url("../fonts/MuseoSlab-500.woff") format("woff");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 300;
-  font-style: normal;
-  src: url("../fonts/MuseoSlab-300.otf") format("opentype");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 100;
-  font-style: normal;
-  src: url("../fonts/MuseoSlab-100.otf") format("opentype");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 100;
-  font-style: italic;
-  src: url("../fonts/MuseoSlab-100Italic.otf") format("opentype");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 300;
-  font-style: italic;
-  src: url("../fonts/MuseoSlab-300Italic.otf") format("opentype");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 700;
-  font-style: italic;
-  src: url("../fonts/MuseoSlab-700Italic.otf") format("opentype");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 900;
-  font-style: italic;
-  src: url("../fonts/MuseoSlab-900Italic.otf") format("opentype");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 1000;
-  font-style: normal;
-  src: url("../fonts/MuseoSlab-1000.otf") format("opentype");
-}
-@font-face {
-  font-family: 'MuseoSlab';
-  font-weight: 1000;
-  font-style: italic;
-  src: url("../fonts/MuseoSlab-1000Italic.otf") format("opentype");
 }
 .header-with-delimiter, .label, .s-article pre, .s-article code, .accordion__header, .accordion__switch:after, .accordion__body, .alert__body, .breadcrumbs, .fullscreen-message__body, .header__text, .table, .s-article table, .value__label, .cover-story__story-content, .section__header, .header--section, .side-bar__inner, .form, .s-form, .s-form input, .s-form textarea, .s-form select, .info-box, .article__paragraph, .article__list-item, .s-article ul li, .s-article ol li, .s-article p, .u-base-color, .select-with-content {
   color: #666666;
