@@ -118,7 +118,7 @@ Sample response:
             },
             "protected_area_parcels": [],
             "links": {
-                "protected_planet": "http://protectedplanet.net/555555"
+                "protected_planet": "https://protectedplanet.net/555555"
             },
             "legal_status_updated_at": "01/01/1872",
             "geojson": {
@@ -287,7 +287,7 @@ Sample response:
             },
             "protected_area_parcels": [],
             "links": {
-                "protected_planet": "http://protectedplanet.net/555555"
+                "protected_planet": "https://protectedplanet.net/555555"
             },
             "legal_status_updated_at": "01/01/1872"
         }
@@ -400,7 +400,7 @@ Sample response:
             },
             "protected_area_parcels": [],
             "links": {
-                "protected_planet": "http://protectedplanet.net/123456"
+                "protected_planet": "https://protectedplanet.net/123456"
             },
             "legal_status_updated_at": "01/01/1898"
         }
@@ -533,7 +533,7 @@ Sample response:
         },
         "protected_area_parcels": [],
         "links": {
-            "protected_planet": "http://protectedplanet.net/555555"
+            "protected_planet": "https://protectedplanet.net/555555"
         },
         "legal_status_updated_at": "01/01/1872"
     }

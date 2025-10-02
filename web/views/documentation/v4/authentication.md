@@ -9,7 +9,7 @@ You can use the `/test` endpoint to check for the validity of your API token:
 ## `GET /test`
 
 ~~~
-$ curl http://api.protectedplanet.net/test?token=ca4703ffba6b9a26b2db73f78e56e088
+$ curl https://api.protectedplanet.net/test?token=ca4703ffba6b9a26b2db73f78e56e088
 
 { status: "Success!" }
 ~~~

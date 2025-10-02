@@ -110,7 +110,7 @@ Sample response:
                 "expiry_date": null
             },
             "links": {
-                "protected_planet": "http://protectedplanet.net/555555"
+                "protected_planet": "https://protectedplanet.net/555555"
             },
             "legal_status_updated_at": "01/01/1872"
         }
@@ -246,7 +246,7 @@ Sample response:
                 "name": "Terrestrial"
             },
             "links": {
-                "protected_planet": "http://protectedplanet.net/555555"
+                "protected_planet": "https://protectedplanet.net/555555"
             },
             "legal_status_updated_at": "01/01/1872"
         }
@@ -364,7 +364,7 @@ Sample response:
                 }
             },
             "links": {
-                "protected_planet": "http://protectedplanet.net/555555"
+                "protected_planet": "https://protectedplanet.net/555555"
             }
         }
     ]
@@ -479,7 +479,7 @@ Sample response:
             "name": "Terrestrial"
         },
         "links": {
-            "protected_planet": "http://protectedplanet.net/555555"
+            "protected_planet": "https://protectedplanet.net/555555"
         },
         "legal_status_updated_at": "01/01/1872"
     }

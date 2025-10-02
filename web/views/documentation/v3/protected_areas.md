@@ -116,7 +116,7 @@ Sample response:
             "pame_evaluations": [],
             "green_list_status": null,
             "links": {
-                "protected_planet": "http://protectedplanet.net/40366"
+                "protected_planet": "https://protectedplanet.net/40366"
             },
             "legal_status_updated_at": "01/01/1998"
         },
@@ -330,7 +330,7 @@ Sample response:
             ],
             "green_list_status": null,
             "links": {
-                "protected_planet": "http://protectedplanet.net/555547509"
+                "protected_planet": "https://protectedplanet.net/555547509"
             },
             "legal_status_updated_at": "01/01/2009"
         }
@@ -448,7 +448,7 @@ Sample response:
         "pame_evaluations": [],
         "green_list_status": null,
         "links": {
-            "protected_planet": "http://protectedplanet.net/40366"
+            "protected_planet": "https://protectedplanet.net/40366"
         },
         "legal_status_updated_at": "01/01/1998"
     }
@@ -780,7 +780,7 @@ Sample response:
             },
             "pame_evaluations": [],
             "links": {
-                "protected_planet": "http://protectedplanet.net/6722"
+                "protected_planet": "https://protectedplanet.net/6722"
             },
             "legal_status_updated_at": "01/01/1977"
         },
@@ -934,7 +934,7 @@ Sample response:
             },
             "pame_evaluations": [],
             "links": {
-                "protected_planet": "http://protectedplanet.net/166899"
+                "protected_planet": "https://protectedplanet.net/166899"
             },
             "legal_status_updated_at": "01/01/1976"
         }
@@ -969,7 +969,7 @@ Sample response:
             "marine": false,
             "reported_marine_area": "0.0",
             "reported_area": "773.430147925",
-            "management_plan": "http://www.bnt.bs//_m1731/The-National-Parks-of-The-Bahamas/Inagua-National-Park",
+            "management_plan": "https://www.bnt.bs//_m1731/The-National-Parks-of-The-Bahamas/Inagua-National-Park",
             "is_green_list": false,
             "owner_type": "Not Reported",
             "countries": [
@@ -1024,7 +1024,7 @@ Sample response:
                 }
             ],
             "links": {
-                "protected_planet": "http://protectedplanet.net/24"
+                "protected_planet": "https://protectedplanet.net/24"
             },
             "legal_status_updated_at": "01/01/1997"
         },

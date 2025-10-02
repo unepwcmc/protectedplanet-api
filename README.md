@@ -4,7 +4,7 @@ The official API for accessing global protected area data from the World Databas
 
 ## 🌍 For API Users
 
-If you want to **use** the API to access protected area data, visit our [API Documentation](http://api.protectedplanet.net/documentation) to get started.
+If you want to **use** the API to access protected area data, visit our [API Documentation](https://api.protectedplanet.net/documentation) to get started.
 
 ## 🛠️ For Developers
 
@@ -17,7 +17,7 @@ The Protected Planet API is built as a **Ruby Rack application** with two main c
 | Component | Framework | Purpose |
 |-----------|-----------|---------|
 | `/api/**/*` | [Grape](https://github.com/ruby-grape/grape) | RESTful API endpoints |
-| `/web/**/*` | [Sinatra](http://www.sinatrarb.com/) | Documentation website |
+| `/web/**/*` | [Sinatra](https://www.sinatrarb.com/) | Documentation website |
 
 ### How it works:
 1. Both frameworks are combined using **Rack::Cascade** in [`config.ru`](/config.ru)
@@ -178,6 +178,6 @@ gem install pg -v '0.18.1' -- --with-cflags="-Wno-error=implicit-function-declar
 
 ## 📚 Additional Resources
 
-- [API Documentation](http://api.protectedplanet.net/documentation) - For API users
+- [API Documentation](https://api.protectedplanet.net/documentation) - For API users
 - [ProtectedPlanet Main Repository](https://github.com/unepwcmc/ProtectedPlanet) - Main Rails application
 - [ProtectedPlanet Database](https://github.com/unepwcmc/protectedplanet-db) - Database schemas and migrations
