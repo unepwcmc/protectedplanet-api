@@ -29,12 +29,6 @@ html {
 .link--external:active, .breadcrumbs__link:active, .close-button:active, .link-with-icon:active, .pa-card__name:active, .pa-card__detail-link:active, .tooltip__element:active, .uservoice:active, .hero__link:active, .article__link:active, .s-article a:active {
   color: #699728;
 }
-.link--external:visited:active, .breadcrumbs__link:visited:active, .close-button:visited:active, .link-with-icon:visited:active, .pa-card__name:visited:active, .pa-card__detail-link:visited:active, .tooltip__element:visited:active, .uservoice:visited:active, .hero__link:visited:active, .article__link:visited:active, .s-article a:visited:active {
-  color: #699728;
-}
-.link--external:visited, .breadcrumbs__link:visited, .close-button:visited, .link-with-icon:visited, .pa-card__name:visited, .pa-card__detail-link:visited, .tooltip__element:visited, .uservoice:visited, .hero__link:visited, .article__link:visited, .s-article a:visited {
-  color: #83af46;
-}
 .header-with-delimiter {
   margin-bottom: 0.625rem;
   font-family: 'MuseoSans';
@@ -302,6 +296,7 @@ html {
 .link-with-icon--bold {
   font-weight: 700;
 }
+
 @keyframes showNav {
   from {
     transform: translateY(-100%);
@@ -318,10 +313,10 @@ html {
     transform: translateY(0);
   }
 }
-.table, .s-article table {
+.table, .s-article {
   width: 100%;
 }
-.table__column, .s-article table tr:first-child td {
+.s-article table tr:first-child td {
   cursor: pointer;
   font-family: 'MuseoSlab';
   font-weight: 100;
@@ -330,32 +325,32 @@ html {
   text-align: right;
   padding-bottom: 0.5em;
 }
-.table__column:first-child, .s-article table tr:first-child td:first-child {
+.s-article table tr:first-child td:first-child {
   text-align: left;
 }
-.table__column--align-left, .s-article table tr:first-child td {
+.s-article table tr:first-child td {
   text-align: left;
 }
-.table__column.is-sorted-asc:after, .s-article table tr:first-child td.is-sorted-asc:after {
+.s-article table tr:first-child td.is-sorted-asc:after {
   color: #71a32b;
   content: "";
   font-family: 'FontAwesome';
   margin-left: 7px;
 }
-.table__column.is-sorted-desc:after, .s-article table tr:first-child td.is-sorted-desc:after {
+.s-article table tr:first-child td.is-sorted-desc:after {
   color: #71a32b;
   content: "";
   font-family: 'FontAwesome';
   margin-left: 7px;
 }
-.table__header, .s-article table tr:first-child {
+.s-article table tr:first-child {
   line-height: 2rem;
   border-bottom: solid 0.0625rem #bbbbbb;
 }
-.table__header th, .s-article table tr:first-child th {
+.s-article table tr:first-child th {
   padding-right: 0.625rem;
 }
-.table__row, .s-article table tr:not(:first-child) {
+.s-article table tr:not(:first-child) {
   font-family: 'MuseoSans';
   font-weight: 300;
   font-size: 1rem;
@@ -363,10 +358,6 @@ html {
   border-bottom: solid 0.0625rem #dfe0e1;
   margin-bottom: 0.625rem;
   padding: 0.3125rem 0;
-}
-.tooltip__trigger {
-  display: inline-block;
-  position: relative;
 }
 .uservoice {
   font-family: 'MuseoSans';
@@ -421,6 +412,9 @@ html {
   justify-content: space-between;
   padding: 0 1.25rem;
   margin-bottom: .666rem;
+}
+.hero__top--no-padding {
+  padding: 0;
 }
 .hero__title {
   font-family: 'MuseoSans';
@@ -614,13 +608,7 @@ html {
   line-height: 50px;
 }
 .side-bar {
-  position: fixed;
-  overflow: scroll;
-  height: 80%;
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 18.96686%;
+  width: 29%;
 }
 .side-bar:last-child {
   margin-right: 0;
@@ -1256,4 +1244,20 @@ sup {
 }
 .u-alt-font {
   font-family: 'MuseoSlab';
+}
+
+.gap-1 {
+  gap: calc(var(--spacing) * 1);
+}
+
+.sticky{
+  position: sticky;
+}
+
+.max-h-screen{
+  max-height: 100vh;
+}
+
+.margin-top-1{
+  margin-top: 1rem;
 }

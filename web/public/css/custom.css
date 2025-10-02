@@ -18,3 +18,11 @@
 .gdpr-checkbox label {
   display: inline !important;
 }
+
+/* Active navigation link styling - higher specificity to override main.css */
+.hero .link-with-icon.link-with-icon--active {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+

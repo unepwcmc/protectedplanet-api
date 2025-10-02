@@ -1,0 +1,13 @@
+<% if session[:error] %>
+  <section class="alert alert--flex margin-top-1" style="background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24;">
+    <span class="fa-stack alert__icon alert__icon--warning">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-exclamation-triangle alert__icon-inner alert__icon-inner--warning fa-stack-1x"></i>
+    </span>
+    <div>
+      <h4 class="alert__title" style="color: #721c24;">Error</h4>
+      <p class="alert__body"><%= session[:error] %></p>
+    </div>
+  </section>
+  <% session.delete(:error) %>
+<% end %>
