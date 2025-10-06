@@ -1,6 +1,6 @@
 <div class="container--profile container--push-bottom">
   <div class="breadcrumbs">
-    <a class="breadcrumbs__link" href="http://www.protectedplanet.net">Home</a>
+    <a class="breadcrumbs__link" href="https://www.protectedplanet.net">Home</a>
     >
     Protected Planet API
   </div>
@@ -15,29 +15,8 @@
     </div>
   </section>
 
-  <div class="alert alert--flex alert--push">
-    <span class="fa-stack alert__icon alert__icon--warning">
-      <i class="fa fa-circle fa-stack-2x"></i>
-      <i class="fa fa-info alert__icon-inner alert__icon-inner--warning fa-stack-1x"></i>
-    </span>
-    <div class="alert__body">
-      <h3 class="alert__title alert__title--warning">
-        Important Database Merger Announcement
-      </h3>
-      <p class="article__paragraph">
-        From 1st November 2025, the World Database on Protected Areas (WDPA) and World Database on Other Effective Area-Based Conservation Measures (WD-OECM) will be merged into one database. This is to streamline data management processes and simplify how external users access the two datasets, allowing them to identify all reported protected areas and OECMs using a single dataset. Users will be able to easily differentiate between PA and OECM data and filter based on types of sites relevant to their work.
-      </p>
-      
-      <p class="article__paragraph">
-        There are some important associated changes that will affect how data users interpret and analyse the data. We have also taken the opportunity to change some field names for clarity and to improve the data we provide by adding and removing some fields. All changes are outlined in this document: <a class="link-with-icon" href="http://wcmc.io/WDPA_changes_2025" target="_blank">http://wcmc.io/WDPA_changes_2025</a>
-      </p>
-      
-      <p class="article__paragraph">
-        To ensure a smooth transition, v3 of the API will not change and will therefore carry on displaying the old field names. A v4 of the API will be created to reflect the changes outlined above. v4 will be available from the 1st November 2025, while v3 will be taken down on 1st May 2026 to allow users time to switch to the new version.
-      </p>
-    </div>
-  </div>
-
+  <%= erb "shared/_v3_depreciated_announcement".to_sym %>
+  
   <% if settings.environment == :staging %>
     <%= erb "shared/_live_version_alert".to_sym %>
   <% end%>

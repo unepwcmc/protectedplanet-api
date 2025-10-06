@@ -1,0 +1,52 @@
+ 
+<div class="flex flex-row gap-1">
+  <%= erb "documentation/v4/_sidebar".to_sym %>
+
+  <div class="three-fourths article">
+    <h1 class="article__title">API Documentation</h1>
+    
+    <div class="alert alert--flex alert--push">
+      <span class="fa-stack alert__icon alert__icon--warning">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-star alert__icon-inner alert__icon-inner--warning fa-stack-1x"></i>
+      </span>
+      <div class="alert__body">
+        <h3 class="alert__title alert__title--warning">
+          Differences between API v3 and v4
+        </h3>
+        <p class="article__paragraph">
+          Discover all changes/new enhancements in API v4. 
+          <a class="link-with-icon" target="_blank" href="/documentation/whats_new_in_v4">View What's New in v4</a>.
+        </p>
+      </div>
+    </div>
+
+    <div class="alert alert--flex alert--push">
+      <span class="fa-stack alert__icon alert__icon--warning">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-warning alert__icon-inner alert__icon-inner--warning fa-stack-1x"></i>
+      </span>
+      <div class="alert__body">
+        <h3 class="alert__title alert__title--warning">
+          API v3 Deprecation Notice
+        </h3>
+        <p class="article__paragraph">
+          API v3 is now deprecated. For v3 documentation, please refer to 
+          <a class="link-with-icon" target="_blank" href="/documentation/v3">API v3 Documentation</a>.
+        </p>
+      </div>
+    </div>
+
+    <article class="s-article">
+      <%= markdown "documentation/v4/introduction".to_sym %>
+      <hr>
+      <%= erb "documentation/v4/_authentication".to_sym %>
+      <hr>
+      <%= markdown "documentation/v4/countries".to_sym %>
+      <hr>
+      <%= markdown "documentation/v4/protected_areas".to_sym %>
+      <hr>
+      <%= markdown "documentation/v4/protected_area_parcels".to_sym %>
+    </article>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<%
+  # Generate email recipients from secrets configuration
+  recipients = $secrets[:mailer][:notifications_recipients].join(',')
+  
+  # Email subject
+  subject = "Protected Planet API - Field Permissions Request"
+  
+  # Email body template
+  body = <<~EMAIL
+    Hello,
+
+    I am requesting access to additional API fields that are currently not visible in my responses.
+
+    Request Details:
+    - User Email: [YOUR_EMAIL_ADDRESS]
+    - API Token: [YOUR_API_TOKEN]
+    - Endpoint: [SPECIFIC_ENDPOINT_URL]
+    - Missing Fields: [LIST_OF_MISSING_FIELDS]
+
+    Sample Request:
+    [PASTE_YOUR_REQUEST_HERE]
+
+    Current Response Sample:
+    [PASTE_YOUR_CURRENT_RESPONSE_HERE]
+
+    Please review this request and update my permissions as appropriate.
+
+    Thank you,
+    [YOUR_NAME]
+  EMAIL
+  
+  # URL encode the parameters
+  require 'uri'
+  encoded_recipients = URI.encode_www_form_component(recipients)
+  encoded_subject = URI.encode_www_form_component(subject)
+  encoded_body = URI.encode_www_form_component(body)
+  
+  # Generate mailto link
+  mailto_link = "mailto:#{encoded_recipients}?subject=#{encoded_subject}&body=#{encoded_body}"
+%>
+
+<p class="article__paragraph">
+  <a href="<%= mailto_link %>" class="link-with-icon">
+    <i class="fa fa-envelope"></i> Send Field Permissions Request
+  </a>
+</p>

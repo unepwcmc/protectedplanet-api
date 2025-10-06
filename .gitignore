@@ -36,11 +36,11 @@ build/
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
 
-# Sinatra
-/web/public/protectedplanet-frontend
-
 # dotenv
 .env
 
 # Appsignal
 appsignal.log
+
+# ctags
+tags

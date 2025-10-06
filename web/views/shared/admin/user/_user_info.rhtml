@@ -1,0 +1,19 @@
+<aside class="row alert alert--flex">
+  <span class="fa-stack alert__icon alert__icon--info">
+    <i class="fa fa-circle fa-stack-2x"></i>
+    <i class="fa fa-info alert__icon-inner alert__icon-inner--info fa-stack-1x"></i>
+  </span>
+
+  <div>
+    <h4 class="alert__title alert__title--info"> Token: <%= api_user.token %> </h4>
+    <ul class="alert__body">
+      <li>Name: <%= api_user.full_name %></li>
+      <li>Email: <%= api_user.email %></li>
+      <li>Company: <%= api_user.company %></li>
+      <li>Type of User: <%= api_user.kind %></li>
+      <li>Has licence? <%= api_user.has_licence %></li>
+      <li>Licence Number: <%= api_user.licence_number || "N/A" %></li>
+      <li>Reason for using the api: <%= api_user.reason %></li>
+    </ul>
+  </div>
+</aside>

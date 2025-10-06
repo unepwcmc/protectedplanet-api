@@ -1,0 +1,42 @@
+<form method="POST" action="/admin/api_users/<%= api_user.id %>">
+  <%= Rack::Csrf.csrf_tag(env) %>
+
+  <div class="row">
+    <label class="u-alt-font">Active</label>
+    <input name="api_user[active]" type="checkbox" value="1" <%= api_user.active ? "checked" : nil %>>
+  </div>
+  <div class="row">
+    <label class="u-alt-font">Archived</label>
+    <input name="api_user[archived]" type="checkbox" value="1" <%= api_user.archived ? "checked" : nil %>>
+  </div>
+
+  <h4 class="article__title--paragraph">Permissions</h4>
+  <div class="u-flex">
+    <% $api_objects.each do |api_object| %>
+      <div class="row one-fourths">
+        <h4 class="article__title--subparagraph"><%= api_object.name %></h4>
+        <table class="table">
+          <% api_object.api_attributes.each do |attribute| %>
+            <tr>
+              <td><label class="u-alt-font"><%= attribute %> </label></td>
+              <td><input
+                  name="api_user[permissions][<%= api_object.name %>][<%= attribute %>]"
+                  type="checkbox"
+                  value="1"
+                  <%= api_user.access_to?(api_object, attribute) ? "checked" : nil %>
+              ></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% end %>
+  </div>
+
+  <button name="save" class="big-button" type="submit">
+    Save
+  </button>
+  <button onclick="return confirm('Are you sure?');" name="destroy" class="big-button--danger big-button" type="submit">
+    Delete user
+  </button>
+
+</form>

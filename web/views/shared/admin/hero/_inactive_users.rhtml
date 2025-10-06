@@ -1,0 +1,8 @@
+<% 
+  current_path = request.path_info
+  is_active = current_path == '/admin/inactive'
+  link_class = is_active ? "link-with-icon--active" : ""
+%>
+<a href="/admin/inactive" class="link-with-icon link-with-icon--bold <%= link_class %>">
+  <i class="link-with-icon__icon fa fa-ban"></i>Inactive users
+</a>

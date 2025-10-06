@@ -54,14 +54,14 @@ module GeometryConcern
       geojson = ActiveRecord::Base.connection.select_value(sql_query)
 
       if geojson.nil?
-        Appsignal.send_error(RuntimeError.new("GeoJSON is nil for SITE_ID: #{wdpa_id}"))
+        Appsignal.send_error(RuntimeError.new("GeoJSON is nil for SITE_ID: #{site_id}"))
         return nil 
       end
 
       geometry = JSON.parse(geojson)
       unless geometry.present?
         Appsignal.send_error(
-          RuntimeError.new("Parsed geometry is empty for SITE_ID: #{wdpa_id}")
+          RuntimeError.new("Parsed geometry is empty for SITE_ID: #{site_id}")
         )
         return nil
       end
@@ -72,7 +72,7 @@ module GeometryConcern
         "geometry" => geometry
       }
     rescue => e
-      context_message = "GeoJSON error for SITE_ID #{wdpa_id} (model: #{self.class.name}): #{e.message}"
+      context_message = "GeoJSON error for SITE_ID #{site_id} (model: #{self.class.name}): #{e.message}"
       Appsignal.send_error(RuntimeError.new(context_message))
       nil
     end
