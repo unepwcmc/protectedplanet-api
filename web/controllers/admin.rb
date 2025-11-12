@@ -11,6 +11,11 @@ class Web::AdminController < Sinatra::Base
     erb :admin, layout: :layout
   end
 
+  get("/admin/inactive") do
+    protected!
+    erb :inactive, layout: :layout
+  end
+
   get("/admin/archived") do
     protected!
     erb :archived, layout: :layout
@@ -30,8 +35,14 @@ class Web::AdminController < Sinatra::Base
     if params.has_key?("destroy")
       user.destroy
     elsif params.has_key?("save")
-      update_user(user, params["api_user"])
-      user.save
+      result = update_user(user, params["api_user"])
+      
+      if result.is_a?(Hash) && result[:error]
+        session[:error] = result[:error]
+        redirect back
+      else
+        user.save
+      end
     end
 
     Appsignal.set_gauge("user_count",        ApiUser.count)
@@ -50,12 +61,23 @@ class Web::AdminController < Sinatra::Base
   private
 
   def update_user user, params
+    # Validate that user cannot be both active and archived
+    if params["active"].present? && params["archived"].present?
+      return { error: "Cannot update #{user.email}: A user cannot be both active and archived simultaneously. Please choose either 'Active' or 'Archived', not both." }
+    end
+    
     if params["active"].present?
       unless user.active
         user.activate!
 
-        documentation_url = url("/documentation")
-        Mailer.send_new_activation_notification(user, documentation_url)
+        # Try to send activation email, but don't fail the whole operation if it fails
+        begin
+          documentation_url = url("/documentation")
+          Mailer.send_new_activation_notification(user, documentation_url)
+        rescue => e
+          # Log the error but continue with the user activation
+          puts "Failed to send activation email to #{user.email}: #{e.message}"
+        end
       end
     else
       user.deactivate!

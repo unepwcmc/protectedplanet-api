@@ -7,6 +7,7 @@ require 'grape_logging'
 
 module API; end
 module API::V3; end
+module API::V4; end
 
 Dir["#{File.dirname(__FILE__)}/**/*.rb"].each {|f| require f}
 
@@ -60,6 +61,20 @@ module API
 
       resources :countries do
         mount API::V3::Countries
+      end
+    end
+
+    version "v4" do
+      resources :protected_areas do
+        mount API::V4::ProtectedAreas
+      end
+
+      resources :protected_area_parcels do
+        mount API::V4::ProtectedAreaParcels
+      end
+
+      resources :countries do
+        mount API::V4::Countries
       end
     end
   end

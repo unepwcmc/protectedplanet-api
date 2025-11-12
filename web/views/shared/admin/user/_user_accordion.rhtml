@@ -1,0 +1,17 @@
+<div class="row accordion js-accordion">
+  <h3 class="js-trigger accordion__header">
+    <% if api_user.active %>
+      <i class="fa fa-check u-link-color" title="Active user"></i>
+    <% else %>
+      <i class="fa fa-close" title="User disabled"></i>
+    <% end %>
+
+    <%= api_user.email %>
+    <i class="accordion__switch js-switch accordion__switch is-closed"></i>
+  </h3>
+
+  <div class="js-target accordion__body u-hide">
+    <%= erb :'shared/admin/user/_user_info', locals: { api_user: api_user } %>
+    <%= erb :'shared/admin/user/_user_form', locals: { api_user: api_user } %>
+  </div>
+</div>

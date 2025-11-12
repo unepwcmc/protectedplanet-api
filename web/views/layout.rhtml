@@ -2,30 +2,22 @@
 <html>
 <head>
   <title>ProtectedPlanet API</title>
-
-  <!-- IE stuff -->
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <!--[if lt IE 9]>
-    <![endif]-->
-  <!-- IE stuff -->
-
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="/protectedplanet-frontend/dist/style/main.css" rel="stylesheet">
-  <link href="/custom.css" rel="stylesheet">
+  <link href="/css/main.css" rel="stylesheet">
+  <link href="/css/custom.css" rel="stylesheet">
 </head>
 
 <body>
   <main class="body-container">
   <header>
     <nav class="navbar">
-      
       <div class="navbar__element--bigger">
-        <a class="protectedplanet-logo" href="http://www.protectedplanet.net">
+        <a class="protectedplanet-logo" href="https://www.protectedplanet.net">
           protected planet<sup class="protectedplanet-logo__registered">®</sup>
         </a>
       </div>
     </nav>
-
   </header>
 
   <%= yield %>
@@ -37,8 +29,8 @@
     </p>
 
     <div class="footer__element footer__element--logos flex-row align-items-center">
-      <a class="unepwcmc-logo" href="http://www.unep-wcmc.org"></a>
-      <a class="iucn-logo" href="http://www.iucn.org"></a>
+      <a class="unepwcmc-logo" href="https://www.unep-wcmc.org"></a>
+      <a class="iucn-logo" href="https://www.iucn.org"></a>
     
       <div class="u-only-desktop footer__element footer__element--with-separator">
         <a class="uservoice uservoice--no-color uservoice--bold" href="mailto:protectedareas@unep-wcmc.org" data-uv-trigger>
@@ -48,9 +40,9 @@
     </div>
   </footer>
 
-  <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  <script src="/custom.js"></script>
+  <script src="/js/jquery-1.12.0.min.js"></script>
+  <link href="/css/font-awesome.min.css" rel="stylesheet">
+  <script src="/js/custom.js"></script>
 
   <% if settings.environment == :production %>
     <script>

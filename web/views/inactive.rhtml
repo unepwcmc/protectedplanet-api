@@ -1,0 +1,16 @@
+<div class="container--profile container--push-bottom">
+  <%= erb :'shared/admin/_error_banner' %>
+
+  <%= erb :'shared/admin/hero/_index', locals: { title: 'Inactive Users' } %>
+
+  <section class="list">
+    <% ApiUser.order(created_at: :desc).where(archived: false, active: false).each do |api_user| %>
+      <%= erb :'shared/admin/user/_user_accordion', locals: { api_user: api_user } %>
+    <% end%>
+  </section>
+
+  <p class="u-full-width u-center article__paragraph--bigger">
+    <%= ApiUser.count %> API users, <%= ApiUser.where(archived: false, active: false).count %> of which inactive
+  </p>
+</div>
+

@@ -16,8 +16,6 @@ class Country < ActiveRecord::Base
   belongs_to :region
   has_one :country_statistic
   has_one :pame_statistic
-
-  has_many :sub_locations
   has_and_belongs_to_many :protected_areas
   has_many :designations, -> { uniq }, through: :protected_areas
 
