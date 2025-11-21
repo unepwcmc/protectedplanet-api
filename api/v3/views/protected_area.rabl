@@ -6,8 +6,7 @@ object @protected_area
 attribute   :site_id => :id
 attribute   :site_id => :wdpa_id
 attribute   :site_id => :wdpa_pid
-attributes  :site_id, :site_pid,
-            :name, :original_name,
+attributes  :name, :original_name,
             :international_criteria,
             :verif, :parent_iso3, :marine_type,
             :gis_marine_area, :gis_area
