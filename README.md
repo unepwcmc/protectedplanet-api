@@ -39,7 +39,7 @@ The API includes several rake tasks for maintenance and development:
 
 #### Reset API User Permissions
 ```bash
-bundle exec rake api_users:reset_permissions
+RAILS_ENV=production bundle exec rake api_users:reset_permissions
 ```
 - **Purpose:** Reset permissions for all API users
 - **When to use:** After adding new fields to `api_attributes` arrays
