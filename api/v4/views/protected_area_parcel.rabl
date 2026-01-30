@@ -77,6 +77,14 @@ if @current_user.access_to?(ProtectedAreaParcel, :oecm_assessment)
   attribute :oecm_assessment
 end
 
+# PAME evaluations for this parcel only (protected_area shows all from PA + parcels).
+# If the user has access to the protected area, then they will also have access to the PAME evaluations for this parcel.
+if @current_user.access_to?(ProtectedArea, :pame_evaluations)
+  child :pame_evaluations, object_root: false do
+    extends "v4/views/pame_evaluation"
+  end
+end
+
 # Relations
 if @current_user.access_to?(ProtectedAreaParcel, :countries)
   child :countries, object_root: false do

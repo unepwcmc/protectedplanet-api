@@ -123,13 +123,12 @@ if @current_user.access_to?(ProtectedArea, :owner_type)
 end
 
 if @current_user.access_to?(ProtectedArea, :pame_evaluations)
-  child :pame_evaluations do
-    attributes :id, :metadata_id,
-      :url, :year,
-      :methodology
-    child :pame_source => :source do
-      attributes :data_title, :resp_party,
-      :year, :language
+  # Return PAMEs from the PA and all its parcels (same as v4); works for show and list.
+  node :pame_evaluations do |pa|
+    pa = pa || @protected_area
+    next [] unless pa
+    pa.all_pame_evaluations_from_current_pa_and_parcels.map do |evaluation|
+      partial("v3/views/pame_evaluation", object: evaluation)
     end
   end
 end
