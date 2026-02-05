@@ -1,31 +1,25 @@
-FROM ubuntu:18.04
+FROM ruby:2.3.6
 
-RUN apt-get update && apt-get install -y \
+# Buster is EOL, so point APT to Debian archive mirrors before updating
+RUN printf 'deb http://archive.debian.org/debian buster main\n\
+deb http://archive.debian.org/debian buster-updates main\n\
+deb http://archive.debian.org/debian-security buster/updates main\n' > /etc/apt/sources.list \
+    && printf 'Acquire::Check-Valid-Until \"0\";\nAcquire::Retries \"3\";\nAPT::Get::AllowUnauthenticated \"true\";\n' > /etc/apt/apt.conf.d/99no-check-valid \
+    && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Check-Valid-Until=false update
+RUN apt-get install -y --allow-unauthenticated \
   autoconf \
   bison \
   build-essential \
   curl \
   git \
   libreadline-dev \
-  libssl1.0-dev \
+  libssl-dev \
   libpq-dev \
   nodejs \
   zlib1g-dev
 
-ENV RBENV_ROOT /usr/local/src/rbenv
-
-ENV PATH ${RBENV_ROOT}/bin:${RBENV_ROOT}/shims:$PATH
-
-RUN git clone https://github.com/rbenv/rbenv.git ${RBENV_ROOT} \
-  && git clone https://github.com/rbenv/ruby-build.git \
-    ${RBENV_ROOT}/plugins/ruby-build \
-  && ${RBENV_ROOT}/plugins/ruby-build/install.sh \
-  && echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh
-RUN rbenv install 2.3.0 \
-    && rbenv global 2.3.0
-
 # install npm
-RUN apt-get install -y --force-yes -qq npm
+RUN apt-get install -y --allow-unauthenticated -qq npm
 RUN mkdir /ProtectedPlanetApi
 WORKDIR /ProtectedPlanetApi
 ADD Gemfile /ProtectedPlanetApi/Gemfile
