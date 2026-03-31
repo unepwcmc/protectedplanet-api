@@ -25,7 +25,7 @@ class API::V3::Countries < Grape::API
     @with_geometry = params[:with_geometry]
     @iucn_category_long_names = params[:iucn_category_long_names]
     @group_governances = params[:group_governances]
-    @countries = paginate(collection)
+    @countries = paginate_collection(collection)
   end
 
   # == annotations

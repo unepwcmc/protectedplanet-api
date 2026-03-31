@@ -2,6 +2,7 @@ $LOAD_PATH.unshift("#{File.dirname(__FILE__)}")
 
 require 'yaml'
 require 'erb'
+require 'logger'
 require 'active_record'
 require 'config/environment'
 require 'rake/testtask'

@@ -23,7 +23,7 @@ class API::V4::ProtectedAreas < Grape::API
     collection = collection.without_geometry unless params[:with_geometry]
 
     @with_geometry   = params[:with_geometry]
-    @protected_areas = paginate(collection)
+    @protected_areas = paginate_collection(collection)
   end
 
   # == annotations
@@ -48,7 +48,7 @@ class API::V4::ProtectedAreas < Grape::API
     collection = ProtectedArea.search(declared(params, include_missing: false))
 
     @with_geometry   = params[:with_geometry]
-    @protected_areas = paginate(collection)
+    @protected_areas = paginate_collection(collection)
   end
 
   # == annotations

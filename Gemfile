@@ -1,11 +1,12 @@
 source "https://rubygems.org"
 
 # Frameworks
-gem "grape", "~> 0.17.0"
-gem "grape-rabl", "~> 0.4.1"
-gem "grape-kaminari", "~> 0.1.8"
+gem "grape", "~> 1.7.1"
+gem "grape-rabl", "~> 0.5.0"
+gem "grape-kaminari", "~> 0.4.5"
+gem "kaminari", "~> 1.2"
 gem "grape_logging", '~> 1.3.0'
-gem "sinatra", "~> 1.4.6"
+gem "sinatra", "~> 2.2.4"
 gem "kramdown", "~> 2.4"
 
 # Security
@@ -21,21 +22,21 @@ gem 'bcrypt_pbkdf' # Might be needed for capistrano
 
 # Database
 gem "pg", "~> 0.18.4"
-gem "activerecord", "~> 4.2.11"
-gem "activerecord-postgis-adapter", "~> 3.1.3"
+gem "activerecord", "~> 6.0.6.1"
+gem "activerecord-postgis-adapter", "~> 6.0.3"
 
 # Notifications
 gem "pony", "~> 1.11"
 gem "slack-notifier", "~> 2.4"
-gem "exception_notification", "~> 4.1.4"
+gem "exception_notification", "~> 4.4"
 
 # Analytics
 gem "appsignal", "~> 1.1.0.beta.5"
 
 # Support
 gem "rake", "~> 10.5.0"
-gem "activesupport", "~> 4.2.11"
-gem "json", "~> 1.8.6"
+gem "activesupport", "~> 6.0.6.1"
+gem "json", "~> 2.6.3"
 
 # gem 'puma', '5.6.6' - https://github.com/unepwcmc/protectedplanet-api/pull/58
 
@@ -43,7 +44,7 @@ gem "json", "~> 1.8.6"
 group :test, :development do
   gem "minitest"
   gem "minitest-around", "~> 0.3.2"
-  gem "database_cleaner", "~> 1.5.1"
+  gem "database_cleaner-active_record"
   gem "factory_bot"
   gem "rack-test", "~> 0.6.3"
 end

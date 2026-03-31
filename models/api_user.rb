@@ -41,7 +41,8 @@ class ApiUser < ActiveRecord::Base
     self.permissions ||= {}
 
     $api_objects.each do |api_object|
-      self.permissions[api_object] = api_object.api_attributes
+      object_name = api_object.is_a?(Class) ? api_object.name : api_object.to_s
+      self.permissions[object_name] ||= api_object.api_attributes
     end
   end
 

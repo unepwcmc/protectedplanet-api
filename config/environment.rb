@@ -3,6 +3,7 @@ $environment = (ENV["API_ENV"] || ENV["RACK_ENV"] || ENV["RAILS_ENV"] || "develo
 require 'dotenv'
 Dotenv.load
 
+require 'logger'
 require 'bigdecimal'
 
 # Ruby 2.7 removes `BigDecimal.new`, but ActiveSupport 4.2 still calls it.
@@ -22,6 +23,8 @@ require 'sinatra'
 # Grape
 require 'grape'
 require 'action_view'
+require 'kaminari'
+require 'kaminari/activerecord'
 require 'grape-rabl'
 require 'grape-kaminari'
 

@@ -18,13 +18,18 @@ module API
 
     helpers API::Helpers
 
-    unless $environment == "test"
+    log_output = if $environment == "test"
+      STDOUT
+    else
       log_file = File.open("log/#{$environment}.log", "a")
       log_file.sync = true
+      GrapeLogging::MultiIO.new(STDOUT, log_file)
+    end
 
-      logger = Logger.new(GrapeLogging::MultiIO.new(STDOUT, log_file))
-      logger.formatter = GrapeLogging::Formatters::Default.new
+    logger = Logger.new(log_output)
+    logger.formatter = GrapeLogging::Formatters::Default.new
 
+    unless $environment == "test"
       use GrapeLogging::Middleware::RequestLogger, {logger: logger}
       use ExceptionNotification::Rack, slack: {
         webhook_url: ENV["SLACK_WEBHOOK_URL"],
