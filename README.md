@@ -194,6 +194,9 @@ end
   - Modifying existing field permissions  
   - Database migrations that add API-exposed columns
 
+## Run Tests
+```bundle exec rake test```
+
 ## 🐛 Troubleshooting
 
 ### PostgreSQL Installation Issues
