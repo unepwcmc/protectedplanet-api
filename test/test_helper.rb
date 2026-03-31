@@ -3,7 +3,7 @@ TEST_API_TOKEN = "123890123890"
 
 require "minitest/autorun"
 require "rack/test"
-require "factory_girl"
+require "factory_bot"
 require "database_cleaner"
 require "config/environment"
 
@@ -11,7 +11,7 @@ DatabaseCleaner.clean_with :truncation
 DatabaseCleaner.strategy = :transaction
 
 class Minitest::Test
-  include FactoryGirl::Syntax::Methods
+  include FactoryBot::Syntax::Methods
 
   def setup
     DatabaseCleaner.start
@@ -37,4 +37,4 @@ class TestClass
   end
 end
 
-FactoryGirl.find_definitions
+FactoryBot.find_definitions

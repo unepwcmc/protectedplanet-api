@@ -88,8 +88,8 @@ GEM
     exception_notification (4.1.4)
       actionmailer (~> 4.0)
       activesupport (~> 4.0)
-    factory_girl (4.5.0)
-      activesupport (>= 3.0.0)
+    factory_bot (5.2.0)
+      activesupport (>= 4.2.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     grape (0.17.0)
@@ -211,7 +211,7 @@ DEPENDENCIES
   dotenv (~> 2.1.0)
   ed25519
   exception_notification (~> 4.1.4)
-  factory_girl (~> 4.0)
+  factory_bot
   grape (~> 0.17.0)
   grape-kaminari (~> 0.1.8)
   grape-rabl (~> 0.4.1)

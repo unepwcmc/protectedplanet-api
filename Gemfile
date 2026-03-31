@@ -13,8 +13,9 @@ gem "rack_csrf", "~> 2.5.0"
 gem "rack-cors", :require => "rack/cors"
 gem "dotenv", "~> 2.1.0"
 
-gem 'ed25519'
-gem 'bcrypt_pbkdf'
+
+gem 'ed25519' # Might be needed for capistrano
+gem 'bcrypt_pbkdf' # Might be needed for capistrano
 
 # Database
 gem "pg", "~> 0.18.4"
@@ -41,7 +42,7 @@ group :test, :development do
   gem "minitest"
   gem "minitest-around", "~> 0.3.2"
   gem "database_cleaner", "~> 1.5.1"
-  gem "factory_girl", "~> 4.0"
+  gem "factory_bot"
   gem "rack-test", "~> 0.6.3"
 end
 
