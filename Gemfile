@@ -21,9 +21,9 @@ gem 'bcrypt_pbkdf' # Might be needed for capistrano
 
 
 # Database
-gem "pg", "~> 0.18.4"
-gem "activerecord", "~> 6.0.6.1"
-gem "activerecord-postgis-adapter", "~> 6.0.3"
+gem "pg", "~> 1.5"
+gem "activerecord", "~> 6.1.7.10"
+gem "activerecord-postgis-adapter", "~> 7.0.1"
 
 # Notifications
 gem "pony", "~> 1.11"
@@ -35,7 +35,7 @@ gem "appsignal", "~> 1.1.0.beta.5"
 
 # Support
 gem "rake", "~> 10.5.0"
-gem "activesupport", "~> 6.0.6.1"
+gem "activesupport", "~> 6.1.7.10"
 gem "json", "~> 2.6.3"
 
 # gem 'puma', '5.6.6' - https://github.com/unepwcmc/protectedplanet-api/pull/58
