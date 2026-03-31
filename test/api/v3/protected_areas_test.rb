@@ -22,6 +22,15 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
     assert_equal 3, @json_response["protected_areas"].size
   end
 
+  def test_get_protected_areas_sets_deprecation_headers
+    create(:protected_area)
+    get_with_rabl "/v3/protected_areas"
+
+    assert last_response.ok?
+    assert_equal "true", last_response.headers["deprecated"]
+    assert_match(/API v3 is deprecated/, last_response.headers["description"])
+  end
+
   def test_get_protected_areas_with_geometry_true_returns_all_protected_areas_with_geojson
     3.times { create(:protected_area, the_geom: "POINT(-122 47)") }
     get_with_rabl "/v3/protected_areas", {with_geometry: true}
@@ -94,8 +103,9 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
   end
 
   def test_get_protected_areas_search_with_is_green_list_returns_green_listed_pas
-    create(:protected_area, name: "Darjeeling", is_green_list: true)
-    create(:protected_area, name: "Not Marine", is_green_list: false)
+    green_list_status = GreenListStatus.create!
+    create(:protected_area, name: "Darjeeling", green_list_status: green_list_status)
+    create(:protected_area, name: "Not Marine", green_list_status_id: nil)
 
     get_with_rabl "/v3/protected_areas/search", {is_green_list: true}
 
@@ -105,8 +115,9 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
   end
 
   def test_get_protected_areas_with_is_green_list_unset_returns_all_pas
-    create(:protected_area, name: "Darjeeling", is_green_list: true)
-    create(:protected_area, name: "Not Marine", is_green_list: false)
+    green_list_status = GreenListStatus.create!
+    create(:protected_area, name: "Darjeeling", green_list_status: green_list_status)
+    create(:protected_area, name: "Not Marine", green_list_status_id: nil)
 
     get_with_rabl "/v3/protected_areas"
 
