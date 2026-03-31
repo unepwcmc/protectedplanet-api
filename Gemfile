@@ -6,26 +6,27 @@ gem "grape-rabl", "~> 0.4.1"
 gem "grape-kaminari", "~> 0.1.8"
 gem "grape_logging", '~> 1.3.0'
 gem "sinatra", "~> 1.4.6"
-gem "kramdown", "~> 1.9.0"
+gem "kramdown", "~> 2.4"
 
 # Security
 gem "rack_csrf", "~> 2.5.0"
 gem "rack-cors", :require => "rack/cors"
-gem "dotenv", "~> 2.1.0"
+gem "dotenv", "~> 2.8"
 
 
 gem 'ed25519' # Might be needed for capistrano
 gem 'bcrypt_pbkdf' # Might be needed for capistrano
 
+
+
 # Database
 gem "pg", "~> 0.18.4"
-gem "activerecord", "~> 4.2.5"
-gem "active_record_migrations", "~> 4.2.5.1.1", require: false
+gem "activerecord", "~> 4.2.11"
 gem "activerecord-postgis-adapter", "~> 3.1.3"
 
 # Notifications
 gem "pony", "~> 1.11"
-gem "slack-notifier", "~> 1.5.1"
+gem "slack-notifier", "~> 2.4"
 gem "exception_notification", "~> 4.1.4"
 
 # Analytics
@@ -33,7 +34,8 @@ gem "appsignal", "~> 1.1.0.beta.5"
 
 # Support
 gem "rake", "~> 10.5.0"
-gem "activesupport", "~> 4.2.5"
+gem "activesupport", "~> 4.2.11"
+gem "json", "~> 1.8.6"
 
 # gem 'puma', '5.6.6' - https://github.com/unepwcmc/protectedplanet-api/pull/58
 
@@ -54,5 +56,5 @@ group :development do
   gem 'capistrano-maintenance', '~> 1.0', require: false
   gem 'capistrano-passenger', '~> 0.2.1', require: false
   # gem 'capistrano3-puma', '~> 5.2', require: false - https://github.com/unepwcmc/protectedplanet-api/pull/58
-  gem 'byebug', '~> 3.1.2'
+  gem 'byebug', '~> 11.1.3'
 end

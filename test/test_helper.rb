@@ -7,6 +7,8 @@ require "factory_bot"
 require "database_cleaner"
 require "config/environment"
 
+MiniTest = Minitest unless defined?(MiniTest)
+
 DatabaseCleaner.clean_with :truncation
 DatabaseCleaner.strategy = :transaction
 

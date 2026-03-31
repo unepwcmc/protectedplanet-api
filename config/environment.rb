@@ -3,6 +3,17 @@ $environment = (ENV["API_ENV"] || ENV["RACK_ENV"] || ENV["RAILS_ENV"] || "develo
 require 'dotenv'
 Dotenv.load
 
+require 'bigdecimal'
+
+# Ruby 2.7 removes `BigDecimal.new`, but ActiveSupport 4.2 still calls it.
+unless BigDecimal.respond_to?(:new)
+  class << BigDecimal
+    def new(*args)
+      BigDecimal(*args)
+    end
+  end
+end
+
 # Sinatra
 require 'rack/csrf'
 require 'rack/cors'
