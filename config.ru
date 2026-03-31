@@ -1,5 +1,8 @@
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}")
 
+require "appsignal"
+Appsignal.load(:grape) unless ENV["RACK_ENV"] == "test"
+
 require 'config/environment'
 
 require 'api/root'
@@ -17,5 +20,8 @@ use Rack::Cors do
     resource '*', headers: :any, methods: [:get, :post, :options]
   end
 end
+
+use Appsignal::Rack::EventMiddleware unless ENV["RACK_ENV"] == "test"
+Appsignal.start unless ENV["RACK_ENV"] == "test"
 
 run Rack::Cascade.new [Web::Root, API::Root]

@@ -1,4 +1,3 @@
-require 'appsignal/integrations/grape'
 require 'slack-notifier'
 require 'exception_notification'
 require 'api/helpers'
@@ -13,7 +12,7 @@ Dir["#{File.dirname(__FILE__)}/**/*.rb"].each {|f| require f}
 
 module API
   class Root < Grape::API
-    use Appsignal::Grape::Middleware
+    insert_before Grape::Middleware::Error, Appsignal::Rack::GrapeMiddleware unless $environment == "test"
     use Middlewares::StatsCollector
 
     helpers API::Helpers

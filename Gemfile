@@ -5,7 +5,7 @@ gem "grape", "~> 1.7.1"
 gem "grape-rabl", "~> 0.5.0"
 gem "grape-kaminari", "~> 0.4.5"
 gem "kaminari", "~> 1.2"
-gem "grape_logging", '~> 1.3.0'
+gem "grape_logging", '~> 1.8.4'
 gem "sinatra", "~> 2.2.4"
 gem "kramdown", "~> 2.4"
 
@@ -31,7 +31,7 @@ gem "slack-notifier", "~> 2.4"
 gem "exception_notification", "~> 4.4"
 
 # Analytics
-gem "appsignal", "~> 1.1.0.beta.5"
+gem "appsignal", "~> 3.13.1"
 
 # Support
 gem "rake", "~> 10.5.0"
@@ -46,7 +46,7 @@ group :test, :development do
   gem "minitest-around", "~> 0.3.2"
   gem "database_cleaner-active_record"
   gem "factory_bot"
-  gem "rack-test", "~> 0.6.3"
+  gem "rack-test", "~> 2.1"
 end
 
 # Deploy
