@@ -1,14 +1,15 @@
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}")
 
-require "appsignal"
-Appsignal.load(:grape) unless ENV["RACK_ENV"] == "test"
-
 require 'config/environment'
+
+require 'appsignal'
+require 'config/appsignal'
+Appsignal.load(:grape) unless APP_ENV == 'test'
 
 require 'api/root'
 require 'web/root'
 
-use Rack::Session::Cookie, secret: ENV["RACK_SESSION_SECRET"]
+use Rack::Session::Cookie, secret: ENV['RACK_SESSION_SECRET']
 use Rack::Csrf, :raise => true
 use Rack::Config do |env|
   env['api.tilt.root'] = "#{File.dirname(__FILE__)}/api"
@@ -21,7 +22,7 @@ use Rack::Cors do
   end
 end
 
-use Appsignal::Rack::EventMiddleware unless ENV["RACK_ENV"] == "test"
-Appsignal.start unless ENV["RACK_ENV"] == "test"
+use Appsignal::Rack::EventMiddleware unless APP_ENV == 'test'
+Appsignal.start unless APP_ENV == 'test'
 
 run Rack::Cascade.new [Web::Root, API::Root]

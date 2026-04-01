@@ -1,61 +1,46 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
+
+gem 'dotenv', '~> 2.8'
 
 # Frameworks
-gem "grape", "~> 1.7.1"
-gem "grape-rabl", "~> 0.5.0"
-gem "grape-kaminari", "~> 0.4.5"
-gem "kaminari", "~> 1.2"
-gem "grape_logging", '~> 1.8.4'
-gem "sinatra", "~> 2.2.4"
-gem "kramdown", "~> 2.4"
+gem 'grape', '~> 1.8'
+gem 'grape-kaminari', '~> 0.4.5'
+gem 'grape-rabl', '~> 0.5.0'
+gem 'grape_logging', '~> 1.8.4'
+gem 'kaminari', '~> 1.2'
+gem 'sinatra', '~> 3.2'
+gem 'kramdown', '~> 2.4'
 
 # Security
-gem "rack_csrf", "~> 2.5.0"
-gem "rack-cors", :require => "rack/cors"
-gem "dotenv", "~> 2.8"
-
-
-gem 'ed25519' # Might be needed for capistrano
-gem 'bcrypt_pbkdf' # Might be needed for capistrano
-
+gem 'rack-cors', :require => 'rack/cors'
+gem 'rack_csrf', '~> 2.5.0'
 
 
 # Database
-gem "pg", "~> 1.5"
-gem "activerecord", "~> 6.1.7.10"
-gem "activerecord-postgis-adapter", "~> 7.0.1"
+gem 'pg', '~> 1.5'
+gem 'activerecord', '~> 7.0.10'
+gem 'activerecord-postgis-adapter', '~> 8.0.3'
 
 # Notifications
-gem "pony", "~> 1.11"
-gem "slack-notifier", "~> 2.4"
-gem "exception_notification", "~> 4.4"
+gem 'pony', '~> 1.13'
+gem 'slack-notifier', '~> 2.4'
+gem 'exception_notification', '~> 4.4'
 
 # Analytics
-gem "appsignal", "~> 3.13.1"
+gem 'appsignal', '~> 4.8'
 
 # Support
-gem "rake", "~> 10.5.0"
-gem "activesupport", "~> 6.1.7.10"
-gem "json", "~> 2.6.3"
+gem 'rake', '~> 13.2'
+gem 'activesupport', '~> 7.0.10'
+gem 'webrick', '~> 1.9'
 
 # gem 'puma', '5.6.6' - https://github.com/unepwcmc/protectedplanet-api/pull/58
 
 # Testing
 group :test, :development do
-  gem "minitest"
-  gem "minitest-around", "~> 0.3.2"
-  gem "database_cleaner-active_record"
-  gem "factory_bot"
-  gem "rack-test", "~> 2.1"
-end
-
-# Deploy
-group :development do
-  gem 'capistrano', '~> 3.16.0', require: false
-  gem 'capistrano-bundler', '~> 2.0.1', require: false
-  gem 'capistrano-rvm',   '~> 0.1.2', require: false
-  gem 'capistrano-maintenance', '~> 1.0', require: false
-  gem 'capistrano-passenger', '~> 0.2.1', require: false
-  # gem 'capistrano3-puma', '~> 5.2', require: false - https://github.com/unepwcmc/protectedplanet-api/pull/58
   gem 'byebug', '~> 11.1.3'
+  gem 'database_cleaner-active_record', '~> 2.2'
+  gem 'factory_bot', '~> 6.4'
+  gem 'minitest', '~> 5.27'
+  gem 'rack-test', '~> 2.1'
 end

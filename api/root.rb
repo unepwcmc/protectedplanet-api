@@ -12,23 +12,24 @@ Dir["#{File.dirname(__FILE__)}/**/*.rb"].each {|f| require f}
 
 module API
   class Root < Grape::API
-    insert_before Grape::Middleware::Error, Appsignal::Rack::GrapeMiddleware unless $environment == "test"
+    insert_before Grape::Middleware::Error, Appsignal::Rack::GrapeMiddleware unless APP_ENV == "test"
     use Middlewares::StatsCollector
 
     helpers API::Helpers
 
-    log_output = if $environment == "test"
-      STDOUT
-    else
-      log_file = File.open("log/#{$environment}.log", "a")
-      log_file.sync = true
-      GrapeLogging::MultiIO.new(STDOUT, log_file)
-    end
+    log_output =
+      if APP_ENV == "test"
+        STDOUT
+      else
+        log_file = File.open("log/#{APP_ENV}.log", "a")
+        log_file.sync = true
+        GrapeLogging::MultiIO.new(STDOUT, log_file)
+      end
 
     logger = Logger.new(log_output)
     logger.formatter = GrapeLogging::Formatters::Default.new
 
-    unless $environment == "test"
+    unless APP_ENV == "test"
       use GrapeLogging::Middleware::RequestLogger, {logger: logger}
       use ExceptionNotification::Rack, slack: {
         webhook_url: ENV["SLACK_WEBHOOK_URL"],

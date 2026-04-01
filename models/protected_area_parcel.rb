@@ -66,7 +66,7 @@ class ProtectedAreaParcel < ActiveRecord::Base
   end
 
   def link_to_pp
-    File.join($secrets[:host], self.site_id.to_s)
+    File.join(APP_SECRETS[:host], self.site_id.to_s)
   end
 
   def name_english

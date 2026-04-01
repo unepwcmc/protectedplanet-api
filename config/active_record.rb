@@ -15,9 +15,10 @@ end
 
 # Process ERB templates in database.yml
 database_config = ERB.new(File.read("config/database.yml")).result
-db_config = YAML.load(database_config)[$environment]
+database_settings = YAML.safe_load(database_config, aliases: true)
+db_config = database_settings.fetch(APP_ENV)
 
-ActiveRecord::Base.default_timezone = :utc
+ActiveRecord.default_timezone = :utc
 ActiveRecord::Base.establish_connection(db_config)
 
 use ActiveRecordConnectionManagement
