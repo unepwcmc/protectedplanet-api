@@ -2,6 +2,8 @@
 
 The official API for accessing global protected area data from the World Database on Protected Areas (WDPA).
 
+> **All protected planet projects in same place:** For Vscode users clone [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet) repo and use [protected-planet-family-apps.code-workspace](https://github.com/unepwcmc/ProtectedPlanet/blob/master/protected-planet-family-apps.code-workspace) to open all protected planet apps in the same workspace
+
 ## 🌍 For API Users
 
 If you want to **use** the API to access protected area data, visit our [API Documentation](https://api.protectedplanet.net/documentation) to get started.
@@ -191,6 +193,9 @@ end
   - Adding new fields to `api_attributes` arrays
   - Modifying existing field permissions  
   - Database migrations that add API-exposed columns
+
+## Run Tests
+```bundle exec rake test```
 
 ## 🐛 Troubleshooting
 
