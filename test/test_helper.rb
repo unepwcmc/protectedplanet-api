@@ -4,7 +4,7 @@ TEST_API_TOKEN = "123890123890"
 require "minitest/autorun"
 require "rack/test"
 require "factory_bot"
-require "config/environment"
+require_relative "../config/environment"
 require "database_cleaner/active_record"
 
 MiniTest = Minitest unless defined?(MiniTest)

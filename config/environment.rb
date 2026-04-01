@@ -2,6 +2,9 @@ APP_ENV = ENV.fetch("API_ENV", ENV.fetch("RACK_ENV", ENV.fetch("RAILS_ENV", "dev
 ENV["API_ENV"] = ENV["RACK_ENV"] = ENV["RAILS_ENV"] = APP_ENV unless defined?(APP_ENV_INITIALIZED)
 APP_ENV_INITIALIZED = true
 
+APP_ROOT = File.expand_path("..", __dir__) unless defined?(APP_ROOT)
+$LOAD_PATH.unshift(APP_ROOT) unless $LOAD_PATH.include?(APP_ROOT)
+
 require 'dotenv'
 Dotenv.load
 
@@ -19,7 +22,6 @@ require 'action_view'
 require 'kaminari'
 require 'kaminari/activerecord'
 require 'grape-rabl'
-require 'grape-kaminari'
 
 require 'appsignal'
 require 'active_support'
@@ -27,6 +29,18 @@ require 'active_support'
 # Markdown rendering
 require 'kramdown'
 Tilt.prefer Tilt::KramdownTemplate
+
+module Grape
+  module Rabl
+    class Formatter
+      private
+
+      def fallback_formatter
+        Grape::Formatter::Json
+      end
+    end
+  end
+end
 
 # Notifications
 require 'pony'

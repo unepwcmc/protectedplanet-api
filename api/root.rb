@@ -12,7 +12,10 @@ Dir["#{File.dirname(__FILE__)}/**/*.rb"].each {|f| require f}
 
 module API
   class Root < Grape::API
-    insert_before Grape::Middleware::Error, Appsignal::Rack::GrapeMiddleware unless APP_ENV == "test"
+    if APP_ENV != 'test' && defined?(Appsignal::Rack::GrapeMiddleware)
+      insert_before Grape::Middleware::Error, Appsignal::Rack::GrapeMiddleware
+    end
+
     use Middlewares::StatsCollector
 
     helpers API::Helpers

@@ -11,7 +11,7 @@ class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
   }
 
   def app
-    API::V4::ProtectedAreaParcels
+    API::Root
   end
 
   def test_get_protected_area_parcels_returns_all_protected_area_parcels_as_JSON

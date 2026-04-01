@@ -1,4 +1,4 @@
-FROM ruby:3.2.4
+FROM ruby:3.4.9
 
 RUN apt-get update && apt-get install -y \
   autoconf \
@@ -16,7 +16,7 @@ WORKDIR /app
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
 COPY config.ru /app/config.ru
-RUN gem install bundler -v 2.4.22 && bundle _2.4.22_ install
+RUN gem install bundler -v 2.6.9 && bundle _2.6.9_ install
 COPY . /app
 EXPOSE 9292
 CMD ["rackup"]

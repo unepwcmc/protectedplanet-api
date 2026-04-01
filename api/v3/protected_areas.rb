@@ -1,7 +1,7 @@
 require 'models/protected_area'
 
 class API::V3::ProtectedAreas < Grape::API
-  include Grape::Kaminari
+  helpers API::Helpers
 
   before do
     authenticate!
@@ -18,8 +18,11 @@ class API::V3::ProtectedAreas < Grape::API
   # == annotations
   ################
   desc "Get all protected areas, paginated."
-  paginate per_page: 25, max_per_page: 50
-  params { optional :with_geometry, default: false, type: Boolean }
+  params do
+    optional :page, type: Integer, default: 1
+    optional :per_page, type: Integer, default: 25, values: 1..50
+    optional :with_geometry, default: false, type: Boolean
+  end
   # == body
   #########
   get rabl: "v3/views/protected_areas" do
@@ -33,8 +36,9 @@ class API::V3::ProtectedAreas < Grape::API
   # == annotations
   ################
   desc "Search for a subset of protected areas."
-  paginate per_page: 25, max_per_page: 50
   params do
+    optional :page, type: Integer, default: 1
+    optional :per_page, type: Integer, default: 25, values: 1..50
     optional :country, type: String, regexp: /[a-zA-Z]{3}/
     optional :marine, type: Boolean
     optional :is_green_list, type: Boolean

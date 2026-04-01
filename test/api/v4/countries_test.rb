@@ -11,7 +11,7 @@ class API::V4::CountriesTest < MiniTest::Test
   }
 
   def app
-    API::V4::Countries
+    API::Root
   end
 
   def test_get_countries_returns_all_countries_as_JSON

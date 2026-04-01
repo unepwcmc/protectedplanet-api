@@ -1,7 +1,7 @@
 require 'models/protected_area_parcel'
 
 class API::V4::ProtectedAreaParcels < Grape::API
-  include Grape::Kaminari
+  helpers API::Helpers
 
   before do
     authenticate!
@@ -14,8 +14,11 @@ class API::V4::ProtectedAreaParcels < Grape::API
   # == annotations
   ################
   desc "Get all protected area parcels, paginated."
-  paginate per_page: 25, max_per_page: 50
-  params { optional :with_geometry, default: false, type: Boolean }
+  params do
+    optional :page, type: Integer, default: 1
+    optional :per_page, type: Integer, default: 25, values: 1..50
+    optional :with_geometry, default: false, type: Boolean
+  end
   # == body
   #########
   get rabl: "v4/views/protected_area_parcels" do
@@ -29,8 +32,9 @@ class API::V4::ProtectedAreaParcels < Grape::API
   # == annotations
   ################
   desc "Search for a subset of protected area parcels."
-  paginate per_page: 25, max_per_page: 50
   params do
+    optional :page, type: Integer, default: 1
+    optional :per_page, type: Integer, default: 25, values: 1..50
     optional :country, type: String, regexp: /[a-zA-Z]{3}/
     optional :marine, type: Boolean
     optional :designation, type: Integer

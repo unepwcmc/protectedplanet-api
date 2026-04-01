@@ -1,13 +1,11 @@
-$LOAD_PATH.unshift("#{File.dirname(__FILE__)}")
-
-require 'config/environment'
+require_relative 'config/environment'
 
 require 'appsignal'
-require 'config/appsignal'
+require_relative 'config/appsignal'
 Appsignal.load(:grape) unless APP_ENV == 'test'
 
-require 'api/root'
-require 'web/root'
+require_relative 'api/root'
+require_relative 'web/root'
 
 use Rack::Session::Cookie, secret: ENV['RACK_SESSION_SECRET']
 use Rack::Csrf, :raise => true

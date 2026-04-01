@@ -11,7 +11,7 @@ class API::V3::ProtectedAreasTest < MiniTest::Test
   }
 
   def app
-    API::V3::ProtectedAreas
+    API::Root
   end
 
   def test_get_protected_areas_returns_all_protected_areas_as_JSON

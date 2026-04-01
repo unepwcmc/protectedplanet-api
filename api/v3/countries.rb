@@ -1,7 +1,7 @@
 require 'models/country'
 
 class API::V3::Countries < Grape::API
-  include Grape::Kaminari
+  helpers API::Helpers
 
   after do
     set_v3_deprecation_headers
@@ -10,12 +10,13 @@ class API::V3::Countries < Grape::API
   # == annotations
   ################
   desc "Get all countries, paginated."
-  paginate per_page: 25, max_per_page: 50
-  params {
+  params do
+    optional :page, type: Integer, default: 1
+    optional :per_page, type: Integer, default: 25, values: 1..50
     optional :with_geometry, default: false, type: Boolean
     optional :iucn_category_long_names, default: false, type: Boolean
     optional :group_governances, default: false, type: Boolean
-  }
+  end
   # == body
   #########
   get rabl: "v3/views/countries" do
