@@ -25,12 +25,15 @@ class API::V3::ProtectedAreas < Grape::API
   end
   # == body
   #########
-  get rabl: "v3/views/protected_areas" do
+  get do
     collection = ProtectedArea
     collection = collection.without_geometry unless params[:with_geometry]
 
-    @with_geometry   = params[:with_geometry]
-    @protected_areas = paginate_collection(collection)
+    API::Serializers::V3::ProtectedAreaSerializer.collection(
+      paginate_collection(collection),
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 
   # == annotations
@@ -52,11 +55,14 @@ class API::V3::ProtectedAreas < Grape::API
   end
   # == body
   #########
-  get :search, rabl: "v3/views/protected_areas" do
+  get :search do
     collection = ProtectedArea.search(declared(params, include_missing: false))
 
-    @with_geometry   = params[:with_geometry]
-    @protected_areas = paginate_collection(collection)
+    API::Serializers::V3::ProtectedAreaSerializer.collection(
+      paginate_collection(collection),
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 
   # == annotations
@@ -65,12 +71,15 @@ class API::V3::ProtectedAreas < Grape::API
   params { optional :with_geometry, default: false, type: Boolean }
   # == body
   #########
-  get :biopama, rabl: "v3/views/protected_areas" do
+  get :biopama do
     collection = ProtectedArea.biopama.with_pame_evaluations
     collection = collection.without_geometry unless params[:with_geometry]
 
-    @with_geometry   = params[:with_geometry]
-    @protected_areas = collection
+    API::Serializers::V3::ProtectedAreaSerializer.collection(
+      collection,
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 
   # == annotations
@@ -79,10 +88,14 @@ class API::V3::ProtectedAreas < Grape::API
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########
-  get ":wdpa_id", rabl: "v3/views/protected_area" do
-    @with_geometry = params[:with_geometry]
-    @protected_area = ProtectedArea.find_by_site_id(
-      params[:wdpa_id]
-      ) or error!(:not_found, 404)
+  get ":wdpa_id" do
+    protected_area = ProtectedArea.find_by_site_id(params[:wdpa_id])
+    error!(:not_found, 404) unless protected_area
+
+    API::Serializers::V3::ProtectedAreaSerializer.single(
+      protected_area,
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 end

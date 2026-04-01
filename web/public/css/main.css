@@ -393,6 +393,17 @@ html {
   padding: 0 1.25rem;
   margin-bottom: .666rem;
 }
+
+.hero__top--admin {
+  gap: 1rem;
+}
+@media only screen and (max-width: 1024px) {
+  .hero__top--admin {
+    flex-direction: column;
+    padding: 1.25rem;
+  }
+}
+
 .hero__top--no-padding {
   padding: 0;
 }
@@ -402,6 +413,9 @@ html {
   font-size: 1.625rem;
   line-height: 2rem;
   color: #71a32b;
+}
+.hero__title--admin {
+  flex-shrink: 0;
 }
 .hero__title--article {
   padding-left: 0.5rem;

@@ -21,12 +21,15 @@ class API::V4::ProtectedAreaParcels < Grape::API
   end
   # == body
   #########
-  get rabl: "v4/views/protected_area_parcels" do
+  get do
     collection = ProtectedAreaParcel
     collection = collection.without_geometry unless params[:with_geometry]
 
-    @with_geometry = params[:with_geometry]
-    @protected_area_parcels = paginate_collection(collection)
+    API::Serializers::V4::ProtectedAreaParcelSerializer.collection(
+      paginate_collection(collection),
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 
   # == annotations
@@ -47,12 +50,15 @@ class API::V4::ProtectedAreaParcels < Grape::API
   end
   # == body
   #########
-  get :search, rabl: "v4/views/protected_area_parcels" do
+  get :search do
     collection = ProtectedAreaParcel.search(declared(params, include_missing: false))
     collection = collection.without_geometry unless params[:with_geometry]
 
-    @with_geometry = params[:with_geometry]
-    @protected_area_parcels = paginate_collection(collection)
+    API::Serializers::V4::ProtectedAreaParcelSerializer.collection(
+      paginate_collection(collection),
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 
   # == annotations
@@ -61,13 +67,16 @@ class API::V4::ProtectedAreaParcels < Grape::API
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########
-  get ":site_id", rabl: "v4/views/protected_area_parcels" do
-    @with_geometry = params[:with_geometry]
+  get ":site_id" do
     collection = ProtectedAreaParcel.where(site_id: params[:site_id])
     collection = collection.without_geometry unless params[:with_geometry]
-    
-    @protected_area_parcels = collection
-    error!(:not_found, 404) if @protected_area_parcels.empty?
+    error!(:not_found, 404) if collection.empty?
+
+    API::Serializers::V4::ProtectedAreaParcelSerializer.collection(
+      collection,
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 
   # == annotations
@@ -76,11 +85,17 @@ class API::V4::ProtectedAreaParcels < Grape::API
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########
-  get ":site_id/:site_pid", rabl: "v4/views/protected_area_parcel" do
-    @with_geometry = params[:with_geometry]
-    @protected_area_parcel = ProtectedAreaParcel.find_by(
+  get ":site_id/:site_pid" do
+    protected_area_parcel = ProtectedAreaParcel.find_by(
       site_id: params[:site_id],
       site_pid: params[:site_pid]
-    ) or error!(:not_found, 404)
+    )
+    error!(:not_found, 404) unless protected_area_parcel
+
+    API::Serializers::V4::ProtectedAreaParcelSerializer.single(
+      protected_area_parcel,
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 end

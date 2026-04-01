@@ -112,11 +112,6 @@ GEM
       mustermann-grape (~> 1.1.0)
       rack (>= 2)
       zeitwerk
-    grape-rabl (0.5.0)
-      grape
-      i18n
-      rabl
-      tilt
     grape_logging (3.0.0)
       grape (>= 2.4.0)
       rack
@@ -200,8 +195,6 @@ GEM
     psych (5.3.1)
       date
       stringio
-    rabl (0.17.0)
-      activesupport (>= 2.3.14)
     racc (1.8.1)
     rack (3.2.6)
     rack-cors (3.0.0)
@@ -281,7 +274,6 @@ DEPENDENCIES
   exception_notification (~> 4.4)
   factory_bot (~> 6.4)
   grape (~> 3.1)
-  grape-rabl (~> 0.5.0)
   grape_logging (~> 3.0)
   kaminari (~> 1.2)
   kramdown (~> 2.4)

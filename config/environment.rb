@@ -21,7 +21,6 @@ require 'grape'
 require 'action_view'
 require 'kaminari'
 require 'kaminari/activerecord'
-require 'grape-rabl'
 
 require 'appsignal'
 require 'active_support'
@@ -30,25 +29,12 @@ require 'active_support'
 require 'kramdown'
 Tilt.prefer Tilt::KramdownTemplate
 
-module Grape
-  module Rabl
-    class Formatter
-      private
-
-      def fallback_formatter
-        Grape::Formatter::Json
-      end
-    end
-  end
-end
-
 # Notifications
 require 'pony'
 
 # Configuration files
 require 'config/secrets'
 require 'config/pony'
-require 'config/rabl'
 require 'config/active_record'
 
 # Models

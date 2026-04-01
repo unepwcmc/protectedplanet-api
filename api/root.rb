@@ -51,7 +51,7 @@ module API
     end
 
     format :json
-    formatter :json, Grape::Formatter::Rabl
+    formatter :json, Grape::Formatter::Json
     content_type :json, 'application/json; charset=utf-8'
 
     before do

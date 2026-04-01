@@ -7,7 +7,6 @@ gem 'rackup', '~> 2.3.1'
 
 # Frameworks
 gem 'grape', '~> 3.1'
-gem 'grape-rabl', '~> 0.5.0'
 gem 'grape_logging', '~> 3.0'
 gem 'kaminari', '~> 1.2'
 gem 'sinatra', '~> 4.2'

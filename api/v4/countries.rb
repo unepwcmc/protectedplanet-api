@@ -15,14 +15,17 @@ class API::V4::Countries < Grape::API
   end
   # == body
   #########
-  get rabl: "v4/views/countries" do
+  get do
     collection = Country
     collection = collection.without_geometry unless params[:with_geometry]
 
-    @with_geometry = params[:with_geometry]
-    @iucn_category_long_names = params[:iucn_category_long_names]
-    @group_governances = params[:group_governances]
-    @countries = paginate_collection(collection)
+    API::Serializers::V4::CountrySerializer.collection(
+      paginate_collection(collection),
+      current_user: current_user,
+      with_geometry: params[:with_geometry],
+      iucn_category_long_names: params[:iucn_category_long_names],
+      group_governances: params[:group_governances]
+    )
   end
 
   # == annotations
@@ -35,16 +38,23 @@ class API::V4::Countries < Grape::API
   }
   # == body
   #########
-  get ":iso_3", rabl: "v4/views/country" do
-    @with_geometry = params[:with_geometry]
-    @iucn_category_long_names = params[:iucn_category_long_names]
-    @group_governances = params[:group_governances]
+  get ":iso_3" do
+    country =
+      if params[:iso_3].length == 2
+        Country.find_by_iso(params[:iso_3].upcase)
+      else
+        Country.find_by_iso_3(params[:iso_3].upcase)
+      end
 
-    if params[:iso_3].length == 2
-      @country = Country.find_by_iso(params[:iso_3].upcase) or error!(:not_found, 404)
-    else
-      @country = Country.find_by_iso_3(params[:iso_3].upcase) or error!(:not_found, 404)
-    end
+    error!(:not_found, 404) unless country
+
+    API::Serializers::V4::CountrySerializer.single(
+      country,
+      current_user: current_user,
+      with_geometry: params[:with_geometry],
+      iucn_category_long_names: params[:iucn_category_long_names],
+      group_governances: params[:group_governances]
+    )
   end
 end
 
