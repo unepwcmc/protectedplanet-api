@@ -149,6 +149,13 @@ end
 if @current_user.access_to?(ProtectedArea, :green_list_status)
   child :green_list_status, object_root: false do
     attributes :id, :gl_status, :gl_expiry, :gl_link
+
+    # Alias, Remove it in next version (v5)
+    attribute :gl_status => :status
+    # Alias, Remove it in next version (v5)
+    attribute :gl_expiry => :expiry_date
+    # Alias, Remove it in next version (v5)
+    attribute :gl_link => :link
   end
 end
 

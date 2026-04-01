@@ -135,7 +135,8 @@ end
 
 if @current_user.access_to?(ProtectedArea, :green_list_status)
   child :green_list_status, object_root: false do
-    attributes :id, :status, :expiry_date
+    attributes :id
+
     attribute :gl_status => :status
     attribute :gl_expiry => :expiry_date
     attribute :gl_link => :link
