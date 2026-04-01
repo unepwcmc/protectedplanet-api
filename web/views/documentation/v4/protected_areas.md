@@ -86,23 +86,52 @@ Sample response:
             },
             "pame_evaluations": [
                 {
-                    "id": 29653,
-                    "metadata_id": 27,
-                    "url": "Not reported",
-                    "year": 2018,
-                    "methodology": "IMET",
+                    "asmt_id": 29653,
+                    "id": 29653, // Alias to asmt_id. It will be removed in next version (v5), use asmt_id.
+                    "eff_metaid": 27,
+                    "metadata_id": 27, // Alias to eff_metaid. It will be removed in next version (v5), use eff_metaid.
+                    "asmt_year": 2018,
+                    "year": 2018, // Alias to asmt_year. It will be removed in next version (v5), use asmt_year.
+                    "method": "IMET",
+                    "methodology": "IMET", // Alias to method. It will be removed in next version (v5), use method.
+                    "asmt_url": "Not reported",
+                    "url": "Not reported", // Alias to asmt_url. It will be removed in next version (v5), use asmt_url.
+                    "submit_year": 2019,
+                    "verif_eff": "Verified",
+                    "info_url": null,
+                    "gov_act": "Yes",
+                    "gov_asmt": "Yes",
+                    "dp_bio": "Yes",
+                    "dp_other": "No",
+                    "mgmt_obset": "Yes",
+                    "mgmt_obman": "Yes",
+                    "mgmt_adapt": "Yes",
+                    "mgmt_staff": "Adequate",
+                    "mgmt_budgt": "Adequate",
+                    "mgmt_thrts": "Managed",
+                    "mgmt_mon": "Yes",
+                    "out_bio": "Positive",
                     "source": {
+                        "id": 27,
                         "data_title": "JRC IMET information",
                         "resp_party": "JRC",
                         "year": 2019,
                         "language": "English"
+                    },
+                    "pame_method": {
+                        "id": 1,
+                        "name": "IMET"
                     }
                 }
             ],
             "green_list_status": {
                 "id": 1,
-                "status": "Listed",
-                "expiry_date": null
+                "gl_status": "Listed",
+                "status": "Listed", // Alias to gl_status. It will be removed in next version (v5), use gl_status.
+                "gl_expiry": null,
+                "expiry_date": null, // Alias to gl_expiry. It will be removed in next version (v5), use gl_expiry.
+                "gl_link": null,
+                "link": null // Alias to gl_link. It will be removed in next version (v5), use gl_link.
             },
             "sources": [
                 {
@@ -255,23 +284,52 @@ Sample response:
             },
             "pame_evaluations": [
                 {
-                    "id": 29653,
-                    "metadata_id": 27,
-                    "url": "Not reported",
-                    "year": 2018,
-                    "methodology": "IMET",
+                    "asmt_id": 29653,
+                    "id": 29653, // Alias to asmt_id. It will be removed in next version (v5), use asmt_id.
+                    "eff_metaid": 27,
+                    "metadata_id": 27, // Alias to eff_metaid. It will be removed in next version (v5), use eff_metaid.
+                    "asmt_year": 2018,
+                    "year": 2018, // Alias to asmt_year. It will be removed in next version (v5), use asmt_year.
+                    "method": "IMET",
+                    "methodology": "IMET", // Alias to method. It will be removed in next version (v5), use method.
+                    "asmt_url": "Not reported",
+                    "url": "Not reported", // Alias to asmt_url. It will be removed in next version (v5), use asmt_url.
+                    "submit_year": 2019,
+                    "verif_eff": "Verified",
+                    "info_url": null,
+                    "gov_act": "Yes",
+                    "gov_asmt": "Yes",
+                    "dp_bio": "Yes",
+                    "dp_other": "No",
+                    "mgmt_obset": "Yes",
+                    "mgmt_obman": "Yes",
+                    "mgmt_adapt": "Yes",
+                    "mgmt_staff": "Adequate",
+                    "mgmt_budgt": "Adequate",
+                    "mgmt_thrts": "Managed",
+                    "mgmt_mon": "Yes",
+                    "out_bio": "Positive",
                     "source": {
+                        "id": 27,
                         "data_title": "JRC IMET information",
                         "resp_party": "JRC",
                         "year": 2019,
                         "language": "English"
+                    },
+                    "pame_method": {
+                        "id": 1,
+                        "name": "IMET"
                     }
                 }
             ],
             "green_list_status": {
                 "id": 1,
-                "status": "Listed",
-                "expiry_date": null
+                "gl_status": "Listed",
+                "status": "Listed", // Alias to gl_status. It will be removed in next version (v5), use gl_status.
+                "gl_expiry": null,
+                "expiry_date": null, // Alias to gl_expiry. It will be removed in next version (v5), use gl_expiry.
+                "gl_link": null,
+                "link": null // Alias to gl_link. It will be removed in next version (v5), use gl_link.
             },
             "sources": [
                 {
@@ -372,16 +430,41 @@ Sample response:
             },
             "pame_evaluations": [
                 {
-                    "id": 29653,
-                    "metadata_id": 27,
-                    "url": "Not reported",
-                    "year": 2018,
-                    "methodology": "IMET",
+                    "asmt_id": 29653,
+                    "id": 29653, // Alias to asmt_id. It will be removed in next version (v5), use asmt_id.
+                    "eff_metaid": 27,
+                    "metadata_id": 27, // Alias to eff_metaid. It will be removed in next version (v5), use eff_metaid.
+                    "asmt_year": 2018,
+                    "year": 2018, // Alias to asmt_year. It will be removed in next version (v5), use asmt_year.
+                    "method": "IMET",
+                    "methodology": "IMET", // Alias to method. It will be removed in next version (v5), use method.
+                    "asmt_url": "Not reported",
+                    "url": "Not reported", // Alias to asmt_url. It will be removed in next version (v5), use asmt_url.
+                    "submit_year": 2019,
+                    "verif_eff": "Verified",
+                    "info_url": null,
+                    "gov_act": "Yes",
+                    "gov_asmt": "Yes",
+                    "dp_bio": "Yes",
+                    "dp_other": "No",
+                    "mgmt_obset": "Yes",
+                    "mgmt_obman": "Yes",
+                    "mgmt_adapt": "Yes",
+                    "mgmt_staff": "Adequate",
+                    "mgmt_budgt": "Adequate",
+                    "mgmt_thrts": "Managed",
+                    "mgmt_mon": "Yes",
+                    "out_bio": "Positive",
                     "source": {
+                        "id": 27,
                         "data_title": "JRC IMET information",
                         "resp_party": "JRC",
                         "year": 2019,
                         "language": "English"
+                    },
+                    "pame_method": {
+                        "id": 1,
+                        "name": "IMET"
                     }
                 }
             ],
@@ -501,24 +584,53 @@ Sample response:
         },
         "green_list_status": {
             "id": 1,
-            "status": "Listed",
-            "expiry_date": null
+            "gl_status": "Listed",
+            "status": "Listed", // Alias to gl_status. It will be removed in next version (v5), use gl_status.
+            "gl_expiry": null,
+            "expiry_date": null, // Alias to gl_expiry. It will be removed in next version (v5), use gl_expiry.
+            "gl_link": null,
+            "link": null // Alias to gl_link. It will be removed in next version (v5), use gl_link.
         },
         "pame_evaluations": [
-                {
-                    "id": 29653,
-                    "metadata_id": 27,
-                    "url": "Not reported",
-                    "year": 2018,
-                    "methodology": "IMET",
-                    "source": {
-                        "data_title": "JRC IMET information",
-                        "resp_party": "JRC",
-                        "year": 2019,
-                        "language": "English"
-                    }
+            {
+                "asmt_id": 29653,
+                "id": 29653, // Alias to asmt_id. It will be removed in next version (v5), use asmt_id.
+                "eff_metaid": 27,
+                "metadata_id": 27, // Alias to eff_metaid. It will be removed in next version (v5), use eff_metaid.
+                "asmt_year": 2018,
+                "year": 2018, // Alias to asmt_year. It will be removed in next version (v5), use asmt_year.
+                "method": "IMET",
+                "methodology": "IMET", // Alias to method. It will be removed in next version (v5), use method.
+                "asmt_url": "Not reported",
+                "url": "Not reported", // Alias to asmt_url. It will be removed in next version (v5), use asmt_url.
+                "submit_year": 2019,
+                "verif_eff": "Verified",
+                "info_url": null,
+                "gov_act": "Yes",
+                "gov_asmt": "Yes",
+                "dp_bio": "Yes",
+                "dp_other": "No",
+                "mgmt_obset": "Yes",
+                "mgmt_obman": "Yes",
+                "mgmt_adapt": "Yes",
+                "mgmt_staff": "Adequate",
+                "mgmt_budgt": "Adequate",
+                "mgmt_thrts": "Managed",
+                "mgmt_mon": "Yes",
+                "out_bio": "Positive",
+                "source": {
+                    "id": 27,
+                    "data_title": "JRC IMET information",
+                    "resp_party": "JRC",
+                    "year": 2019,
+                    "language": "English"
+                },
+                "pame_method": {
+                    "id": 1,
+                    "name": "IMET"
                 }
-            ],
+            }
+        ],
         "sources": [
             {
                 "id": 123,
