@@ -12,7 +12,7 @@ MiniTest = Minitest unless defined?(MiniTest)
 DatabaseCleaner.clean_with :truncation
 DatabaseCleaner.strategy = :transaction
 
-class Minitest
+module Minitest
   class Test
     include FactoryBot::Syntax::Methods
 
