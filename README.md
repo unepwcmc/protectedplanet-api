@@ -191,7 +191,7 @@ end
 - This ensures existing API users can access new fields
 - **Required after:**
   - Adding new fields to `api_attributes` arrays
-  - Modifying existing field permissions  
+  - Modifying existing field permissions
   - Database migrations that add API-exposed columns
 
 ## Run Tests

@@ -3,6 +3,7 @@ require "api/root"
 
 class API::V3::CountriesTest < MiniTest::Test
   include Rack::Test::Methods
+  include V3ContractHelpers
 
   EXPECTED_GEOJSON = {
     "type" => "Feature",
@@ -38,6 +39,7 @@ class API::V3::CountriesTest < MiniTest::Test
     assert_equal("WES", @json_response["country"]["id"])
     assert_equal("WES", @json_response["country"]["iso_3"])
     assert_equal("Zubrowka", @json_response["country"]["name"])
+    assert_equal "WES", @json_response["country"]["id"]
   end
 
   def test_get_countries_wes_returns_country_with_iso_3_WES
@@ -56,6 +58,13 @@ class API::V3::CountriesTest < MiniTest::Test
 
     assert last_response.ok?
     assert_equal(EXPECTED_GEOJSON, @json_response["country"]["geojson"])
+  end
+
+  def test_get_countries_unknown_returns_404
+    get_with_rabl "/v3/countries/ZZZ"
+
+    refute last_response.ok?
+    assert_equal 404, last_response.status
   end
 
   def test_get_countries_WES_returns_designations_with_counts
@@ -136,5 +145,20 @@ class API::V3::CountriesTest < MiniTest::Test
       "pas_count" => 1,
       "pas_percentage" => 100
     }], @json_response["country"]["iucn_categories"])
+  end
+
+  def test_get_countries_returns_401_on_wrong_token
+    get_with_rabl "/v3/countries", token: "wrong token"
+
+    refute last_response.ok?
+    assert_equal 401, last_response.status
+  end
+
+  def test_get_countries_returns_401_on_inactive_user
+    user = ApiUser.create(token: "thetoken", active: false)
+    get_with_rabl "/v3/countries", {token: user.token}
+
+    refute last_response.ok?
+    assert_equal 401, last_response.status
   end
 end
