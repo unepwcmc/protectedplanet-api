@@ -9,7 +9,7 @@ module API
           "Shared Governance",
           "Private Governance",
           "Governance by Indigenous Peoples and Local Communities",
-          "Not Reported"
+          "Not Reported" 
         ].freeze
 
         def collection(countries, current_user:, with_geometry:, iucn_category_long_names:, group_governances:)

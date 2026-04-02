@@ -10,11 +10,11 @@ module API
 
         def one(evaluation)
           {
-            "id" => evaluation.id,
-            "url" => safe_value(evaluation, :url),
-            "metadata_id" => safe_value(evaluation, :eff_metaid),
-            "methodology" => safe_value(evaluation, :method),
-            "source" => source_payload(evaluation.pame_source)
+            'id' => evaluation.id,
+            'url' => safe_value(evaluation, :asmt_url),
+            'metadata_id' => safe_value(evaluation, :eff_metaid),
+            'methodology' => safe_value(evaluation, :method),
+            'source' => source_payload(evaluation.pame_source)
           }
         end
 
@@ -22,15 +22,16 @@ module API
           return nil unless source
 
           {
-            "data_title" => safe_value(source, :data_title),
-            "resp_party" => safe_value(source, :resp_party),
-            "year" => safe_value(source, :year),
-            "language" => safe_value(source, :language)
+            'data_title' => safe_value(source, :data_title),
+            'resp_party' => safe_value(source, :resp_party),
+            'year' => safe_value(source, :year),
+            'language' => safe_value(source, :language)
           }
         end
 
         def safe_value(record, method_name)
-          record.respond_to?(method_name) ? record.public_send(method_name) : nil
+          return record.public_send(method_name) if record.respond_to?(method_name)
+          nil
         end
       end
     end

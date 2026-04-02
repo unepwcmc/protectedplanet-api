@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :governance do
-    name { "MyString" }
+    name { 'MyString' }
   end
 end

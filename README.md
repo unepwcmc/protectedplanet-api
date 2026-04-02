@@ -41,7 +41,7 @@ The API includes several rake tasks for maintenance and development:
 
 #### Reset API User Permissions
 ```bash
-RAILS_ENV=production bundle exec rake api_users:reset_permissions
+API_RACK_ENV=production bundle exec rake api_users:reset_permissions
 ```
 - **Purpose:** Reset permissions for all API users - which will give `ALL` users access to `ALL` avaliable pre-defined FIELDS
 - **When to use:** After adding new fields to `api_attributes` arrays
@@ -154,7 +154,7 @@ Access the Rails console to interact with models and test functionality:
 
 ```bash
 # Start IRB with the application environment loaded
-RAILS_ENV=development bundle exec irb
+API_RACK_ENV=development bundle exec irb
 
 # Load the application
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}")

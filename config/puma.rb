@@ -8,7 +8,7 @@ preload_app!
 
 port 5000
 
-app_dir = File.expand_path("../..", __FILE__)
+app_dir = File.expand_path('..', __dir__)
 bind "unix://#{app_dir}/tmp/sockets/puma.sock"
 stdout_redirect "#{app_dir}/log/puma.stdout.log", "#{app_dir}/log/puma.stderr.log", true
 pidfile "#{app_dir}/tmp/pids/puma.pid"

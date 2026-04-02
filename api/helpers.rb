@@ -3,10 +3,10 @@ module API
     DEFAULT_PER_PAGE = 25
 
     def authenticate!
-      unless current_user
-        Appsignal.increment_counter("unauthorized_access_count", 1)
-        error!('Unauthorized. Invalid or expired token.', 401)
-      end
+      return if current_user
+
+      Appsignal.increment_counter('unauthorized_access_count', 1)
+      error!('Unauthorized. Invalid or expired token.', 401)
     end
 
     def current_user
@@ -20,7 +20,8 @@ module API
 
     def set_v3_deprecation_headers
       header 'deprecated', 'true'
-      header 'description', 'API v3 is deprecated and will be removed on 1st/May/2026. Please migrate to v4. Visit the Protected Planet API website https://api.protectedplanet.net for v4 documentation.'
+      header 'description',
+             'API v3 is deprecated and will be removed on 1st/May/2026. Please migrate to v4. Visit the Protected Planet API website https://api.protectedplanet.net for v4 documentation.'
     end
 
     def paginate_collection(collection)

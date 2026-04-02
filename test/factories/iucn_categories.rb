@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :iucn_category do
-    name { "MyString" }
+    name { 'MyString' }
   end
 end

@@ -2,12 +2,12 @@
 
 FactoryBot.define do
   factory :api_user do
-    email { "test@user.com" }
-    full_name { "Test User" }
-    company { "Test Company" }
-    reason { "To test things" }
-    permissions { {"ProtectedArea" => ["name", "marine"]} }
+    email { 'test@user.com' }
+    full_name { 'Test User' }
+    company { 'Test Company' }
+    reason { 'To test things' }
+    permissions { { 'ProtectedArea' => %w[name marine] } }
 
-    token { "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" }
+    token { 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' }
   end
 end

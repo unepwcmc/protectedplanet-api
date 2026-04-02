@@ -17,8 +17,8 @@ class ApiObjectTest < MiniTest::Test
     klass.send(:include, ApiObject)
     assert_equal [], klass.api_attributes
 
-    klass.api_attributes = ["name", "iso_3"]
-    assert_equal ["name", "iso_3"], klass.api_attributes
+    klass.api_attributes = %w[name iso_3]
+    assert_equal %w[name iso_3], klass.api_attributes
 
     reset_api_objects(klass)
   end
@@ -29,7 +29,7 @@ class ApiObjectTest < MiniTest::Test
     Class.new do
       def self.remove_module(mod)
         mod.instance_methods.each do |method_name|
-          next if [:object_id, :__send__].include?(method_name)
+          next if %i[object_id __send__].include?(method_name)
 
           undef_method(method_name)
         end
@@ -39,6 +39,6 @@ class ApiObjectTest < MiniTest::Test
 
   def reset_api_objects(klass)
     klass.remove_module(klass)
-    $api_objects.reject!{ |o| o == klass }
+    $api_objects.reject! { |o| o == klass }
   end
 end

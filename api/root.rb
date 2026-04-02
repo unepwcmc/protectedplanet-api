@@ -26,10 +26,10 @@ module API
     helpers API::Helpers
 
     log_output =
-      if APP_ENV == "test"
+      if APP_ENV == 'test'
         STDOUT
       else
-        log_file = File.open("log/#{APP_ENV}.log", "a")
+        log_file = File.open("log/#{APP_ENV}.log", 'a')
         log_file.sync = true
         GrapeLogging::MultiIO.new(STDOUT, log_file)
       end
@@ -37,11 +37,11 @@ module API
     logger = Logger.new(log_output)
     logger.formatter = GrapeLogging::Formatters::Default.new
 
-    unless APP_ENV == "test"
-      use GrapeLogging::Middleware::RequestLogger, {logger: logger}
+    unless APP_ENV == 'test'
+      use GrapeLogging::Middleware::RequestLogger, { logger: logger }
       use ExceptionNotification::Rack, slack: {
-        webhook_url: ENV["SLACK_WEBHOOK_URL"],
-        channel: "#protectedplanet-api",
+        webhook_url: ENV['SLACK_WEBHOOK_URL'],
+        channel: '#protectedplanet-api',
         additional_parameters: {
           mrkdwn: true
         }
@@ -52,7 +52,7 @@ module API
       logger.error e
       Thread.new { ExceptionNotifier.notify_exception(e) }
 
-      error!({error: 'unexpected error'}, 500)
+      error!({ error: 'unexpected error' }, 500)
     end
 
     format :json
@@ -63,11 +63,11 @@ module API
       authenticate!
     end
 
-    get "test" do
-      {status: "Success!"}
+    get 'test' do
+      { status: 'Success!' }
     end
 
-    version "v3" do
+    version 'v3' do
       resources :protected_areas do
         mount API::V3::ProtectedAreas
       end
@@ -77,7 +77,7 @@ module API
       end
     end
 
-    version "v4" do
+    version 'v4' do
       resources :protected_areas do
         mount API::V4::ProtectedAreas
       end

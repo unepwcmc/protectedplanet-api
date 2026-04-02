@@ -1,4 +1,7 @@
+require 'rack'
 require_relative 'config/environment'
+
+use Rack::Reloader, 0 if APP_ENV == 'development'
 
 require 'appsignal'
 Appsignal.load(:grape) unless APP_ENV == 'test'

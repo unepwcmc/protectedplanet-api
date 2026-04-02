@@ -1,12 +1,18 @@
-APP_ENV = ENV.fetch("API_ENV", ENV.fetch("RACK_ENV", ENV.fetch("RAILS_ENV", "development")))
-ENV["API_ENV"] = ENV["RACK_ENV"] = ENV["RAILS_ENV"] = APP_ENV unless defined?(APP_ENV_INITIALIZED)
-APP_ENV_INITIALIZED = true
-
-APP_ROOT = File.expand_path("..", __dir__) unless defined?(APP_ROOT)
+APP_ROOT = File.expand_path('..', __dir__) unless defined?(APP_ROOT)
 $LOAD_PATH.unshift(APP_ROOT) unless $LOAD_PATH.include?(APP_ROOT)
 
 require 'dotenv'
 Dotenv.load
+
+unless defined?(APP_ENV_INITIALIZED)
+  api_rack_env = ENV.fetch('API_RACK_ENV') do
+    raise KeyError, 'API_RACK_ENV is required (e.g. development/test/production) for protectedplanet-api'
+  end
+  ENV['RACK_ENV'] = api_rack_env
+  APP_ENV = api_rack_env
+
+  APP_ENV_INITIALIZED = true
+end
 
 require 'logger'
 require 'bigdecimal'
@@ -38,4 +44,4 @@ require 'config/pony'
 require 'config/active_record'
 
 # Models
-Dir["#{File.dirname(__FILE__)}/../models/**/*.rb"].each {|f| require f}
+Dir["#{File.dirname(__FILE__)}/../models/**/*.rb"].each { |f| require f }

@@ -5,7 +5,7 @@ class API::V4::Countries < Grape::API
 
   # == annotations
   ################
-  desc "Get all countries, paginated."
+  desc 'Get all countries, paginated.'
   params do
     optional :page, type: Integer, default: 1
     optional :per_page, type: Integer, default: 25, values: 1..50
@@ -30,15 +30,15 @@ class API::V4::Countries < Grape::API
 
   # == annotations
   ################
-  desc "Get one country, with geometry, given a ISO3 code"
-  params {
+  desc 'Get one country, with geometry, given a ISO3 code'
+  params do
     optional :with_geometry, default: true, type: Boolean
     optional :iucn_category_long_names, default: false, type: Boolean
     optional :group_governances, default: false, type: Boolean
-  }
+  end
   # == body
   #########
-  get ":iso_3" do
+  get ':iso_3' do
     country =
       if params[:iso_3].length == 2
         Country.find_by_iso(params[:iso_3].upcase)
@@ -57,4 +57,3 @@ class API::V4::Countries < Grape::API
     )
   end
 end
-

@@ -13,7 +13,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
 
   # == annotations
   ################
-  desc "Get all protected area parcels, paginated."
+  desc 'Get all protected area parcels, paginated.'
   params do
     optional :page, type: Integer, default: 1
     optional :per_page, type: Integer, default: 25, values: 1..50
@@ -34,7 +34,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
 
   # == annotations
   ################
-  desc "Search for a subset of protected area parcels."
+  desc 'Search for a subset of protected area parcels.'
   params do
     optional :page, type: Integer, default: 1
     optional :per_page, type: Integer, default: 25, values: 1..50
@@ -46,7 +46,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
     optional :iucn_category, type: Integer
     optional :with_geometry, default: false, type: Boolean
     at_least_one_of :country, :marine, :designation,
-      :jurisdiction, :governance, :iucn_category
+                    :jurisdiction, :governance, :iucn_category
   end
   # == body
   #########
@@ -63,11 +63,11 @@ class API::V4::ProtectedAreaParcels < Grape::API
 
   # == annotations
   ################
-  desc "Get parcels of a protected area via its site_id."
+  desc 'Get parcels of a protected area via its site_id.'
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########
-  get ":site_id" do
+  get ':site_id' do
     collection = ProtectedAreaParcel.where(site_id: params[:site_id])
     collection = collection.without_geometry unless params[:with_geometry]
     error!(:not_found, 404) if collection.empty?
@@ -81,11 +81,11 @@ class API::V4::ProtectedAreaParcels < Grape::API
 
   # == annotations
   ################
-  desc "Get a protected area parcel via its site_id and site_pid."
+  desc 'Get a protected area parcel via its site_id and site_pid.'
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########
-  get ":site_id/:site_pid" do
+  get ':site_id/:site_pid' do
     protected_area_parcel = ProtectedAreaParcel.find_by(
       site_id: params[:site_id],
       site_pid: params[:site_pid]

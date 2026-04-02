@@ -13,7 +13,7 @@ class API::V4::ProtectedAreas < Grape::API
 
   # == annotations
   ################
-  desc "Get all protected areas, paginated."
+  desc 'Get all protected areas, paginated.'
   params do
     optional :page, type: Integer, default: 1
     optional :per_page, type: Integer, default: 25, values: 1..50
@@ -34,7 +34,7 @@ class API::V4::ProtectedAreas < Grape::API
 
   # == annotations
   ################
-  desc "Search for a subset of protected areas."
+  desc 'Search for a subset of protected areas.'
   params do
     optional :page, type: Integer, default: 1
     optional :per_page, type: Integer, default: 25, values: 1..50
@@ -47,7 +47,7 @@ class API::V4::ProtectedAreas < Grape::API
     optional :iucn_category, type: Integer
     optional :with_geometry, default: false, type: Boolean
     at_least_one_of :country, :marine, :is_green_list, :designation,
-      :jurisdiction, :governance, :iucn_category
+                    :jurisdiction, :governance, :iucn_category
   end
   # == body
   #########
@@ -63,7 +63,7 @@ class API::V4::ProtectedAreas < Grape::API
 
   # == annotations
   ################
-  desc "Get ACP countries protected areas."
+  desc 'Get ACP countries protected areas.'
   params { optional :with_geometry, default: false, type: Boolean }
   # == body
   #########
@@ -80,11 +80,11 @@ class API::V4::ProtectedAreas < Grape::API
 
   # == annotations
   ################
-  desc "Get a protected area via its site_id."
+  desc 'Get a protected area via its site_id.'
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########
-  get ":site_id" do
+  get ':site_id' do
     protected_area = ProtectedArea.find_by_site_id(params[:site_id])
     error!(:not_found, 404) unless protected_area
 

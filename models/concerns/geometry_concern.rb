@@ -2,12 +2,12 @@ module GeometryConcern
   extend ActiveSupport::Concern
 
   included do
-    scope :without_geometry, -> { select(column_names - self.geometry_columns) }
+    scope :without_geometry, -> { select(column_names - geometry_columns) }
   end
 
   module ClassMethods
     def geometry_columns
-      columns_hash.select { |_,v| v.type == :spatial }.keys
+      columns_hash.select { |_, v| v.type == :spatial }.keys
     end
   end
 
@@ -23,15 +23,15 @@ module GeometryConcern
   end
 
   def geojson
-    geom_size = ActiveRecord::Base.connection.select_value("""
-      SELECT ST_MemSize(#{main_geom_column}) 
-      FROM #{self.class.table_name} 
+    geom_size = ActiveRecord::Base.connection.select_value("
+      SELECT ST_MemSize(#{main_geom_column})
+      FROM #{self.class.table_name}
       WHERE id = #{id}
-    """.squish)
+    ".squish)
 
     return nil if geom_size.nil? # Ideally this should never happen
 
-    # This figure is based on testing SITE_ID 555592567 which already took 22 seconds to return 
+    # This figure is based on testing SITE_ID 555592567 which already took 22 seconds to return
     # https://unep-wcmc.codebasehq.com/projects/protected-planet-support-and-maintenance/tickets/353
     sql_query = if geom_size.to_i > 26_900_000
                   # If too large then don't use ST_MakeValid and capture errors (geom is not valid, nil etc...)
@@ -55,7 +55,7 @@ module GeometryConcern
 
       if geojson.nil?
         Appsignal.send_error(RuntimeError.new("GeoJSON is nil for SITE_ID: #{site_id}"))
-        return nil 
+        return nil
       end
 
       geometry = JSON.parse(geojson)
@@ -65,13 +65,13 @@ module GeometryConcern
         )
         return nil
       end
-      
+
       {
-        "type" => "Feature",
-        "properties" => geometry_properties,
-        "geometry" => geometry
+        'type' => 'Feature',
+        'properties' => geometry_properties,
+        'geometry' => geometry
       }
-    rescue => e
+    rescue StandardError => e
       context_message = "GeoJSON error for SITE_ID #{site_id} (model: #{self.class.name}): #{e.message}"
       Appsignal.send_error(RuntimeError.new(context_message))
       nil
@@ -81,26 +81,26 @@ module GeometryConcern
   private
 
   def geometry_properties
-    if self.respond_to?(:marine) && marine
+    if respond_to?(:marine) && marine
       {
-        "fill-opacity" => 0.7,
-        "stroke-width" => 0.05,
-        "stroke" => "#2E5387",
-        "fill" => "#3E7BB6",
-        "marker-color" => "#2B3146"
+        'fill-opacity' => 0.7,
+        'stroke-width' => 0.05,
+        'stroke' => '#2E5387',
+        'fill' => '#3E7BB6',
+        'marker-color' => '#2B3146'
       }
     else
       {
-        "fill-opacity" => 0.7,
-        "stroke-width" => 0.05,
-        "stroke" => "#40541b",
-        "fill" => "#83ad35",
-        "marker-color" => "#2B3146"
+        'fill-opacity' => 0.7,
+        'stroke-width' => 0.05,
+        'stroke' => '#40541b',
+        'fill' => '#83ad35',
+        'marker-color' => '#2B3146'
       }
     end
   end
 
   def main_geom_column
-    self.respond_to?(:the_geom) ? 'the_geom' : 'bounding_box'
+    respond_to?(:the_geom) ? 'the_geom' : 'bounding_box'
   end
 end

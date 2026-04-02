@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :jurisdiction do
-    name { "MyString" }
+    name { 'MyString' }
   end
 end

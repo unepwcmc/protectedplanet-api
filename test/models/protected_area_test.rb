@@ -3,10 +3,10 @@ require 'models/protected_area'
 
 class ProtectedAreaTest < MiniTest::Test
   def test_search_with_country_returns_pa_from_country
-    country = create(:country, iso_3: "WES")
+    country = create(:country, iso_3: 'WES')
     pa = create(:protected_area, countries: [country])
 
-    result = ProtectedArea.search(country: "WES")
+    result = ProtectedArea.search(country: 'WES')
     assert_equal [pa], result
   end
 

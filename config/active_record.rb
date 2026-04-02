@@ -14,7 +14,7 @@ class ActiveRecordConnectionManagement
 end
 
 # Process ERB templates in database.yml
-database_config = ERB.new(File.read("config/database.yml")).result
+database_config = ERB.new(File.read('config/database.yml')).result
 database_settings = YAML.safe_load(database_config, aliases: true)
 db_config = database_settings.fetch(APP_ENV)
 
@@ -22,4 +22,3 @@ ActiveRecord.default_timezone = :utc
 ActiveRecord::Base.establish_connection(db_config)
 
 use ActiveRecordConnectionManagement
-
