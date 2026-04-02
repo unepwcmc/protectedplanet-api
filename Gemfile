@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '3.4.9'
 
-gem 'dotenv', '~> 2.8'
+gem 'dotenv', '~> 3.2'
 gem 'rackup', '~> 2.3.1'
 
 # Frameworks
@@ -25,7 +25,7 @@ gem 'activerecord-postgis-adapter', '~> 9.0'
 # Notifications
 gem 'pony', '~> 1.13'
 gem 'slack-notifier', '~> 2.4'
-gem 'exception_notification', '~> 4.4'
+gem 'exception_notification', '~> 5.0'
 
 # Analytics
 gem 'appsignal', '~> 4.8'
@@ -43,6 +43,6 @@ group :test, :development do
   gem 'debug', '~> 1.10'
   gem 'database_cleaner-active_record', '~> 2.2'
   gem 'factory_bot', '~> 6.4'
-  gem 'minitest', '~> 5.27'
+  gem 'minitest', '~> 6.0'
   gem 'rack-test', '~> 2.1'
 end
