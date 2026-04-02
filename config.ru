@@ -1,7 +1,6 @@
 require_relative 'config/environment'
 
 require 'appsignal'
-require_relative 'config/appsignal'
 Appsignal.load(:grape) unless APP_ENV == 'test'
 
 require_relative 'api/root'

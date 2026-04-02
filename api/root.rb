@@ -8,7 +8,12 @@ module API; end
 module API::V3; end
 module API::V4; end
 
-Dir["#{File.dirname(__FILE__)}/**/*.rb"].each {|f| require f}
+api_dir = File.dirname(__FILE__)
+Dir["#{api_dir}/**/*.rb"].sort.each do |path|
+  next if path == __FILE__
+
+  require path
+end
 
 module API
   class Root < Grape::API
