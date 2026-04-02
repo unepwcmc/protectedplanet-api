@@ -1,11 +1,11 @@
-require_relative "../protected_area_serialization"
-require_relative "pame_evaluation_serializer"
+require_relative "concerns/protected_area"
+require_relative "pame_evaluation_serialiser"
 
 module API
-  module Serializers
+  module Serialisers
     module V4
       module ProtectedAreaParcelSerializer
-        extend API::Serializers::ProtectedAreaSerialization
+        extend API::Serialisers::V4::Concerns::ProtectedArea
         module_function
 
         def collection(protected_area_parcels, current_user:, with_geometry:)
@@ -40,10 +40,6 @@ module API
             "site_type" => protected_area_parcel.site_type
           }
 
-          add_field(payload, "links", current_user.access_to?(ProtectedAreaParcel, :link_to_pp)) do
-            { "protected_planet" => protected_area_parcel.link_to_pp }
-          end
-
           add_field(payload, "geojson", current_user.access_to?(ProtectedAreaParcel, :geometry) && with_geometry) do
             protected_area_parcel.geojson
           end
@@ -58,10 +54,6 @@ module API
 
           add_field(payload, "reported_area", current_user.access_to?(ProtectedAreaParcel, :reported_area)) do
             protected_area_parcel.reported_area
-          end
-
-          add_field(payload, "legal_status_updated_at", current_user.access_to?(ProtectedAreaParcel, :legal_status_updated_at)) do
-            formatted_legal_status_updated_at(protected_area_parcel)
           end
 
           add_field(payload, "management_plan", current_user.access_to?(ProtectedAreaParcel, :management_plan)) do
@@ -84,10 +76,6 @@ module API
             safe_value(protected_area_parcel, :conservation_objectives)
           end
 
-          add_field(payload, "green_list_url", current_user.access_to?(ProtectedAreaParcel, :green_list_url)) do
-            safe_value(protected_area_parcel, :green_list_url)
-          end
-
           add_field(payload, "inland_waters", current_user.access_to?(ProtectedAreaParcel, :inland_waters)) do
             safe_value(protected_area_parcel, :inland_waters)
           end
@@ -97,7 +85,48 @@ module API
           end
 
           add_field(payload, "pame_evaluations", current_user.access_to?(ProtectedArea, :pame_evaluations)) do
-            API::Serializers::V4::PameEvaluationSerializer.many(protected_area_parcel.pame_evaluations)
+            API::Serialisers::V4::PameEvaluationSerialiser.many(protected_area_parcel.pame_evaluations)
+          end
+
+          add_field(payload, "countries", current_user.access_to?(ProtectedAreaParcel, :countries)) do
+            countries_payload(protected_area_parcel.countries)
+          end
+
+          add_field(payload, "iucn_category", current_user.access_to?(ProtectedAreaParcel, :iucn_category)) do
+            iucn_category_payload(protected_area_parcel.iucn_category)
+          end
+
+          add_field(payload, "designation", current_user.access_to?(ProtectedAreaParcel, :designation)) do
+            designation_payload(protected_area_parcel.designation)
+          end
+
+          add_field(payload, "no_take_status", current_user.access_to?(ProtectedAreaParcel, :no_take_status)) do
+            no_take_status_payload(protected_area_parcel.no_take_status)
+          end
+
+          add_field(payload, "legal_status", current_user.access_to?(ProtectedAreaParcel, :legal_status)) do
+            legal_status_payload(protected_area_parcel.legal_status)
+          end
+
+          add_field(payload, "management_authority", current_user.access_to?(ProtectedAreaParcel, :management_authority)) do
+            management_authority_payload(protected_area_parcel.management_authority)
+          end
+
+          add_field(payload, "governance", current_user.access_to?(ProtectedAreaParcel, :governance)) do
+            governance_payload(protected_area_parcel.governance)
+          end
+
+          add_field(payload, "sources", current_user.access_to?(ProtectedAreaParcel, :sources)) do
+            sources_payload(protected_area_parcel.sources)
+          end
+
+          add_field(payload, "realm", current_user.access_to?(ProtectedAreaParcel, :realm)) do
+            realm_payload(protected_area_parcel.realm)
+          end
+
+          if current_user.access_to?(ProtectedArea, :green_list_status)
+            # Emit `green_list_status: null` when association is nil.
+            payload["green_list_status"] = green_list_status_payload(protected_area_parcel.green_list_status, legacy_aliases: true)
           end
 
           add_field(payload, "countries", current_user.access_to?(ProtectedAreaParcel, :countries)) do
@@ -148,8 +177,12 @@ module API
             realm_payload(protected_area_parcel.realm)
           end
 
-          add_field(payload, "green_list_status", current_user.access_to?(ProtectedArea, :green_list_status)) do
-            green_list_status_payload(protected_area_parcel.green_list_status)
+          add_field(payload, "links", current_user.access_to?(ProtectedAreaParcel, :link_to_pp)) do
+            { "protected_planet" => protected_area_parcel.link_to_pp }
+          end
+
+          add_field(payload, "legal_status_updated_at", current_user.access_to?(ProtectedAreaParcel, :legal_status_updated_at)) do
+            formatted_legal_status_updated_at(protected_area_parcel)
           end
 
           payload

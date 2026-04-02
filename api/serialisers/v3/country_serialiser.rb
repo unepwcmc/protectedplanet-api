@@ -1,7 +1,7 @@
 module API
-  module Serializers
+  module Serialisers
     module V3
-      module CountrySerializer
+      module CountrySerialiser
         module_function
 
         GROUPED_GOVERNANCE_ORDER = [
@@ -39,25 +39,13 @@ module API
         end
 
         def country_payload(country, current_user:, with_geometry:, iucn_category_long_names:, group_governances:)
+          # NOTE: Ruby hashes preserve insertion order; this serializer intentionally
+          # inserts keys in the order expected by the legacy Rabl output.
           payload = {
             "name" => country.name,
             "iso_3" => country.iso_3,
-            "id" => country.iso_3,
-            "pas_count" => country.protected_areas.count,
-            "pas_national_count" => protected_area_count(country, "National"),
-            "pas_regional_count" => protected_area_count(country, "Regional"),
-            "pas_international_count" => protected_area_count(country, "International"),
-            "pas_with_iucn_category_count" => country.protected_areas.where("iucn_category_id IS NOT NULL").count,
-            "pas_with_iucn_category_percentage" => protected_area_with_iucn_percentage(country)
+            "id" => country.iso_3
           }
-
-          add_field(payload, "links", current_user.access_to?(Country, :link_to_pp)) do
-            { "protected_planet" => country.link_to_pp }
-          end
-
-          add_field(payload, "geojson", current_user.access_to?(Country, :geometry) && with_geometry) do
-            country.geojson
-          end
 
           add_field(payload, "statistics", current_user.access_to?(Country, :country_statistic)) do
             statistics_payload(country.country_statistic)
@@ -69,6 +57,21 @@ module API
 
           add_field(payload, "region", current_user.access_to?(Country, :region)) do
             region_payload(country.region)
+          end
+
+          payload["pas_count"] = country.protected_areas.count
+          payload["pas_national_count"] = protected_area_count(country, "National")
+          payload["pas_regional_count"] = protected_area_count(country, "Regional")
+          payload["pas_international_count"] = protected_area_count(country, "International")
+          payload["pas_with_iucn_category_count"] = country.protected_areas.where("iucn_category_id IS NOT NULL").count
+          payload["pas_with_iucn_category_percentage"] = protected_area_with_iucn_percentage(country)
+
+          add_field(payload, "links", current_user.access_to?(Country, :link_to_pp)) do
+            { "protected_planet" => country.link_to_pp }
+          end
+
+          add_field(payload, "geojson", current_user.access_to?(Country, :geometry) && with_geometry) do
+            country.geojson
           end
 
           add_field(payload, "designations", current_user.access_to?(Country, :designations)) do

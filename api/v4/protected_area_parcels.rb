@@ -25,7 +25,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
     collection = ProtectedAreaParcel
     collection = collection.without_geometry unless params[:with_geometry]
 
-    API::Serializers::V4::ProtectedAreaParcelSerializer.collection(
+    API::Serialisers::V4::ProtectedAreaParcelSerializer.collection(
       paginate_collection(collection),
       current_user: current_user,
       with_geometry: params[:with_geometry]
@@ -54,7 +54,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
     collection = ProtectedAreaParcel.search(declared(params, include_missing: false))
     collection = collection.without_geometry unless params[:with_geometry]
 
-    API::Serializers::V4::ProtectedAreaParcelSerializer.collection(
+    API::Serialisers::V4::ProtectedAreaParcelSerializer.collection(
       paginate_collection(collection),
       current_user: current_user,
       with_geometry: params[:with_geometry]
@@ -72,7 +72,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
     collection = collection.without_geometry unless params[:with_geometry]
     error!(:not_found, 404) if collection.empty?
 
-    API::Serializers::V4::ProtectedAreaParcelSerializer.collection(
+    API::Serialisers::V4::ProtectedAreaParcelSerializer.collection(
       collection,
       current_user: current_user,
       with_geometry: params[:with_geometry]
@@ -92,7 +92,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
     )
     error!(:not_found, 404) unless protected_area_parcel
 
-    API::Serializers::V4::ProtectedAreaParcelSerializer.single(
+    API::Serialisers::V4::ProtectedAreaParcelSerializer.single(
       protected_area_parcel,
       current_user: current_user,
       with_geometry: params[:with_geometry]

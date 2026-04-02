@@ -1,12 +1,12 @@
-require_relative "../protected_area_serialization"
-require_relative "pame_evaluation_serializer"
-require_relative "protected_area_parcel_serializer"
+require_relative "concerns/protected_area"
+require_relative "pame_evaluation_serialiser"
+require_relative "protected_area_parcel_serialiser"
 
 module API
-  module Serializers
+  module Serialisers
     module V4
-      module ProtectedAreaSerializer
-        extend API::Serializers::ProtectedAreaSerialization
+      module ProtectedAreaSerialiser
+        extend API::Serialisers::V4::Concerns::ProtectedArea
         module_function
 
         def collection(protected_areas, current_user:, with_geometry:)
@@ -77,16 +77,24 @@ module API
             safe_value(protected_area, :conservation_objectives)
           end
 
+          add_field(payload, "governance_subtype", current_user.access_to?(ProtectedArea, :governance_subtype)) do
+            safe_value(protected_area, :governance_subtype)
+          end
+
+          add_field(payload, "owner_type", current_user.access_to?(ProtectedArea, :owner_type)) do
+            protected_area.owner_type
+          end
+
+          add_field(payload, "ownership_subtype", current_user.access_to?(ProtectedArea, :ownership_subtype)) do
+            safe_value(protected_area, :ownership_subtype)
+          end
+
           add_field(payload, "inland_waters", current_user.access_to?(ProtectedArea, :inland_waters)) do
             safe_value(protected_area, :inland_waters)
           end
 
           add_field(payload, "oecm_assessment", current_user.access_to?(ProtectedArea, :oecm_assessment)) do
             safe_value(protected_area, :oecm_assessment)
-          end
-
-          add_field(payload, "green_list_url", current_user.access_to?(ProtectedArea, :green_list_url)) do
-            safe_value(protected_area, :green_list_url)
           end
 
           add_field(payload, "countries", current_user.access_to?(ProtectedArea, :countries)) do
@@ -117,26 +125,15 @@ module API
             governance_payload(protected_area.governance)
           end
 
-          add_field(payload, "governance_subtype", current_user.access_to?(ProtectedArea, :governance_subtype)) do
-            safe_value(protected_area, :governance_subtype)
-          end
-
-          add_field(payload, "ownership_subtype", current_user.access_to?(ProtectedArea, :ownership_subtype)) do
-            safe_value(protected_area, :ownership_subtype)
-          end
-
-          add_field(payload, "owner_type", current_user.access_to?(ProtectedArea, :owner_type)) do
-            protected_area.owner_type
-          end
-
           add_field(payload, "pame_evaluations", current_user.access_to?(ProtectedArea, :pame_evaluations)) do
-            API::Serializers::V4::PameEvaluationSerializer.many(
+            API::Serialisers::V4::PameEvaluationSerialiser.many(
               protected_area.all_pame_evaluations_from_current_pa_and_parcels
             )
           end
 
-          add_field(payload, "green_list_status", current_user.access_to?(ProtectedArea, :green_list_status)) do
-            green_list_status_payload(protected_area.green_list_status)
+          if current_user.access_to?(ProtectedArea, :green_list_status)
+            # Emit `green_list_status: null` when association is nil.
+            payload["green_list_status"] = green_list_status_payload(protected_area.green_list_status, legacy_aliases: true)
           end
 
           add_field(payload, "sources", current_user.access_to?(ProtectedArea, :sources)) do
@@ -149,7 +146,7 @@ module API
 
           add_field(payload, "protected_area_parcels", current_user.access_to?(ProtectedArea, :protected_area_parcels)) do
             protected_area.protected_area_parcels.map do |protected_area_parcel|
-              API::Serializers::V4::ProtectedAreaParcelSerializer.payload(
+              API::Serialisers::V4::ProtectedAreaParcelSerializer.payload(
                 protected_area_parcel,
                 current_user: current_user,
                 with_geometry: with_geometry

@@ -99,7 +99,7 @@ Recommended approach:
 Possible replacements:
 
 - Grape entities
-- PORO serializers
+- PORO Serialisers
 - explicit JSON builders
 
 ### Phase 5: Move to current Ruby

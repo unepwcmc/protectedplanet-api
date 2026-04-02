@@ -1,11 +1,11 @@
-require_relative "../protected_area_serialization"
-require_relative "pame_evaluation_serializer"
+require_relative "concerns/protected_area"
+require_relative "pame_evaluation_serialiser"
 
 module API
-  module Serializers
+  module Serialisers
     module V3
-      module ProtectedAreaSerializer
-        extend API::Serializers::ProtectedAreaSerialization
+      module ProtectedAreaSerialiser
+        extend API::Serialisers::V3::Concerns::ProtectedArea
         module_function
 
         def collection(protected_areas, current_user:, with_geometry:)
@@ -76,8 +76,8 @@ module API
             safe_value(protected_area, :conservation_objectives)
           end
 
-          add_field(payload, "green_list_url", current_user.access_to?(ProtectedArea, :green_list_url)) do
-            safe_value(protected_area, :green_list_url)
+          add_field(payload, "owner_type", current_user.access_to?(ProtectedArea, :owner_type)) do
+            protected_area.owner_type
           end
 
           add_field(payload, "countries", current_user.access_to?(ProtectedArea, :countries)) do
@@ -108,32 +108,32 @@ module API
             governance_payload(protected_area.governance)
           end
 
-          add_field(payload, "owner_type", current_user.access_to?(ProtectedArea, :owner_type)) do
-            protected_area.owner_type
-          end
-
-          add_field(payload, "pame_evaluations", current_user.access_to?(ProtectedArea, :pame_evaluations)) do
-            API::Serializers::V3::PameEvaluationSerializer.many(
-              protected_area.all_pame_evaluations_from_current_pa_and_parcels
+          if current_user.access_to?(ProtectedArea, :green_list_status)
+            # Rabl emitted `green_list_status: null` when the association was nil.
+            payload["green_list_status"] = green_list_status_payload(
+              protected_area.green_list_status,
+              legacy_aliases: true
             )
-          end
-
-          add_field(payload, "green_list_status", current_user.access_to?(ProtectedArea, :green_list_status)) do
-            green_list_status_payload(protected_area.green_list_status, legacy_aliases: true)
           end
 
           add_field(payload, "sources", true) do
             sources_payload(protected_area.sources)
           end
 
+          payload["sub_locations"] = []
+
           add_field(payload, "links", current_user.access_to?(ProtectedArea, :link_to_pp)) do
             { "protected_planet" => protected_area.link_to_pp }
           end
 
-          payload["sub_locations"] = []
-
           add_field(payload, "legal_status_updated_at", current_user.access_to?(ProtectedArea, :legal_status_updated_at)) do
             formatted_legal_status_updated_at(protected_area)
+          end
+
+          add_field(payload, "pame_evaluations", current_user.access_to?(ProtectedArea, :pame_evaluations)) do
+            API::Serialisers::V3::PameEvaluationSerialiser.many(
+              protected_area.all_pame_evaluations_from_current_pa_and_parcels
+            )
           end
 
           payload

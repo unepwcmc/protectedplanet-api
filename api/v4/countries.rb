@@ -19,7 +19,7 @@ class API::V4::Countries < Grape::API
     collection = Country
     collection = collection.without_geometry unless params[:with_geometry]
 
-    API::Serializers::V4::CountrySerializer.collection(
+    API::Serialisers::V4::CountrySerialiser.collection(
       paginate_collection(collection),
       current_user: current_user,
       with_geometry: params[:with_geometry],
@@ -48,7 +48,7 @@ class API::V4::Countries < Grape::API
 
     error!(:not_found, 404) unless country
 
-    API::Serializers::V4::CountrySerializer.single(
+    API::Serialisers::V4::CountrySerialiser.single(
       country,
       current_user: current_user,
       with_geometry: params[:with_geometry],

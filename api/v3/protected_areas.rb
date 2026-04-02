@@ -29,7 +29,7 @@ class API::V3::ProtectedAreas < Grape::API
     collection = ProtectedArea
     collection = collection.without_geometry unless params[:with_geometry]
 
-    API::Serializers::V3::ProtectedAreaSerializer.collection(
+    API::Serialisers::V3::ProtectedAreaSerialiser.collection(
       paginate_collection(collection),
       current_user: current_user,
       with_geometry: params[:with_geometry]
@@ -58,7 +58,7 @@ class API::V3::ProtectedAreas < Grape::API
   get :search do
     collection = ProtectedArea.search(declared(params, include_missing: false))
 
-    API::Serializers::V3::ProtectedAreaSerializer.collection(
+    API::Serialisers::V3::ProtectedAreaSerialiser.collection(
       paginate_collection(collection),
       current_user: current_user,
       with_geometry: params[:with_geometry]
@@ -75,7 +75,7 @@ class API::V3::ProtectedAreas < Grape::API
     collection = ProtectedArea.biopama.with_pame_evaluations
     collection = collection.without_geometry unless params[:with_geometry]
 
-    API::Serializers::V3::ProtectedAreaSerializer.collection(
+    API::Serialisers::V3::ProtectedAreaSerialiser.collection(
       collection,
       current_user: current_user,
       with_geometry: params[:with_geometry]
@@ -92,7 +92,7 @@ class API::V3::ProtectedAreas < Grape::API
     protected_area = ProtectedArea.find_by_site_id(params[:wdpa_id])
     error!(:not_found, 404) unless protected_area
 
-    API::Serializers::V3::ProtectedAreaSerializer.single(
+    API::Serialisers::V3::ProtectedAreaSerialiser.single(
       protected_area,
       current_user: current_user,
       with_geometry: params[:with_geometry]
