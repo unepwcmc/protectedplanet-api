@@ -3,26 +3,23 @@ default: &default
   adapter: postgis
   pool: 5
   timeout: 5000
-  username: postgres
+  host: "<%= ENV['POSTGRES_HOST'] %>"
+  database: "<%= ENV['POSTGRES_DBNAME'] %>"
+  port: "<%= ENV['POSTGRES_PORT'] %>"
+  username: "<%= ENV['POSTGRES_USER'] %>"
+  password: "<%= ENV['POSTGRES_PASSWORD'] %>"
 
 development:
   <<: *default
-  host: "<%= ENV['POSTGRES_HOST'] || 'protectedplanet-db' %>"
-  username: "<%= ENV['POSTGRES_USER'] %>"
-  password: "<%= ENV['POSTGRES_PASSWORD'] %>"
-  database: "<%= ENV['POSTGRES_DBNAME'] %>"
 
 test:
   <<: *default
-  host: "<%= ENV['POSTGRES_HOST'] || 'protectedplanet-db' %>"
-  username: "<%= ENV['POSTGRES_USER'] %>"
-  password: "<%= ENV['POSTGRES_PASSWORD'] %>"
   database: "<%= ENV['POSTGRES_TEST_DBNAME'] %>"
+
+staging:
+  <<: *default 
 
 production:
   <<: *default
-  database: pp_production
 
-staging:
-  <<: *default
-  database: pp_staging
+
