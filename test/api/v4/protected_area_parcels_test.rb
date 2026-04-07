@@ -3,6 +3,7 @@ require 'api/root'
 
 class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
   include Rack::Test::Methods
+  include V4ContractHelpers
 
   EXPECTED_GEOJSON = {
     'type' => 'Feature',
@@ -21,6 +22,7 @@ class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
 
     assert last_response.ok?
     assert_equal 3, @json_response['protected_area_parcels'].size
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
   end
 
   def test_get_protected_area_parcels_with_geometry_true_returns_all_protected_area_parcels_with_geojson
@@ -29,6 +31,7 @@ class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
 
     assert last_response.ok?
     assert_equal(EXPECTED_GEOJSON, @json_response['protected_area_parcels'][0]['geojson'])
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: true)
   end
 
   def test_get_protected_area_parcels_search_with_country_returns_matching_parcels
@@ -43,6 +46,7 @@ class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
     assert_equal(123, @json_response['protected_area_parcels'][0]['site_id'])
     assert_equal('ABC', @json_response['protected_area_parcels'][0]['site_pid'])
     assert_equal('Parcel A', @json_response['protected_area_parcels'][0]['name_english'])
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
   end
 
   def test_get_protected_area_parcels_search_with_marine_returns_matching_parcels
@@ -56,6 +60,7 @@ class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
     assert_equal(123, @json_response['protected_area_parcels'][0]['site_id'])
     assert_equal('ABC', @json_response['protected_area_parcels'][0]['site_pid'])
     assert_equal('Parcel A', @json_response['protected_area_parcels'][0]['name_english'])
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
   end
 
   def test_get_protected_area_parcels_search_wants_at_least_one_param
@@ -74,6 +79,9 @@ class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
 
     assert last_response.ok?
     assert_equal(2, @json_response['protected_area_parcels'].size)
+    @json_response['protected_area_parcels'].each do |pap|
+      assert_v4_protected_area_parcel_envelope(pap, with_geometry: true)
+    end
   end
 
   def test_get_protected_area_parcels_123_returns_404_when_none_exist
@@ -91,6 +99,7 @@ class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
     assert_equal(123, @json_response['protected_area_parcel']['site_id'])
     assert_equal('ABC', @json_response['protected_area_parcel']['site_pid'])
     assert_equal('Parcel A', @json_response['protected_area_parcel']['name_english'])
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcel'], with_geometry: true)
   end
 
   def test_get_protected_area_parcels_123_ABC_returns_404_when_missing
@@ -113,5 +122,51 @@ class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
 
     refute last_response.ok?
     assert_equal 401, last_response.status
+  end
+
+  def test_get_protected_area_parcel_includes_pame_and_green_list_shapes
+    gl = GreenListStatus.create!(ContractSamples::GREEN_LIST_STATUS_ATTRIBUTES)
+    parcel = create(
+      :protected_area_parcel,
+      site_id: 9200,
+      site_pid: 'P9200',
+      name: 'GL parcel',
+      green_list_status: gl
+    )
+    create(:pame_evaluation, protected_area: nil, protected_area_parcel: parcel, asmt_id: 11_519)
+
+    get_with_rabl '/v4/protected_area_parcels/9200/P9200', { with_geometry: false }
+    assert last_response.ok?
+
+    pap = @json_response['protected_area_parcel']
+    assert pap['is_green_list']
+    assert_v4_green_list_status_shape(pap['green_list_status'])
+    assert_v4_green_list_status(pap['green_list_status'])
+
+    assert_equal 1, pap['pame_evaluations'].size
+    assert_v4_pame_evaluation(pap['pame_evaluations'].first)
+    assert_equal 11_519, pap['pame_evaluations'].first['asmt_id']
+    assert_v4_protected_area_parcel_envelope(pap, with_geometry: false)
+  end
+
+  def test_get_protected_area_parcel_611_2_style_payload_has_expected_core_values
+    create(
+      :protected_area_parcel,
+      site_id: 611,
+      site_pid: '611_2',
+      name: 'Wood Buffalo National Park Of Canada',
+      marine: false
+    )
+
+    get_with_rabl '/v4/protected_area_parcels/611/611_2', { with_geometry: false }
+    assert last_response.ok?
+
+    pap = @json_response['protected_area_parcel']
+    assert_equal 'Wood Buffalo National Park Of Canada', pap['name_english']
+    assert_equal 611, pap['site_id']
+    assert_equal '611_2', pap['site_pid']
+    refute pap['is_green_list']
+    assert_equal [], pap['pame_evaluations']
+    assert_v4_protected_area_parcel_envelope(pap, with_geometry: false)
   end
 end

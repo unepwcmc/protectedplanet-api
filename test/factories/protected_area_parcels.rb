@@ -10,5 +10,8 @@ FactoryBot.define do
     association :iucn_category, factory: :iucn_category, name: 'My IUCN category'
     association :legal_status, factory: :legal_status, name: 'My legal status'
     association :governance, factory: :governance, name: 'My governance'
+    association :realm, factory: :realm
+    association :no_take_status, factory: :no_take_status
+    association :management_authority, factory: :management_authority
   end
 end

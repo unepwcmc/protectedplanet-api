@@ -6,6 +6,9 @@ require 'rack/test'
 require 'factory_bot'
 require_relative '../config/environment'
 require 'database_cleaner/active_record'
+require_relative 'support/contract_samples'
+require_relative 'api/v4/contract_helpers'
+require_relative 'api/v3/contract_helpers'
 
 MiniTest = Minitest unless defined?(MiniTest)
 
