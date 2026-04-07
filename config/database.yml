@@ -1,7 +1,8 @@
 default: &default
   encoding: unicode
   adapter: postgis
-  pool: 5
+  # Must be >= Puma max threads per process (see config/puma.rb). Override with DB_POOL.
+  pool: <%= ENV['PUMA_MAX_THREADS'] || 5 %>
   timeout: 5000
   host: "<%= ENV['POSTGRES_HOST'] %>"
   database: "<%= ENV['POSTGRES_DBNAME'] %>"

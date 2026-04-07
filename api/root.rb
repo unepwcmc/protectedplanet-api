@@ -17,7 +17,7 @@ end
 
 module API
   class Root < Grape::API
-    if APP_ENV != 'test' && defined?(Appsignal::Rack::GrapeMiddleware)
+    if API_APP_ENV != 'test' && defined?(Appsignal::Rack::GrapeMiddleware)
       insert_before Grape::Middleware::Error, Appsignal::Rack::GrapeMiddleware
     end
 
@@ -26,10 +26,10 @@ module API
     helpers API::Helpers
 
     log_output =
-      if APP_ENV == 'test'
+      if API_APP_ENV == 'test'
         STDOUT
       else
-        log_file = File.open("log/#{APP_ENV}.log", 'a')
+        log_file = File.open("log/#{API_APP_ENV}.log", 'a')
         log_file.sync = true
         GrapeLogging::MultiIO.new(STDOUT, log_file)
       end
@@ -37,7 +37,7 @@ module API
     logger = Logger.new(log_output)
     logger.formatter = GrapeLogging::Formatters::Default.new
 
-    unless APP_ENV == 'test'
+    unless API_APP_ENV == 'test'
       use GrapeLogging::Middleware::RequestLogger, { logger: logger }
       use ExceptionNotification::Rack, slack: {
         webhook_url: ENV['SLACK_WEBHOOK_URL'],

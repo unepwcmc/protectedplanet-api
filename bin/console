@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# IRB with config/environment and lib/mailer already loaded (same idea as rails console).
+cd "$(dirname "$0")/.."
+exec bundle exec irb -r ./config/environment -r ./lib/mailer

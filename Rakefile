@@ -3,8 +3,13 @@ $LOAD_PATH.unshift("#{File.dirname(__FILE__)}")
 require 'yaml'
 require 'erb'
 require 'logger'
-require 'config/environment'
 require 'rake/testtask'
+
+# Rake tasks in lib/tasks use `=> :environment` (Rails convention). This app is not Rails,
+# so we define the task to load ActiveRecord and models.
+task :environment do
+  require_relative 'config/environment'
+end
 
 Rake::TestTask.new do |t|
   t.libs += ["test", "."]

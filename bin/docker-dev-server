@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")/.."
+
+# Run as production
+exec bundle exec puma -C config/puma.rb config.ru

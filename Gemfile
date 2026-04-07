@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 ruby '4.0.2'
 
 gem 'dotenv', '~> 3.2'
-gem 'rackup', '~> 2.3'
 
 # Frameworks
 gem 'grape', '~> 3.1'
@@ -34,6 +33,9 @@ gem 'activesupport', '~> 8.1.0'
 gem 'csv', '~> 3.3'
 gem 'rake', '~> 13.2'
 gem 'webrick', '~> 1.9'
+
+# App server (production Docker / multi-threaded)
+gem 'puma', '~> 7.2'
 
 # Testing
 group :test, :development do

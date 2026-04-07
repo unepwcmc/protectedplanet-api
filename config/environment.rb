@@ -7,11 +7,11 @@ require 'dotenv'
 Dotenv.load
 
 unless defined?(APP_ENV_INITIALIZED)
-  api_rack_env = ENV.fetch('API_RACK_ENV') do
-    raise KeyError, 'API_RACK_ENV is required (e.g. development/test/production) for protectedplanet-api'
+  api_rack_env = ENV.fetch('API_APP_ENV') do
+    raise KeyError, 'API_APP_ENV is required (e.g. development/test/production) for protectedplanet-api'
   end
-  ENV['RACK_ENV'] = api_rack_env
-  APP_ENV = api_rack_env
+  ENV['API_APP_ENV'] = api_rack_env
+  API_APP_ENV = api_rack_env
 
   APP_ENV_INITIALIZED = true
 end
@@ -27,7 +27,7 @@ require 'rack/csrf'
 require 'rack/cors'
 require 'sinatra'
 
-# Load secrets, mail, and DB before Grape (predictable load order; secrets need APP_ENV).
+# Load secrets, mail, and DB before Grape (predictable load order; secrets need API_APP_ENV).
 require 'config/secrets'
 require 'pony'
 require 'config/pony'

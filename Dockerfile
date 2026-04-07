@@ -18,5 +18,7 @@ COPY Gemfile.lock /app/Gemfile.lock
 COPY config.ru /app/config.ru
 RUN gem install bundler -v 4.0.9 && bundle install
 COPY . /app
+RUN chmod +x /app/bin/docker-dev-server
 EXPOSE 9292
-CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0"]
+
+CMD ["/app/bin/docker-dev-server"]
