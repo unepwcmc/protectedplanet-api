@@ -9,7 +9,7 @@ module API
             return unless enabled
 
             value = yield
-            payload[key] = value unless value.nil?
+            payload[key] = value
           end
 
           def safe_value(record, method_name, fallback = nil)

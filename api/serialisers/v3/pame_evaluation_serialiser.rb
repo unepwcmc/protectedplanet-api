@@ -10,7 +10,7 @@ module API
 
         def one(evaluation)
           {
-            'id' => evaluation.id,
+            'id' => evaluation.asmt_id,
             'url' => safe_value(evaluation, :asmt_url),
             'metadata_id' => safe_value(evaluation, :eff_metaid),
             'methodology' => safe_value(evaluation, :method),
@@ -31,6 +31,7 @@ module API
 
         def safe_value(record, method_name)
           return record.public_send(method_name) if record.respond_to?(method_name)
+
           nil
         end
       end
