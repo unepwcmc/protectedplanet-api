@@ -1,9 +1,11 @@
 require 'rack'
 require_relative 'config/environment'
 
+# Must live in config.ru: `use` only works in Rack::Builder context (not inside required files).
+use ActiveRecordConnectionManagement
+
 use Rack::Reloader, 0 if APP_ENV == 'development'
 
-require 'appsignal'
 Appsignal.load(:grape) unless APP_ENV == 'test'
 
 require_relative 'api/root'

@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'models/concerns/api_object'
 
-class ApiObjectTest < MiniTest::Test
+class ApiObjectTest < Minitest::Test
   def test_including_api_object_adds_to_api_objects
     klass = Class.new
     refute $api_objects.include?(klass)

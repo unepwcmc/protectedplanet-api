@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'api/root'
 
-class API::Authentication < MiniTest::Test
+class API::Authentication < Minitest::Test
   include Rack::Test::Methods
 
   def app

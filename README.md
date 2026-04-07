@@ -102,11 +102,7 @@ The easiest way to run the API locally:
 <details>
 <summary>Click to expand local setup instructions</summary>
 
-1. **Install Ruby version** (check `.ruby-version` file):
-   ```bash
-   rbenv install $(cat .ruby-version)
-   rbenv local $(cat .ruby-version)
-   ```
+1. **Install Ruby** to match [`.tool-version`](.ruby-version), using a version manager such as [asdf](https://asdf-vm.com/):
 
 2. **Clone and setup:**
    ```bash
@@ -125,7 +121,7 @@ The easiest way to run the API locally:
 
 5. **Start server:**
    ```bash
-   rackup
+   bundle exec rackup
    ```
 
 6. **Access:** `http://localhost:9292`
@@ -150,10 +146,10 @@ cd ..
 
 ## 🧪 Development Console
 
-Access the Rails console to interact with models and test functionality:
+Use **IRB** (not Rails console—this repo is not a Rails app) to load the Rack app and work with models:
 
 ```bash
-# Start IRB with the application environment loaded
+# Start IRB, then require the environment below
 API_RACK_ENV=development bundle exec irb
 
 # Load the application
@@ -195,17 +191,9 @@ end
   - Database migrations that add API-exposed columns
 
 ## Run Tests
-```bundle exec rake test```
 
-## 🐛 Troubleshooting
-
-### PostgreSQL Installation Issues
-
-**Error:** `An error occurred while installing pg (0.18.4), and Bundler cannot continue.`
-
-**Solution:**
 ```bash
-gem install pg -v '0.18.1' -- --with-cflags="-Wno-error=implicit-function-declaration"
+bundle exec rake test
 ```
 
 ### Common Issues

@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '3.4.9'
+ruby '4.0.2'
 
 gem 'dotenv', '~> 3.2'
-gem 'rackup', '~> 2.3.1'
+gem 'rackup', '~> 2.3'
 
 # Frameworks
 gem 'grape', '~> 3.1'
@@ -17,9 +17,9 @@ gem 'rack-cors', '~> 3.0', require: 'rack/cors'
 gem 'rack_csrf', '~> 2.7'
 
 # Database
-gem 'activerecord', '~> 7.1.5'
-gem 'activerecord-postgis-adapter', '~> 9.0'
-gem 'pg', '~> 1.5'
+gem 'activerecord', '~> 8.1.0'
+gem 'activerecord-postgis-adapter', '~> 11.1'
+gem 'pg', '~> 1.6'
 
 # Notifications
 gem 'exception_notification', '~> 5.0'
@@ -30,12 +30,10 @@ gem 'slack-notifier', '~> 2.4'
 gem 'appsignal', '~> 4.8'
 
 # Support
-gem 'activesupport', '~> 7.1.5'
+gem 'activesupport', '~> 8.1.0'
 gem 'csv', '~> 3.3'
 gem 'rake', '~> 13.2'
 gem 'webrick', '~> 1.9'
-
-# gem 'puma', '5.6.6' - https://github.com/unepwcmc/protectedplanet-api/pull/58
 
 # Testing
 group :test, :development do

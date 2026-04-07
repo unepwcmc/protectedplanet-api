@@ -1,6 +1,8 @@
 APP_ROOT = File.expand_path('..', __dir__) unless defined?(APP_ROOT)
 $LOAD_PATH.unshift(APP_ROOT) unless $LOAD_PATH.include?(APP_ROOT)
 
+require 'bundler/setup'
+
 require 'dotenv'
 Dotenv.load
 
@@ -16,11 +18,20 @@ end
 
 require 'logger'
 require 'bigdecimal'
+require 'yaml'
+require 'active_support'
+require 'active_support/core_ext/hash'
 
 # Sinatra
 require 'rack/csrf'
 require 'rack/cors'
 require 'sinatra'
+
+# Load secrets, mail, and DB before Grape (predictable load order; secrets need APP_ENV).
+require 'config/secrets'
+require 'pony'
+require 'config/pony'
+require 'config/active_record'
 
 # Grape
 require 'grape'
@@ -29,19 +40,10 @@ require 'kaminari'
 require 'kaminari/activerecord'
 
 require 'appsignal'
-require 'active_support'
 
 # Markdown rendering
 require 'kramdown'
 Tilt.prefer Tilt::KramdownTemplate
-
-# Notifications
-require 'pony'
-
-# Configuration files
-require 'config/secrets'
-require 'config/pony'
-require 'config/active_record'
 
 # Models
 Dir["#{File.dirname(__FILE__)}/../models/**/*.rb"].each { |f| require f }

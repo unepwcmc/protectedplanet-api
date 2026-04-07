@@ -1,4 +1,6 @@
 require 'active_record'
+# Must load the gem entry (not only postgis_adapter.rb) so AR 8 registers the "postgis" adapter name.
+require 'activerecord-postgis-adapter'
 require 'erb'
 
 class ActiveRecordConnectionManagement
@@ -20,5 +22,3 @@ db_config = database_settings.fetch(APP_ENV)
 
 ActiveRecord.default_timezone = :utc
 ActiveRecord::Base.establish_connection(db_config)
-
-use ActiveRecordConnectionManagement

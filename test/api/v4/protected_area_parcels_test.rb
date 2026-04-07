@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'api/root'
 
-class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
+class API::V4::ProtectedAreaParcelsTest < Minitest::Test
   include Rack::Test::Methods
   include V4ContractHelpers
 

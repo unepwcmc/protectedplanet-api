@@ -1,4 +1,4 @@
-ENV['RACK_ENV'] = 'test'
+ENV['API_RACK_ENV'] ||= 'test'
 TEST_API_TOKEN = '123890123890'
 
 require 'minitest/autorun'
@@ -9,8 +9,6 @@ require 'database_cleaner/active_record'
 require_relative 'support/contract_samples'
 require_relative 'api/v4/contract_helpers'
 require_relative 'api/v3/contract_helpers'
-
-MiniTest = Minitest unless defined?(MiniTest)
 
 DatabaseCleaner.clean_with :truncation
 DatabaseCleaner.strategy = :transaction

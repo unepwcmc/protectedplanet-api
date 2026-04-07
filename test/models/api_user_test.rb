@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'models/api_user'
 
-class ApiUserTest < MiniTest::Test
+class ApiUserTest < Minitest::Test
   def test_activate_sets_active_to_true
     api_user = create(:api_user, active: false)
 
