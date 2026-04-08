@@ -18,16 +18,32 @@ class API::V4::ProtectedAreasTest < Minitest::Test
 
   def test_get_protected_areas_returns_all_protected_areas_as_JSON
     3.times { create(:protected_area) }
-    get_with_rabl '/v4/protected_areas'
+    get_json_api '/v4/protected_areas'
 
     assert last_response.ok?
     assert_equal 3, @json_response['protected_areas'].size
     assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
   end
 
+  def test_get_protected_areas_second_page_returns_slice
+    3.times { create(:protected_area) }
+    get_json_api '/v4/protected_areas', { page: 2, per_page: 2 }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_areas'].size
+    assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+  end
+
+  def test_get_protected_areas_rejects_per_page_out_of_range
+    get_json_api '/v4/protected_areas', { per_page: 51 }
+
+    refute last_response.ok?
+    assert_equal 400, last_response.status
+  end
+
   def test_get_protected_areas_with_geometry_true_returns_all_protected_areas_with_geojson
     3.times { create(:protected_area, the_geom: 'POINT(-122 47)') }
-    get_with_rabl '/v4/protected_areas', { with_geometry: true }
+    get_json_api '/v4/protected_areas', { with_geometry: true }
 
     assert last_response.ok?
     assert_equal(EXPECTED_GEOJSON, @json_response['protected_areas'][0]['geojson'])
@@ -36,7 +52,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
 
   def test_get_protected_areas_123_returns_protected_area_with_site_id_123
     create(:protected_area, name: 'Darjeeling', site_id: 123)
-    get_with_rabl '/v4/protected_areas/123'
+    get_json_api '/v4/protected_areas/123'
 
     assert last_response.ok?
     assert_equal(123, @json_response['protected_area']['site_id'])
@@ -46,7 +62,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
 
   def test_get_protected_areas_123_with_geometry_returns_protected_area_123_with_geojson
     create(:protected_area, name: 'Darjeeling', site_id: 123, the_geom: 'POINT(-122 47)')
-    get_with_rabl '/v4/protected_areas/123'
+    get_json_api '/v4/protected_areas/123'
 
     assert last_response.ok?
     assert_equal(EXPECTED_GEOJSON, @json_response['protected_area']['geojson'])
@@ -54,7 +70,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
   end
 
   def test_get_protected_areas_999999_returns_404
-    get_with_rabl '/v4/protected_areas/999999'
+    get_json_api '/v4/protected_areas/999999'
 
     refute last_response.ok?
     assert_equal 404, last_response.status
@@ -65,7 +81,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     create(:protected_area, site_id: 123, name: 'Darjeeling', countries: [country])
     create(:protected_area, site_id: 456, name: 'From Another Country')
 
-    get_with_rabl '/v4/protected_areas/search', { country: 'WES' }
+    get_json_api '/v4/protected_areas/search', { country: 'WES' }
 
     assert last_response.ok?
     assert_equal(1, @json_response['protected_areas'].size)
@@ -79,7 +95,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     create(:protected_area, site_id: 123, name: 'Darjeeling', countries: [country])
     create(:protected_area, site_id: 456, name: 'From Another Country')
 
-    get_with_rabl '/v4/protected_areas/search', { country: 'wes' }
+    get_json_api '/v4/protected_areas/search', { country: 'wes' }
 
     assert last_response.ok?
     assert_equal(1, @json_response['protected_areas'].size)
@@ -88,11 +104,69 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
   end
 
+  def test_get_protected_areas_search_with_designation_returns_matching_pas
+    des_a = create(:designation, name: 'Filter Des A')
+    des_b = create(:designation, name: 'Filter Des B')
+    create(:protected_area, site_id: 501, name: 'PA A', designation: des_a)
+    create(:protected_area, site_id: 502, name: 'PA B', designation: des_b)
+
+    get_json_api '/v4/protected_areas/search', { designation: des_a.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_areas'].size
+    assert_equal 501, @json_response['protected_areas'][0]['site_id']
+    assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+  end
+
+  def test_get_protected_areas_search_with_jurisdiction_returns_matching_pas
+    jur_a = create(:jurisdiction, name: 'Jur Search A')
+    jur_b = create(:jurisdiction, name: 'Jur Search B')
+    des_a = create(:designation, name: 'Des Jur A', jurisdiction: jur_a)
+    des_b = create(:designation, name: 'Des Jur B', jurisdiction: jur_b)
+    create(:protected_area, site_id: 601, designation: des_a)
+    create(:protected_area, site_id: 602, designation: des_b)
+
+    get_json_api '/v4/protected_areas/search', { jurisdiction: jur_a.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_areas'].size
+    assert_equal 601, @json_response['protected_areas'][0]['site_id']
+    assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+  end
+
+  def test_get_protected_areas_search_with_governance_returns_matching_pas
+    gov_a = create(:governance, name: 'Gov Search A')
+    gov_b = create(:governance, name: 'Gov Search B')
+    create(:protected_area, site_id: 701, governance: gov_a)
+    create(:protected_area, site_id: 702, governance: gov_b)
+
+    get_json_api '/v4/protected_areas/search', { governance: gov_a.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_areas'].size
+    assert_equal 701, @json_response['protected_areas'][0]['site_id']
+    assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+  end
+
+  def test_get_protected_areas_search_with_iucn_category_returns_matching_pas
+    cat_a = create(:iucn_category, name: 'Cat A')
+    cat_b = create(:iucn_category, name: 'Cat B')
+    create(:protected_area, site_id: 801, iucn_category: cat_a)
+    create(:protected_area, site_id: 802, iucn_category: cat_b)
+
+    get_json_api '/v4/protected_areas/search', { iucn_category: cat_a.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_areas'].size
+    assert_equal 801, @json_response['protected_areas'][0]['site_id']
+    assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+  end
+
   def test_get_protected_areas_search_with_marine_returns_marine_pas
     create(:protected_area, site_id: 123, name: 'Darjeeling', marine: true)
     create(:protected_area, site_id: 456, name: 'Not Marine', marine: false)
 
-    get_with_rabl '/v4/protected_areas/search', { marine: true }
+    get_json_api '/v4/protected_areas/search', { marine: true }
 
     assert last_response.ok?
     assert_equal(1, @json_response['protected_areas'].size)
@@ -106,7 +180,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     create(:protected_area, site_id: 123, name: 'Darjeeling', green_list_status: green_list_status)
     create(:protected_area, site_id: 456, name: 'Not Green', green_list_status_id: nil)
 
-    get_with_rabl '/v4/protected_areas/search', { is_green_list: true }
+    get_json_api '/v4/protected_areas/search', { is_green_list: true }
 
     assert last_response.ok?
     assert_equal(1, @json_response['protected_areas'].size)
@@ -117,7 +191,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
   end
 
   def test_get_protected_areas_search_wants_at_least_one_param
-    get_with_rabl '/v4/protected_areas/search', {}
+    get_json_api '/v4/protected_areas/search', {}
 
     refute last_response.ok?
     assert_equal 400, last_response.status
@@ -128,7 +202,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     create(:protected_area, :biopama_country, :with_pame_evaluation, name: 'Darjeeling')
     create(:protected_area, :biopama_country, :with_pame_evaluation, name: 'Not Marine')
 
-    get_with_rabl '/v4/protected_areas/biopama'
+    get_json_api '/v4/protected_areas/biopama'
 
     assert last_response.ok?
     assert_equal(2, @json_response['protected_areas'].size)
@@ -140,7 +214,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
   end
 
   def test_get_protected_areas_returns_401_on_wrong_token
-    get_with_rabl '/v4/protected_areas', token: 'wrong token'
+    get_json_api '/v4/protected_areas', token: 'wrong token'
 
     refute last_response.ok?
     assert_equal 401, last_response.status
@@ -148,7 +222,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
 
   def test_get_protected_areas_returns_401_on_inactive_user
     user = ApiUser.create(token: 'thetoken', active: false)
-    get_with_rabl '/v4/protected_areas', { token: user.token }
+    get_json_api '/v4/protected_areas', { token: user.token }
 
     refute last_response.ok?
     assert_equal 401, last_response.status
@@ -158,7 +232,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     pa = create(:protected_area, site_id: 9100)
     create(:pame_evaluation, protected_area: pa, asmt_id: 11_516)
 
-    get_with_rabl '/v4/protected_areas/9100', { with_geometry: false }
+    get_json_api '/v4/protected_areas/9100', { with_geometry: false }
     assert last_response.ok?
 
     list = @json_response['protected_area']['pame_evaluations']
@@ -176,7 +250,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     gl = GreenListStatus.create!(ContractSamples::GREEN_LIST_STATUS_ATTRIBUTES)
     create(:protected_area, site_id: 9101, green_list_status: gl)
 
-    get_with_rabl '/v4/protected_areas/9101', { with_geometry: false }
+    get_json_api '/v4/protected_areas/9101', { with_geometry: false }
     assert last_response.ok?
 
     assert @json_response['protected_area']['is_green_list']
@@ -192,7 +266,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     create(:pame_evaluation, protected_area: pa, asmt_id: 11_517)
     create(:pame_evaluation, protected_area: nil, protected_area_parcel: parcel, asmt_id: 11_518)
 
-    get_with_rabl '/v4/protected_areas/9102', { with_geometry: false }
+    get_json_api '/v4/protected_areas/9102', { with_geometry: false }
     assert last_response.ok?
 
     pames = @json_response['protected_area']['pame_evaluations']
@@ -204,7 +278,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
   def test_get_protected_area_26630_style_payload_has_empty_green_list_pame_and_parcels
     create(:protected_area, site_id: 26_630, name: 'Sample No PAME')
 
-    get_with_rabl '/v4/protected_areas/26630', { with_geometry: false }
+    get_json_api '/v4/protected_areas/26630', { with_geometry: false }
     assert last_response.ok?
 
     pa = @json_response['protected_area']

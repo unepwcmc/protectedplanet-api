@@ -11,12 +11,19 @@ task :environment do
   require_relative 'config/environment'
 end
 
-Rake::TestTask.new do |t|
-  t.libs += ["test", "."]
-  t.pattern = "test/**/*_test.rb"
+# Force test env even if shell exports RACK_ENV=development.
+task :set_test_env do
+  ENV['RACK_ENV'] = 'test'
 end
 
-task :default => [:test]
+Rake::TestTask.new do |t|
+  t.libs += ['test', '.']
+  t.pattern = 'test/**/*_test.rb'
+end
+
+task test: :set_test_env
+
+task default: [:test]
 
 # Load custom tasks from `lib/tasks` if you have any defined
 Dir.glob('lib/tasks/*.rake').each { |r| import r }

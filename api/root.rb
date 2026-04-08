@@ -31,7 +31,7 @@ module API
 
     rescue_from :all do |e|
       logger.error e
-      Thread.new { ExceptionNotifier.notify_exception(e) }
+      ExceptionNotifier.notify_exception(e)
 
       error!({ error: 'unexpected error' }, 500)
     end

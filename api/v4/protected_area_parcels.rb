@@ -3,10 +3,6 @@ require 'models/protected_area_parcel'
 class API::V4::ProtectedAreaParcels < Grape::API
   helpers API::Helpers
 
-  before do
-    authenticate!
-  end
-
   rescue_from Grape::Exceptions::ValidationErrors do |e|
     error! e, 400
   end
@@ -22,7 +18,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
   # == body
   #########
   get do
-    collection = ProtectedAreaParcel
+    collection = ProtectedAreaParcel.with_api_json_includes
     collection = collection.without_geometry unless params[:with_geometry]
 
     API::Serialisers::V4::ProtectedAreaParcelSerializer.collection(
@@ -68,7 +64,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
   # == body
   #########
   get ':site_id' do
-    collection = ProtectedAreaParcel.where(site_id: params[:site_id])
+    collection = ProtectedAreaParcel.with_api_json_includes.where(site_id: params[:site_id]).order(:site_id, :site_pid)
     collection = collection.without_geometry unless params[:with_geometry]
     error!(:not_found, 404) if collection.empty?
 
@@ -86,7 +82,7 @@ class API::V4::ProtectedAreaParcels < Grape::API
   # == body
   #########
   get ':site_id/:site_pid' do
-    protected_area_parcel = ProtectedAreaParcel.find_by(
+    protected_area_parcel = ProtectedAreaParcel.with_api_json_includes.find_by(
       site_id: params[:site_id],
       site_pid: params[:site_pid]
     )

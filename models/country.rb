@@ -16,6 +16,9 @@ class Country < ActiveRecord::Base
   belongs_to :region
   has_one :country_statistic
   has_one :pame_statistic
+
+  # Preload associations the country JSON serialiser reads first (stats, region) to avoid N+1 on country index/show.
+  scope :with_api_json_includes, -> { includes(:country_statistic, :pame_statistic, :region) }
   has_and_belongs_to_many :protected_areas
   has_many :designations, -> { uniq }, through: :protected_areas
 

@@ -3,6 +3,10 @@ require 'models/country'
 class API::V4::Countries < Grape::API
   helpers API::Helpers
 
+  rescue_from Grape::Exceptions::ValidationErrors do |e|
+    error! e, 400
+  end
+
   # == annotations
   ################
   desc 'Get all countries, paginated.'
@@ -16,7 +20,7 @@ class API::V4::Countries < Grape::API
   # == body
   #########
   get do
-    collection = Country
+    collection = Country.with_api_json_includes
     collection = collection.without_geometry unless params[:with_geometry]
 
     API::Serialisers::V4::CountrySerialiser.collection(
@@ -39,11 +43,12 @@ class API::V4::Countries < Grape::API
   # == body
   #########
   get ':iso_3' do
+    scope = Country.with_api_json_includes
     country =
       if params[:iso_3].length == 2
-        Country.find_by_iso(params[:iso_3].upcase)
+        scope.find_by_iso(params[:iso_3].upcase)
       else
-        Country.find_by_iso_3(params[:iso_3].upcase)
+        scope.find_by_iso_3(params[:iso_3].upcase)
       end
 
     error!(:not_found, 404) unless country

@@ -1,5 +1,4 @@
 class ApiUser < ActiveRecord::Base
-  include Sinatra::Helpers
   before_create :set_permissions, :set_gdpr_consent
 
   def activate!

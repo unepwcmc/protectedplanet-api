@@ -3,10 +3,6 @@ require 'models/protected_area'
 class API::V3::ProtectedAreas < Grape::API
   helpers API::Helpers
 
-  before do
-    authenticate!
-  end
-
   after do
     set_v3_deprecation_headers
   end
@@ -26,7 +22,7 @@ class API::V3::ProtectedAreas < Grape::API
   # == body
   #########
   get do
-    collection = ProtectedArea
+    collection = ProtectedArea.with_api_json_includes
     collection = collection.without_geometry unless params[:with_geometry]
 
     API::Serialisers::V3::ProtectedAreaSerialiser.collection(
@@ -72,7 +68,7 @@ class API::V3::ProtectedAreas < Grape::API
   # == body
   #########
   get :biopama do
-    collection = ProtectedArea.biopama.with_pame_evaluations
+    collection = ProtectedArea.with_api_json_includes.biopama.with_pame_evaluations
     collection = collection.without_geometry unless params[:with_geometry]
 
     API::Serialisers::V3::ProtectedAreaSerialiser.collection(
@@ -89,7 +85,7 @@ class API::V3::ProtectedAreas < Grape::API
   # == body
   #########
   get ':wdpa_id' do
-    protected_area = ProtectedArea.find_by_site_id(params[:wdpa_id])
+    protected_area = ProtectedArea.with_api_json_includes.find_by_site_id(params[:wdpa_id])
     error!(:not_found, 404) unless protected_area
 
     API::Serialisers::V3::ProtectedAreaSerialiser.single(

@@ -32,7 +32,7 @@ class ProtectedAreaParcel < ActiveRecord::Base
 
   has_and_belongs_to_many :countries, -> { select(:id, :name, :iso_3) }
   has_and_belongs_to_many :sources
-  has_many :pame_evaluations
+  has_many :pame_evaluations, -> { order(:id) }
 
   belongs_to :protected_area, foreign_key: 'site_id', primary_key: 'site_id'
   belongs_to :legal_status
@@ -45,10 +45,19 @@ class ProtectedAreaParcel < ActiveRecord::Base
   belongs_to :green_list_status
   delegate :jurisdiction, to: :designation, allow_nil: true
 
+  # See ProtectedArea::API_JSON_INCLUDES — same idea: preload what API serialisers touch to avoid N+1 on index/search.
+  API_JSON_INCLUDES = [
+    :countries, :sources, :pame_evaluations, :protected_area,
+    :iucn_category, :designation, :legal_status, :governance, :realm,
+    :no_take_status, :management_authority, :green_list_status
+  ].freeze
+
+  scope :with_api_json_includes, -> { includes(API_JSON_INCLUDES) }
+
   SEARCHES = {
     country:       -> (scope, value) { scope.joins(:countries).where("countries.iso_3 = ?", value.upcase) },
     marine:        -> (scope, value) { scope.where(marine: value) },
-    is_green_list: -> (scope, value) { where.not(green_list_status_id: nil) },
+    is_green_list: -> (scope, _value) { scope.where.not(green_list_status_id: nil) },
     designation:   -> (scope, value) { scope.where(designation_id: value) },
     jurisdiction:  -> (scope, value) { scope.joins(:designation).where("designations.jurisdiction_id = ?", value) },
     governance:    -> (scope, value) { scope.where(governance_id: value) },
@@ -56,7 +65,7 @@ class ProtectedAreaParcel < ActiveRecord::Base
   }
 
   def self.search params
-    collection = self.all
+    collection = with_api_json_includes # see API_JSON_INCLUDES
     params.each do |(key, value)|
       next if SEARCHES[key.to_sym].nil?
       collection = SEARCHES[key.to_sym][collection, value]

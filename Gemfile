@@ -46,3 +46,7 @@ group :test, :development do
   gem 'rack-test', '~> 2.1'
   gem 'rubocop', '~> 1.86', require: false
 end
+
+group :test do
+  gem 'simplecov', '~> 0.22', require: false
+end

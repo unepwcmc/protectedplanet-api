@@ -18,15 +18,30 @@ class API::V4::CountriesTest < Minitest::Test
 
   def test_get_countries_returns_all_countries_as_JSON
     3.times { create(:country) }
-    get_with_rabl '/v4/countries'
+    get_json_api '/v4/countries'
 
     assert last_response.ok?
     assert_equal 3, @json_response['countries'].size
   end
 
+  def test_get_countries_second_page_returns_slice
+    3.times { create(:country) }
+    get_json_api '/v4/countries', { page: 2, per_page: 2 }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['countries'].size
+  end
+
+  def test_get_countries_rejects_per_page_out_of_range
+    get_json_api '/v4/countries', { per_page: 51 }
+
+    refute last_response.ok?
+    assert_equal 400, last_response.status
+  end
+
   def test_get_countries_with_geometry_true_returns_all_countries_with_geojson
     3.times { create(:country, bounding_box: 'POINT(-122 47)') }
-    get_with_rabl '/v4/countries', { with_geometry: true }
+    get_json_api '/v4/countries', { with_geometry: true }
 
     assert last_response.ok?
     assert_equal(EXPECTED_GEOJSON, @json_response['countries'][0]['geojson'])
@@ -34,7 +49,7 @@ class API::V4::CountriesTest < Minitest::Test
 
   def test_get_countries_USA_returns_country_with_iso_3_USA
     create(:country, name: 'United States', iso: 'US', iso_3: 'USA')
-    get_with_rabl '/v4/countries/USA'
+    get_json_api '/v4/countries/USA'
 
     assert last_response.ok?
     assert_equal('USA', @json_response['country']['id'])
@@ -45,7 +60,7 @@ class API::V4::CountriesTest < Minitest::Test
 
   def test_get_countries_usa_returns_country_with_iso_3_USA
     create(:country, name: 'United States', iso: 'US', iso_3: 'USA')
-    get_with_rabl '/v4/countries/usa'
+    get_json_api '/v4/countries/usa'
 
     assert last_response.ok?
     assert_equal('USA', @json_response['country']['id'])
@@ -55,7 +70,7 @@ class API::V4::CountriesTest < Minitest::Test
 
   def test_get_countries_GB_returns_country_with_iso_GB
     create(:country, name: 'United Kingdom', iso: 'GB', iso_3: 'GBR')
-    get_with_rabl '/v4/countries/GB'
+    get_json_api '/v4/countries/GB'
 
     assert last_response.ok?
     assert_equal('GBR', @json_response['country']['id'])
@@ -64,7 +79,7 @@ class API::V4::CountriesTest < Minitest::Test
   end
 
   def test_get_countries_unknown_returns_404
-    get_with_rabl '/v4/countries/ZZZ'
+    get_json_api '/v4/countries/ZZZ'
 
     refute last_response.ok?
     assert_equal 404, last_response.status
@@ -75,7 +90,7 @@ class API::V4::CountriesTest < Minitest::Test
     iucn_category = create(:iucn_category, name: 'IV')
     create(:protected_area, name: 'Grand Budapest', countries: [country], iucn_category: iucn_category)
 
-    get_with_rabl '/v4/countries/wes', iucn_category_long_names: true
+    get_json_api '/v4/countries/wes', iucn_category_long_names: true
 
     assert last_response.ok?
     assert_equal([{
@@ -91,7 +106,7 @@ class API::V4::CountriesTest < Minitest::Test
     governance = create(:governance, name: 'Joint governance')
     create(:protected_area, name: 'Grand Budapest', countries: [country], governance: governance)
 
-    get_with_rabl '/v4/countries/wes', group_governances: true
+    get_json_api '/v4/countries/wes', group_governances: true
 
     assert last_response.ok?
     assert_equal({
@@ -106,7 +121,7 @@ class API::V4::CountriesTest < Minitest::Test
   end
 
   def test_get_countries_returns_401_on_wrong_token
-    get_with_rabl '/v4/countries', token: 'wrong token'
+    get_json_api '/v4/countries', token: 'wrong token'
 
     refute last_response.ok?
     assert_equal 401, last_response.status
@@ -114,7 +129,7 @@ class API::V4::CountriesTest < Minitest::Test
 
   def test_get_countries_returns_401_on_inactive_user
     user = ApiUser.create(token: 'thetoken', active: false)
-    get_with_rabl '/v4/countries', { token: user.token }
+    get_json_api '/v4/countries', { token: user.token }
 
     refute last_response.ok?
     assert_equal 401, last_response.status
@@ -124,7 +139,7 @@ class API::V4::CountriesTest < Minitest::Test
     sample = ContractSamples::SAMPLE_COUNTRY
     create(:country, name: sample['name'], iso: 'AG', iso_3: sample['iso_3'], bounding_box: 'POINT(-122 47)')
 
-    get_with_rabl "/v4/countries/#{sample['id']}", { with_geometry: false }
+    get_json_api "/v4/countries/#{sample['id']}", { with_geometry: false }
     assert last_response.ok?
 
     country = @json_response['country']

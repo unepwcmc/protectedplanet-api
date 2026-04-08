@@ -1,3 +1,8 @@
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start
+end
+
 ENV['RACK_ENV'] ||= 'test'
 TEST_API_TOKEN = '123890123890'
 
@@ -26,8 +31,8 @@ module Minitest
       DatabaseCleaner.clean
     end
 
-    def get_with_rabl(path, params = {})
-      get path, { token: TEST_API_TOKEN }.merge(params), { 'api.tilt.root' => 'api' }
+    def get_json_api(path, params = {}, headers = {})
+      get path, { token: TEST_API_TOKEN }.merge(params), { 'api.tilt.root' => 'api' }.merge(headers)
       @json_response = begin
         JSON.parse(last_response.body)
       rescue StandardError

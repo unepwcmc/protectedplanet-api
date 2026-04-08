@@ -1,3 +1,5 @@
+require 'api/auth_token'
+
 module API
   module Helpers
     DEFAULT_PER_PAGE = 25
@@ -9,8 +11,21 @@ module API
       error!('Unauthorized. Invalid or expired token.', 401)
     end
 
+    def auth_token
+      @auth_token ||= begin
+        set_query_token_deprecation_headers if API::AuthToken.token_provided_via_params?(params)
+        API::AuthToken.from_grape_params_and_headers(params, headers)
+      end
+    end
+
+    def set_query_token_deprecation_headers
+      header 'Deprecation', 'true'
+      header 'Warning',
+             '299 - "Passing token as a query or form parameter is deprecated and will not be supported in next major version; use Authorization: Bearer."'
+    end
+
     def current_user
-      user = ApiUser.where(token: params[:token], active: true).first
+      user = ApiUser.where(token: auth_token, active: true).first
       if user&.active
         @current_user = user
       else
