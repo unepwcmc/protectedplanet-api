@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+# Runtime must set RACK_ENV=production (and optionally PUMA_*; see .env.example and docs).
+exec RACK_ENV=production bundle exec puma -C config/puma.rb config.ru

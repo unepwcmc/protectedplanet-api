@@ -37,7 +37,7 @@ All database migrations are ran in ProtectedPlanet using rails. This project is 
 
 ## Environment variables
 
-Boot **requires** `API_APP_ENV` (e.g. `development`, `test`, or `production`). That value becomes the Ruby constant `API_APP_ENV`—see [`config/environment.rb`](config/environment.rb).
+Boot **requires** `RACK_ENV` (e.g. `development`, `test`, or `production`). That value becomes the Ruby constant `RACK_ENV`—see [`config/environment.rb`](config/environment.rb).
 
 Copy [`.env.example`](.env.example) to `.env` and fill in values (team secrets are typically stored in Keeper). Database fields must match a running Postgres instance (often the one from the main ProtectedPlanet Docker stack).
 
@@ -46,7 +46,7 @@ Copy [`.env.example`](.env.example) to `.env` and fill in values (team secrets a
 ### Reset API user permissions
 
 ```bash
-API_APP_ENV=production bundle exec rake api_users:reset_permissions
+RACK_ENV=production bundle exec rake api_users:reset_permissions
 ```
 
 - **Purpose:** Give all API users access to every field listed in each model’s `api_attributes`.
@@ -55,9 +55,9 @@ API_APP_ENV=production bundle exec rake api_users:reset_permissions
 ### Remove API users
 
 ```bash
-API_APP_ENV=production bundle exec rake api_users:remove[inactive]
-API_APP_ENV=production bundle exec rake api_users:remove[archived]
-API_APP_ENV=production bundle exec rake api_users:remove[archived_or_inactive]
+RACK_ENV=production bundle exec rake api_users:remove[inactive]
+RACK_ENV=production bundle exec rake api_users:remove[archived]
+RACK_ENV=production bundle exec rake api_users:remove[archived_or_inactive]
 ```
 
 - **Purpose:** Remove inactive or archived API users (with confirmation and a preview).
@@ -65,7 +65,7 @@ API_APP_ENV=production bundle exec rake api_users:remove[archived_or_inactive]
 ### Other tasks
 
 ```bash
-API_APP_ENV=development bundle exec rake -T
+RACK_ENV=development bundle exec rake -T
 ```
 
 ## Getting started
@@ -93,7 +93,7 @@ Use this when you already have Postgres and env vars configured.
 
 1. Install **Ruby 4.0.2** (see [`.tool-versions`](.tool-versions)), e.g. with [asdf](https://asdf-vm.com/).
 2. Install gems: `bundle install`
-3. Configure `.env` from `.env.example` and set `API_APP_ENV=development` plus `POSTGRES_*` (and other required keys).
+3. Configure `.env` from `.env.example` and set `RACK_ENV=development` plus `POSTGRES_*` (and other required keys).
 4. Ensure the database exists and migrations have been applied from the main ProtectedPlanet Rails app (this repo is not a Rails app and does not run `rails db:migrate` here).
 5. Start the app on port **9292**:
 
@@ -117,7 +117,7 @@ cd ..
 Use **IRB** (not Rails console). From the **project root**, load the app in one step:
 
 ```bash
-API_APP_ENV=development bundle exec bin/console
+RACK_ENV=development bundle exec bin/console
 ```
 
 
@@ -147,13 +147,13 @@ Do this whenever `api_attributes` or related permissions change, or when migrati
 bundle exec rake test
 ```
 
-`API_APP_ENV` defaults to `test` in [`test/test_helper.rb`](test/test_helper.rb) if unset. Ensure `POSTGRES_TEST_DBNAME` (and related `POSTGRES_*` vars) point at a test database.
+`RACK_ENV` defaults to `test` in [`test/test_helper.rb`](test/test_helper.rb) if unset. Ensure `POSTGRES_TEST_DBNAME` (and related `POSTGRES_*` vars) point at a test database.
 
 ## Troubleshooting
 
 - **Database connection errors:** Confirm Postgres is up and `POSTGRES_*` in `.env` match your instance (host/port often differ between Docker and localhost).
 - **Missing tables or columns:** Run migrations in the main ProtectedPlanet Rails repository against the same database.
-- **`API_APP_ENV` missing:** Set it for any command that loads [`config/environment.rb`](config/environment.rb).
+- **`RACK_ENV` missing:** Set it for any command that loads [`config/environment.rb`](config/environment.rb).
 - **Secrets:** Compare your `.env` with [`.env.example`](.env.example) and your team’s Keeper record.
 
 ## Additional resources

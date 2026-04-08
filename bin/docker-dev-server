@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 cd "$(dirname "$0")/.."
-
-# Run as production
-exec bundle exec puma -C config/puma.rb config.ru
+bundle install && exec bundle exec puma -C config/puma.rb config.ru

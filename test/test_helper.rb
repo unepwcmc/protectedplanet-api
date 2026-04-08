@@ -1,4 +1,4 @@
-ENV['API_APP_ENV'] ||= 'test'
+ENV['RACK_ENV'] ||= 'test'
 TEST_API_TOKEN = '123890123890'
 
 require 'minitest/autorun'

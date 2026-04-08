@@ -1,30 +1,17 @@
+# frozen_string_literal: true
+
 require 'rack'
 require_relative 'config/environment'
 
-# Must live in config.ru: `use` only works in Rack::Builder context (not inside required files).
-use ActiveRecordConnectionManagement
+# One file per RACK_ENV under config/rack/ (same env names as config/puma/ and config.ru).
 
-use Rack::Reloader, 0 if API_APP_ENV == 'development'
+env = ENV.fetch('RACK_ENV', 'development')
+path = File.expand_path(File.join('config', 'rack', "#{env}.rb"), __dir__)
 
-Appsignal.load(:grape) unless API_APP_ENV == 'test'
-
-require_relative 'api/root'
-require_relative 'web/root'
-
-use Rack::Session::Cookie, secret: ENV['RACK_SESSION_SECRET']
-use Rack::Csrf, raise: true
-use Rack::Config do |env|
-  env['api.tilt.root'] = "#{File.dirname(__FILE__)}/api"
+unless File.file?(path)
+  raise LoadError,
+        "No Rack config for RACK_ENV=#{env.inspect} (expected #{path}). " \
+        'Valid values: development, test, staging, production.'
 end
 
-use Rack::Cors do
-  allow do
-    origins '*'
-    resource '*', headers: :any, methods: %i[get post options]
-  end
-end
-
-use Appsignal::Rack::EventMiddleware unless API_APP_ENV == 'test'
-Appsignal.start unless API_APP_ENV == 'test'
-
-run Rack::Cascade.new [Web::Root, API::Root]
+instance_eval(File.read(path), path)

@@ -17,36 +17,17 @@ end
 
 module API
   class Root < Grape::API
-    if API_APP_ENV != 'test' && defined?(Appsignal::Rack::GrapeMiddleware)
+    if ENV['RACK_ENV'] != 'test' && defined?(Appsignal::Rack::GrapeMiddleware)
       insert_before Grape::Middleware::Error, Appsignal::Rack::GrapeMiddleware
     end
 
     use Middlewares::StatsCollector
 
     helpers API::Helpers
-
-    log_output =
-      if API_APP_ENV == 'test'
-        STDOUT
-      else
-        log_file = File.open("log/#{API_APP_ENV}.log", 'a')
-        log_file.sync = true
-        GrapeLogging::MultiIO.new(STDOUT, log_file)
-      end
-
+    log_output = STDOUT
     logger = Logger.new(log_output)
     logger.formatter = GrapeLogging::Formatters::Default.new
-
-    unless API_APP_ENV == 'test'
-      use GrapeLogging::Middleware::RequestLogger, { logger: logger }
-      use ExceptionNotification::Rack, slack: {
-        webhook_url: ENV['SLACK_WEBHOOK_URL'],
-        channel: '#protectedplanet-api',
-        additional_parameters: {
-          mrkdwn: true
-        }
-      }
-    end
+    use GrapeLogging::Middleware::RequestLogger, { logger: logger } unless ENV['RACK_ENV'] == 'test'
 
     rescue_from :all do |e|
       logger.error e

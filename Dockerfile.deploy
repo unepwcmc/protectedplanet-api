@@ -1,0 +1,65 @@
+# Production image: multi-stage build (compile gems with toolchain, ship minimal runtime).
+# syntax=docker/dockerfile:1
+
+# -----------------------------------------------------------------------------
+# Builder: compile native extensions; dev/test gem groups excluded
+# -----------------------------------------------------------------------------
+FROM ruby:4.0.2-slim AS builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  build-essential \
+  libssl-dev \
+  libpq-dev \
+  libyaml-dev \
+  zlib1g-dev \
+  libgeos-dev \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Deployment mode defaults to vendor/bundle; keep gems in the global path so we can COPY one dir.
+ENV BUNDLE_PATH=/usr/local/bundle
+
+COPY Gemfile Gemfile.lock ./
+
+RUN gem install bundler -v 4.0.9 && \
+  bundle config set --local deployment 'true' && \
+  bundle config set --local without 'development test' && \
+  bundle install -j4
+
+COPY . .
+
+# -----------------------------------------------------------------------------
+# Production: no compilers; runtime libs only; non-root user
+# -----------------------------------------------------------------------------
+FROM ruby:4.0.2-slim AS production
+
+# Runtime libraries for pg, RGeo/GEOS, psych/libyaml; curl for HEALTHCHECK
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  curl \
+  libgeos-c1t64 \
+  libpq5 \
+  libyaml-0-2 \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd --gid 1000 app \
+  && useradd --uid 1000 --gid app --home /app --shell /usr/sbin/nologin app
+
+WORKDIR /app
+
+# Match builder so `bundle exec` / puma resolve gems (not persisted in shell ENV otherwise).
+ENV BUNDLE_PATH=/usr/local/bundle \
+    BUNDLE_DEPLOYMENT=1
+
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+COPY --from=builder /app /app
+
+RUN mkdir -p /app/log /app/tmp \
+  && chown -R app:app /app
+
+USER app
+
+EXPOSE 9292
+
+CMD ["/bin/sh", "/app/bin/docker-production-server"]

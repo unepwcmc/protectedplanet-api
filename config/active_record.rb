@@ -18,7 +18,8 @@ end
 # Process ERB templates in database.yml
 database_config = ERB.new(File.read('config/database.yml')).result
 database_settings = YAML.safe_load(database_config, aliases: true)
-db_config = database_settings.fetch(API_APP_ENV)
+env_name = ENV.fetch('RACK_ENV')
 
 ActiveRecord.default_timezone = :utc
-ActiveRecord::Base.establish_connection(db_config)
+ActiveRecord::Base.configurations = ActiveRecord::DatabaseConfigurations.new(database_settings)
+ActiveRecord::Base.establish_connection(env_name.to_sym)

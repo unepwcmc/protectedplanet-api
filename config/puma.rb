@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-workers Integer(ENV.fetch('PUMA_WORKERS', '0'))
+# One file per RACK_ENV under config/puma/ (same env names as config/rack/ and config.ru).
 
-max_threads = Integer(ENV.fetch('PUMA_MAX_THREADS', 5))
-min_threads = Integer(ENV.fetch('PUMA_MIN_THREADS', 1))
-threads min_threads, max_threads
+env = ENV.fetch('RACK_ENV', 'development')
+path = File.expand_path(File.join('puma', "#{env}.rb"), __dir__)
 
-port 9292
+unless File.file?(path)
+  raise LoadError,
+        "No Puma config for RACK_ENV=#{env.inspect} (expected #{path}). " \
+        'Valid values: development, test, staging, production.'
+end
 
-# Optional: set PUMA_PIDFILE=/tmp/puma.pid if something expects a pidfile
-pidfile ENV['PUMA_PIDFILE'] if (path = ENV['PUMA_PIDFILE']) && !path.empty?
+instance_eval(File.read(path), path)
