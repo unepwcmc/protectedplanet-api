@@ -1,16 +1,13 @@
+require_relative 'serialiser_helpers'
+
 module API
   module Serialisers
     module V4
       module Concerns
         module ProtectedArea
+          include SerialiserHelpers
+          module_function :add_field
           module_function
-
-          def add_field(payload, key, enabled)
-            return unless enabled
-
-            value = yield
-            payload[key] = value
-          end
 
           def safe_value(record, method_name, fallback = nil)
             return record.public_send(method_name) if record.respond_to?(method_name)

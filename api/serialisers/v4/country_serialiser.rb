@@ -1,7 +1,11 @@
+require_relative 'concerns/serialiser_helpers'
+
 module API
   module Serialisers
     module V4
       module CountrySerialiser
+        include Concerns::SerialiserHelpers
+        module_function :add_field
         module_function
 
         GROUPED_GOVERNANCE_ORDER = [
@@ -87,13 +91,6 @@ module API
           end
 
           payload
-        end
-
-        def add_field(payload, key, enabled)
-          return unless enabled
-
-          value = yield
-          payload[key] = value unless value.nil?
         end
 
         def protected_area_count(country, jurisdiction_name)

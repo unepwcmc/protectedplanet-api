@@ -127,12 +127,6 @@ module API
             governance_payload(protected_area.governance)
           end
 
-          add_field(payload, 'pame_evaluations', current_user.access_to?(ProtectedArea, :pame_evaluations)) do
-            API::Serialisers::V4::PameEvaluationSerialiser.many(
-              protected_area.all_pame_evaluations_from_current_pa_and_parcels
-            )
-          end
-
           if current_user.access_to?(ProtectedArea, :green_list_status)
             # Emit `green_list_status: null` when association is nil.
             payload['green_list_status'] = green_list_status_payload(protected_area.green_list_status)
@@ -164,6 +158,12 @@ module API
           add_field(payload, 'legal_status_updated_at',
                     current_user.access_to?(ProtectedArea, :legal_status_updated_at)) do
             formatted_legal_status_updated_at(protected_area)
+          end
+
+          add_field(payload, 'pame_evaluations', current_user.access_to?(ProtectedArea, :pame_evaluations)) do
+            API::Serialisers::V4::PameEvaluationSerialiser.many(
+              protected_area.all_pame_evaluations_from_current_pa_and_parcels
+            )
           end
 
           payload
