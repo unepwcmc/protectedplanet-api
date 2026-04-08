@@ -15,10 +15,10 @@
       <h1 class="article__title">V3 API Documentation (Archived)</h1>
       <%= erb "shared/_v3_depreciated_announcement".to_sym %>
       <article class="s-article">
-        <%= markdown "documentation/v3/introduction".to_sym %>
-        <%= markdown "documentation/v3/authentication".to_sym %>
-        <%= markdown "documentation/v3/countries".to_sym %>
-        <%= markdown "documentation/v3/protected_areas".to_sym %>
+        <%= markdown_cached :"documentation/v3/introduction" %>
+        <%= markdown_cached :"documentation/v3/authentication" %>
+        <%= markdown_cached :"documentation/v3/countries" %>
+        <%= markdown_cached :"documentation/v3/protected_areas" %>
       </article>
     </div>
   </div>

@@ -40,13 +40,13 @@ gem 'puma', '~> 7.2'
 # Testing
 group :test, :development do
   gem 'database_cleaner-active_record', '~> 2.2'
-  gem 'debug', '~> 1.10'
   gem 'factory_bot', '~> 6.4'
   gem 'minitest', '~> 6.0'
   gem 'rack-test', '~> 2.1'
-  gem 'rubocop', '~> 1.86', require: false
+  gem 'simplecov', '~> 0.22', require: false
 end
 
-group :test do
-  gem 'simplecov', '~> 0.22', require: false
+group :development do
+  gem 'debug', '~> 1.10'
+  gem 'rubocop', '~> 1.86', require: false
 end

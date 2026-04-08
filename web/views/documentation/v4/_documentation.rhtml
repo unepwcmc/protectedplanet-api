@@ -38,15 +38,15 @@
     </div>
 
     <article class="s-article">
-      <%= markdown "documentation/v4/introduction".to_sym %>
+      <%= markdown_cached :"documentation/v4/introduction" %>
       <hr>
       <%= erb "documentation/v4/_authentication".to_sym %>
       <hr>
-      <%= markdown "documentation/v4/countries".to_sym %>
+      <%= markdown_cached :"documentation/v4/countries" %>
       <hr>
-      <%= markdown "documentation/v4/protected_areas".to_sym %>
+      <%= markdown_cached :"documentation/v4/protected_areas" %>
       <hr>
-      <%= markdown "documentation/v4/protected_area_parcels".to_sym %>
+      <%= markdown_cached :"documentation/v4/protected_area_parcels" %>
     </article>
   </div>
 </div>

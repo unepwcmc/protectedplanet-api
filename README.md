@@ -80,7 +80,7 @@ The API shares the Rails app database. The parent repo’s Compose file defines 
 4. Start the stack **with the API profile**:
 
    ```bash
-   SSH_AUTH_SOCK=$SSH_AUTH_SOCK docker compose --profile api up
+   docker compose --profile api up
    ```
 
 5. Open **`http://localhost:9292`**.
@@ -102,6 +102,22 @@ Use this when you already have Postgres and env vars configured.
    ```
 
 6. Visit **`http://localhost:9292`**.
+
+### Development email previews
+
+- `mailhog` (default): sends email to MailHog (`http://localhost:8025`)
+- `smtp`: uses `MAILER_*` SMTP settings
+
+Docker run (ProtectedPlanet):
+
+```bash
+docker compose --profile api-new up
+```
+
+Open:
+
+- API: `http://localhost:9292`
+- MailHog: `http://localhost:8025`
 
 ## Updating the database submodule
 

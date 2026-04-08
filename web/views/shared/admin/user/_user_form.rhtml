@@ -2,12 +2,12 @@
   <%= Rack::Csrf.csrf_tag(env) %>
 
   <div class="row">
-    <label class="u-alt-font">Active</label>
-    <input name="api_user[active]" type="checkbox" value="1" <%= api_user.active ? "checked" : nil %>>
+    <label class="u-alt-font" for="api_user_active">Active</label>
+    <input id="api_user_active" name="api_user[active]" type="checkbox" value="1" <%= api_user.active ? "checked" : nil %>>
   </div>
   <div class="row">
-    <label class="u-alt-font">Archived</label>
-    <input name="api_user[archived]" type="checkbox" value="1" <%= api_user.archived ? "checked" : nil %>>
+    <label class="u-alt-font" for="api_user_archived">Archived</label>
+    <input id="api_user_archived" name="api_user[archived]" type="checkbox" value="1" <%= api_user.archived ? "checked" : nil %>>
   </div>
 
   <h4 class="article__title--paragraph">Permissions</h4>
@@ -17,9 +17,11 @@
         <h4 class="article__title--subparagraph"><%= api_object.name %></h4>
         <table class="table">
           <% api_object.api_attributes.each do |attribute| %>
+            <% input_id = "permission_#{api_object.name.to_s.parameterize}_#{attribute.to_s.parameterize}" %>
             <tr>
-              <td><label class="u-alt-font"><%= attribute %> </label></td>
+              <td><label class="u-alt-font" for="<%= input_id %>"><%= attribute %> </label></td>
               <td><input
+                  id="<%= input_id %>"
                   name="api_user[permissions][<%= api_object.name %>][<%= attribute %>]"
                   type="checkbox"
                   value="1"
@@ -35,7 +37,7 @@
   <button name="save" class="big-button" type="submit">
     Save
   </button>
-  <button onclick="return confirm('Are you sure?');" name="destroy" class="big-button--danger big-button" type="submit">
+  <button name="destroy" class="js-confirm-delete big-button--danger big-button" type="submit">
     Delete user
   </button>
 
