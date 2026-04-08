@@ -23,6 +23,11 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     assert last_response.ok?
     assert_equal 3, @json_response['protected_areas'].size
     assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 1, @json_response['pagination']['page']
+    assert_equal 25, @json_response['pagination']['per_page']
+    assert_equal 1, @json_response['pagination']['total_pages']
+    assert_equal 3, @json_response['pagination']['total_count']
   end
 
   def test_get_protected_areas_second_page_returns_slice
@@ -32,6 +37,11 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     assert last_response.ok?
     assert_equal 1, @json_response['protected_areas'].size
     assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 2, @json_response['pagination']['page']
+    assert_equal 2, @json_response['pagination']['per_page']
+    assert_equal 2, @json_response['pagination']['total_pages']
+    assert_equal 3, @json_response['pagination']['total_count']
   end
 
   def test_get_protected_areas_rejects_per_page_out_of_range
@@ -88,6 +98,8 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     assert_equal(123, @json_response['protected_areas'][0]['site_id'])
     assert_equal('Darjeeling', @json_response['protected_areas'][0]['name_english'])
     assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 1, @json_response['pagination']['total_count']
   end
 
   def test_get_protected_areas_search_with_country_lowercase_returns_pas_with_country
@@ -211,6 +223,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
       refute_empty pa['pame_evaluations'], 'expected PAME data (biopama scope)'
       assert_v4_pame_evaluation_shape(pa['pame_evaluations'].first)
     end
+    refute @json_response.key?('pagination')
   end
 
   def test_get_protected_areas_returns_401_on_wrong_token

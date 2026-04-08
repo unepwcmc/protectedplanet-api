@@ -16,8 +16,8 @@ module API
           'Not Reported'
         ].freeze
 
-        def collection(countries, current_user:, with_geometry:, iucn_category_long_names:, group_governances:)
-          {
+        def collection(countries, current_user:, with_geometry:, iucn_category_long_names:, group_governances:, pagination: nil)
+          response = {
             'countries' => countries.map do |country|
               country_payload(
                 country,
@@ -28,6 +28,9 @@ module API
               )
             end
           }
+
+          response['pagination'] = pagination if pagination
+          response
         end
 
         def single(country, current_user:, with_geometry:, iucn_category_long_names:, group_governances:)

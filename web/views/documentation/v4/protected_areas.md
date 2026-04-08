@@ -165,7 +165,13 @@ Sample response:
                 }
             }
         }
-    ]
+    ],
+    "pagination": {
+        "page": 1,
+        "per_page": 25,
+        "total_pages": 12,
+        "total_count": 287
+    }
 }
 ~~~
 
@@ -349,12 +355,19 @@ Sample response:
             },
             "legal_status_updated_at": "01/01/1872"
         }
-    ]
+    ],
+    "pagination": {
+        "page": 1,
+        "per_page": 10,
+        "total_pages": 29,
+        "total_count": 287
+    }
 }
 ~~~
 
 ## `GET /v4/protected_areas/biopama`
 Returns protected areas from ACP (African, Caribbean and Pacific) countries that have PAME evaluations.
+This endpoint is not paginated and does not include a `pagination` object.
 
 The accepted parameters are:
 

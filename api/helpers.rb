@@ -45,5 +45,14 @@ module API
 
       collection.page(page).per(per_page)
     end
+
+    def pagination_payload(paginated_collection)
+      {
+        'page' => paginated_collection.current_page,
+        'per_page' => paginated_collection.limit_value,
+        'total_pages' => paginated_collection.total_pages,
+        'total_count' => paginated_collection.total_count
+      }
+    end
   end
 end

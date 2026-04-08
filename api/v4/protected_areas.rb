@@ -20,11 +20,13 @@ class API::V4::ProtectedAreas < Grape::API
   get do
     collection = ProtectedArea.with_api_json_includes
     collection = collection.without_geometry unless params[:with_geometry]
+    paginated = paginate_collection(collection)
 
     API::Serialisers::V4::ProtectedAreaSerialiser.collection(
-      paginate_collection(collection),
+      paginated,
       current_user: current_user,
-      with_geometry: params[:with_geometry]
+      with_geometry: params[:with_geometry],
+      pagination: pagination_payload(paginated)
     )
   end
 
@@ -49,11 +51,13 @@ class API::V4::ProtectedAreas < Grape::API
   #########
   get :search do
     collection = ProtectedArea.search(declared(params, include_missing: false))
+    paginated = paginate_collection(collection)
 
     API::Serialisers::V4::ProtectedAreaSerialiser.collection(
-      paginate_collection(collection),
+      paginated,
       current_user: current_user,
-      with_geometry: params[:with_geometry]
+      with_geometry: params[:with_geometry],
+      pagination: pagination_payload(paginated)
     )
   end
 

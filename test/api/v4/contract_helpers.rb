@@ -19,6 +19,7 @@ module V4ContractHelpers
   PAME_SOURCE_KEYS = %w[eff_metaid data_title resp_party year language].freeze
 
   PAME_METHOD_KEYS = %w[id name].freeze
+  PAGINATION_KEYS = %w[page per_page total_pages total_count].freeze
 
   GREEN_LIST_STATUS_KEYS = %w[
     id gl_status gl_expiry gl_link status expiry_date link
@@ -118,6 +119,16 @@ module V4ContractHelpers
     SAMPLE_COUNTRY_VALUES.each do |key, value|
       assert_equal value, country[key], "unexpected country value for #{key}"
     end
+  end
+
+  def assert_v4_pagination_shape(pagination)
+    assert_kind_of Hash, pagination
+    missing = PAGINATION_KEYS - pagination.keys
+    assert_empty missing, "pagination missing keys: #{missing.inspect}"
+    assert_kind_of Integer, pagination['page']
+    assert_kind_of Integer, pagination['per_page']
+    assert_kind_of Integer, pagination['total_pages']
+    assert_kind_of Integer, pagination['total_count']
   end
 
   def assert_v4_protected_area_envelope(pa, with_geometry:)

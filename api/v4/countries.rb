@@ -22,13 +22,15 @@ class API::V4::Countries < Grape::API
   get do
     collection = Country.with_api_json_includes
     collection = collection.without_geometry unless params[:with_geometry]
+    paginated = paginate_collection(collection)
 
     API::Serialisers::V4::CountrySerialiser.collection(
-      paginate_collection(collection),
+      paginated,
       current_user: current_user,
       with_geometry: params[:with_geometry],
       iucn_category_long_names: params[:iucn_category_long_names],
-      group_governances: params[:group_governances]
+      group_governances: params[:group_governances],
+      pagination: pagination_payload(paginated)
     )
   end
 

@@ -10,12 +10,15 @@ module API
 
         module_function
 
-        def collection(protected_areas, current_user:, with_geometry:)
-          {
+        def collection(protected_areas, current_user:, with_geometry:, pagination: nil)
+          response = {
             'protected_areas' => protected_areas.map do |protected_area|
               payload(protected_area, current_user: current_user, with_geometry: with_geometry)
             end
           }
+
+          response['pagination'] = pagination if pagination
+          response
         end
 
         def single(protected_area, current_user:, with_geometry:)

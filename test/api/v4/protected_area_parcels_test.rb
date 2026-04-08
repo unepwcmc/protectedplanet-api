@@ -23,6 +23,11 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     assert last_response.ok?
     assert_equal 3, @json_response['protected_area_parcels'].size
     assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 1, @json_response['pagination']['page']
+    assert_equal 25, @json_response['pagination']['per_page']
+    assert_equal 1, @json_response['pagination']['total_pages']
+    assert_equal 3, @json_response['pagination']['total_count']
   end
 
   def test_get_protected_area_parcels_second_page_returns_slice
@@ -32,6 +37,11 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     assert last_response.ok?
     assert_equal 1, @json_response['protected_area_parcels'].size
     assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 2, @json_response['pagination']['page']
+    assert_equal 2, @json_response['pagination']['per_page']
+    assert_equal 2, @json_response['pagination']['total_pages']
+    assert_equal 3, @json_response['pagination']['total_count']
   end
 
   def test_get_protected_area_parcels_rejects_per_page_out_of_range
@@ -63,6 +73,8 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     assert_equal('ABC', @json_response['protected_area_parcels'][0]['site_pid'])
     assert_equal('Parcel A', @json_response['protected_area_parcels'][0]['name_english'])
     assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 1, @json_response['pagination']['total_count']
   end
 
   def test_get_protected_area_parcels_search_with_designation_returns_matching_parcels
@@ -156,6 +168,7 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     @json_response['protected_area_parcels'].each do |pap|
       assert_v4_protected_area_parcel_envelope(pap, with_geometry: true)
     end
+    refute @json_response.key?('pagination')
   end
 
   def test_get_protected_area_parcels_123_returns_404_when_none_exist
