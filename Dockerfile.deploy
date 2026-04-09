@@ -62,4 +62,4 @@ USER app
 
 EXPOSE 9292
 
-CMD ["/bin/sh", "/app/bin/docker-production-server"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "config.ru"]

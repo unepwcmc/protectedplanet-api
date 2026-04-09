@@ -7,7 +7,7 @@ servers:
     options:
       add-host: host.docker.internal:host-gateway
     labels:
-      traefik.http.routers.protectedplanet-api-web-staging.rule: Host(`TODO_STAGING_DOMAIN`)
+      traefik.http.routers.protectedplanet-api-web-staging.rule: Host(`api-remove-after-testing.new-web.pp-staging.linode.protectedplanet.net`)
       traefik.http.routers.protectedplanet-api-web-staging.priority: 10
       traefik.http.middlewares.protectedplanet-api-https-headers.headers.customRequestHeaders.X-Forwarded-Proto: "https"
       traefik.http.routers.protectedplanet-api-web-staging.middlewares: protectedplanet-api-https-headers@docker,protectedplanet-api-web-staging-retry@docker
