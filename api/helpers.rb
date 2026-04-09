@@ -45,13 +45,13 @@ module API
       collection.page(page).per(per_page)
       # Keep pagination deterministic across refreshes when endpoints don't provide
       # an explicit order. Respect endpoint-specific ordering when present.
-      # ordered_collection = if collection.order_values.empty?
-      #                        apply_stable_default_order(collection)
-      #                      else
-      #                        collection
-      #                      end
+      ordered_collection = if collection.order_values.empty?
+                             apply_stable_default_order(collection)
+                           else
+                             collection
+                           end
 
-      # ordered_collection.page(page).per(per_page)
+      ordered_collection.page(page).per(per_page)
     end
 
     def pagination_payload(paginated_collection)
