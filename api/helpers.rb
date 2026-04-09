@@ -42,8 +42,16 @@ module API
     def paginate_collection(collection)
       page = params[:page].presence || 1
       per_page = params[:per_page].presence || DEFAULT_PER_PAGE
-
       collection.page(page).per(per_page)
+      # Keep pagination deterministic across refreshes when endpoints don't provide
+      # an explicit order. Respect endpoint-specific ordering when present.
+      # ordered_collection = if collection.order_values.empty?
+      #                        apply_stable_default_order(collection)
+      #                      else
+      #                        collection
+      #                      end
+
+      # ordered_collection.page(page).per(per_page)
     end
 
     def pagination_payload(paginated_collection)
@@ -53,6 +61,15 @@ module API
         'total_pages' => paginated_collection.total_pages,
         'total_count' => paginated_collection.total_count
       }
+    end
+
+    private
+
+    def apply_stable_default_order(collection)
+      primary_key = collection.klass.primary_key
+      return collection unless primary_key
+
+      collection.order("#{collection.klass.table_name}.#{primary_key}")
     end
   end
 end
