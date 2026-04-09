@@ -36,3 +36,9 @@ env:
     - MAILER_HOST
     - MAILER_PORT
     - APPSIGNAL_API_TOKEN
+
+healthcheck:
+  path: /
+  max_attempts: 15
+  interval: 20s
+  port: "9292"
