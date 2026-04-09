@@ -2,10 +2,11 @@ source 'https://rubygems.org'
 
 ruby '4.0.2'
 
-gem 'dotenv', '~> 3.2'
+# We can't upgrade to dotenv 3.2 until we upgrade kamal v2
+gem 'dotenv', '~> 2.8'
 
 # Frameworks
-gem 'grape', '~> 3.1'
+gem 'grape', '~> 3.2'
 gem 'grape_logging', '~> 3.0'
 gem 'kaminari', '~> 1.2'
 gem 'kramdown', '~> 2.4'
@@ -34,8 +35,9 @@ gem 'csv', '~> 3.3'
 gem 'rake', '~> 13.2'
 gem 'webrick', '~> 1.9'
 
-# App server (production Docker / multi-threaded)
-gem 'puma', '~> 7.2'
+# Deployment & Server
+gem 'kamal', '~> 1.9'
+gem 'puma', '~> 8.0'
 
 # Testing
 group :test, :development do
