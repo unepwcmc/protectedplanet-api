@@ -82,7 +82,6 @@ html {
 }
 .protectedplanet-logo {
   padding-left: 2.5rem;
-  content: "";
   display: block;
   background: url("../images/hand-solo.png") center left/2rem no-repeat;
 }
@@ -176,7 +175,6 @@ html {
   font-family: 'MuseoSlab';
   font-weight: 700;
   font-size: 1.25rem;
-  line-height: 1.6875rem;
   line-height: 2rem;
   margin-bottom: 0.5rem;
 }
@@ -266,7 +264,6 @@ html {
   font-weight: 300;
   font-size: 1.25rem;
   line-height: 1.6875rem;
-  line-height: 1.6875rem;
 }
 .link-with-icon {
   font-family: 'MuseoSans';
@@ -314,11 +311,7 @@ html {
   font-weight: 100;
   font-size: 1rem;
   line-height: 1.3125rem;
-  text-align: right;
   padding-bottom: 0.5em;
-}
-.s-article table tr:first-child td:first-child {
-  text-align: left;
 }
 .s-article table tr:first-child td {
   text-align: left;
@@ -365,6 +358,7 @@ html {
 }
 .uservoice__icon {
   margin-right: 0.25rem;
+  color: #ffffff;
 }
 .uservoice--no-color {
   color: inherit !important;
@@ -372,9 +366,6 @@ html {
 }
 .uservoice--bold {
   font-weight: 700;
-}
-.uservoice__icon {
-  color: #ffffff;
 }
 .hero {
   font-size: 1rem;
@@ -431,7 +422,6 @@ html {
     font-family: 'MuseoSans';
     font-weight: 300;
     font-size: 2.375rem;
-    line-height: 2.6875rem;
     line-height: 1.5;
   }
 }
@@ -562,6 +552,7 @@ html {
   line-height: 50px;
 }
 .side-bar {
+  flex: 0 0 29%;
   width: 29%;
 }
 .side-bar:last-child {
@@ -921,6 +912,8 @@ img {
   height: auto;
 }
 select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   font-size: 14px;
   font-family: 'MuseoSans';
@@ -931,9 +924,10 @@ select {
   background-color: #ffffff;
   border-radius: 0;
   text-indent: 0.01px;
-  text-overflow: "";
+  text-overflow: clip;
 }
 .s-article pre > code {
+  white-space: pre-wrap;
   display: block;
 }
 .s-article p + pre {
@@ -1118,7 +1112,12 @@ table {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 74.41059%;
+  width: 71%;
+}
+.three-fourths.article {
+  flex: 1;
+  width: auto;
+  min-width: 0;
 }
 .three-fourths:last-child {
   margin-right: 0;
@@ -1139,6 +1138,10 @@ table {
 }
 .flex-row, .attribute {
   flex-flow: row nowrap;
+}
+.flex.flex-row.gap-1 {
+  display: flex;
+  gap: 1rem;
 }
 sup {
   font-size: 0.625rem;
@@ -1179,13 +1182,6 @@ sup {
 
 .margin-top-1 {
   margin-top: 1rem;
-}
-
-.s-form {
-  font-family: 'MuseoSans';
-  font-weight: 500;
-  font-size: 1rem;
-  line-height: 1.3125rem;
 }
 
 .s-form label {
