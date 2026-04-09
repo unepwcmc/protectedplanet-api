@@ -4,6 +4,7 @@ use ActiveRecordConnectionManagement
 Appsignal.load(:grape)
 
 require_relative '../cors_origins'
+CorsOrigins.ensure_explicit_origins!
 require_relative 'security_headers'
 require_relative '../../api/root'
 require_relative '../../web/root'

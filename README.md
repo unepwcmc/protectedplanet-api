@@ -41,6 +41,10 @@ Boot **requires** `RACK_ENV` (e.g. `development`, `test`, or `production`). That
 
 Copy [`.env.example`](.env.example) to `.env` and fill in values (team secrets are typically stored in Keeper). Database fields must match a running Postgres instance (often the one from the main ProtectedPlanet Docker stack).
 
+### CORS (`CORS_ORIGINS`)
+
+Browser clients sending `Origin` only receive CORS headers for origins listed in **`CORS_ORIGINS`** (comma-separated). In **development** and **test**, if the variable is unset or empty, the app behaves like a wildcard (`*`) and allows any origin, matching older behaviour. In **staging** and **production**, **`CORS_ORIGINS` must be set** to at least one explicit origin or the application will not start. Deployed values should list real front-end URLs (for example `https://www.protectedplanet.net`).
+
 ## Available tasks
 
 ### Reset API user permissions

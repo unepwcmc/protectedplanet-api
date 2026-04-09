@@ -6,18 +6,20 @@ class Web::AdminController < Sinatra::Base
   helpers Web::Helpers
   set :views, File.join(settings.root, '../views')
 
+  before do
+    path = request.path_info
+    protected! if path == '/admin' || path.start_with?('/admin/')
+  end
+
   get('/admin') do
-    protected!
     erb :admin, layout: :layout
   end
 
   get('/admin/inactive') do
-    protected!
     erb :inactive, layout: :layout
   end
 
   get('/admin/archived') do
-    protected!
     erb :archived, layout: :layout
   end
 
@@ -29,7 +31,6 @@ class Web::AdminController < Sinatra::Base
   end
 
   post('/admin/api_users/:id') do
-    protected!
     user = ApiUser.find(params[:id])
 
     if params.has_key?('destroy')
@@ -52,7 +53,6 @@ class Web::AdminController < Sinatra::Base
   end
 
   get('/admin/sign_out') do
-    protected!
     session.destroy
 
     redirect '/'

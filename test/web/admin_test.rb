@@ -28,6 +28,13 @@ class WebAdminTest < Minitest::Test
     assert_equal 'Basic realm="Restricted Area"', last_response.headers['WWW-Authenticate']
   end
 
+  def test_get_admin_export_requires_basic_auth
+    get '/admin/export'
+
+    assert_equal 401, last_response.status
+    assert_equal 'Basic realm="Restricted Area"', last_response.headers['WWW-Authenticate']
+  end
+
   def test_get_admin_with_basic_auth_renders_active_users
     create(:api_user, email: 'active@example.com', active: true, archived: false)
     create(:api_user, email: 'archived@example.com', active: false, archived: true)
