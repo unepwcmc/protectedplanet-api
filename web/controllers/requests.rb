@@ -20,7 +20,7 @@ class Web::RequestsController < Sinatra::Base
   private
 
   def send_notification(new_user)
-    activation_url = url('/admin')
+    activation_url = url('/admin/inactive')
     Mailer.send_new_request_notification(new_user, activation_url)
   end
 end
