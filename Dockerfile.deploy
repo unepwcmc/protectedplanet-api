@@ -4,7 +4,8 @@
 # -----------------------------------------------------------------------------
 # Builder: compile native extensions; dev/test gem groups excluded
 # -----------------------------------------------------------------------------
-FROM ruby:4.0.2-slim AS builder
+ARG DOCKER_BASE_IMAGE=ruby:4.0.2-slim
+FROM $DOCKER_BASE_IMAGE AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   build-essential \
@@ -32,7 +33,7 @@ COPY . .
 # -----------------------------------------------------------------------------
 # Production: no compilers; runtime libs only; non-root user
 # -----------------------------------------------------------------------------
-FROM ruby:4.0.2-slim AS production
+FROM $DOCKER_BASE_IMAGE AS production
 
 # Runtime libraries for pg, RGeo/GEOS, psych/libyaml; curl for HEALTHCHECK
 RUN apt-get update && apt-get install -y --no-install-recommends \

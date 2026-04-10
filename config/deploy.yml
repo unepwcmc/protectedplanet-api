@@ -14,6 +14,8 @@ builder:
   remote:
     arch: amd64
   dockerfile: Dockerfile.deploy
+  args:
+    DOCKER_BASE_IMAGE: ruby:4.0.2-slim
 
 env:
   clear:
