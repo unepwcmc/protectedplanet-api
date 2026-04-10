@@ -5,7 +5,7 @@ Returns all protected areas, paginated. Accepts a `with_geometry` parameter to r
 
 The accepted parameters are:
 
-```
+~~~
 with_geometry (Boolean)
   If set, returns the geojson representation of the geometry of the protected areas.
   Defaults to false.
@@ -16,11 +16,11 @@ page (Number)
 per_page (Number)
   Controls how many protected areas are returned per page. Defaults to 25.
   For performance reasons, the maximum value is 50.
-```
+~~~
 
 Sample response:
 
-```
+~~~
 {
     "protected_areas": [
         {
@@ -181,14 +181,14 @@ Sample response:
         "total_count": 287
     }
 }
-```
+~~~
 
 ## `GET /v4/protected_areas/search`
 Search for a subset of protected areas based on various criteria.
 
 The accepted parameters are:
 
-```
+~~~
 country (String)
   Filter by country ISO3 code (3 letters).
 
@@ -220,19 +220,19 @@ page (Number)
 per_page (Number)
   Controls how many protected areas are returned per page. Defaults to 25.
   For performance reasons, the maximum value is 50.
-```
+~~~
 
 **Note**: At least one of the search parameters (country, marine, is_green_list, designation, jurisdiction, governance, iucn_category) must be provided.
 
 Sample request:
 
-```
+~~~
 GET /v4/protected_areas/search?country=USA&marine=false&is_green_list=true&per_page=10
-```
+~~~
 
 Sample response:
 
-```
+~~~
 {
     "protected_areas": [
         {
@@ -379,7 +379,7 @@ Sample response:
         "total_count": 287
     }
 }
-```
+~~~
 
 ## `GET /v4/protected_areas/biopama`
 Returns protected areas from ACP (African, Caribbean and Pacific) countries that have PAME evaluations.
@@ -387,15 +387,15 @@ This endpoint is not paginated and does not include a `pagination` object.
 
 The accepted parameters are:
 
-```
+~~~
 with_geometry (Boolean)
   If set, returns the geojson representation of the geometry.
   Defaults to false.
-```
+~~~
 
 Sample response:
 
-```
+~~~
 {
     "protected_areas": [
         {
@@ -523,22 +523,22 @@ Sample response:
         }
     ]
 }
-```
+~~~
 
 ## `GET /v4/protected_areas/:site_id`
 Returns a single protected area by its site_id.
 
 The accepted parameters are:
 
-```
+~~~
 with_geometry (Boolean)
   If set, returns the geojson representation of the geometry.
   Defaults to true.
-```
+~~~
 
 Sample response:
 
-```
+~~~
 {
     "protected_area": {
         "name_english": "Yellowstone National Park",
@@ -692,4 +692,4 @@ Sample response:
         "legal_status_updated_at": "01/01/1872"
     }
 }
-```
+~~~
