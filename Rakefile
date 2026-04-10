@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift("#{File.dirname(__FILE__)}")
+$LOAD_PATH.unshift(File.dirname(__FILE__).to_s)
 
 require 'yaml'
 require 'erb'
