@@ -181,6 +181,7 @@ class API::V3::ProtectedAreasTest < Minitest::Test
 
   def test_get_protected_areas_search_with_is_green_list_returns_green_listed_pas
     green_list_status = GreenListStatus.create!(ContractSamples::GREEN_LIST_STATUS_ATTRIBUTES)
+
     create(:protected_area, name: 'Darjeeling', green_list_status: green_list_status)
     create(:protected_area, name: 'Not Marine', green_list_status_id: nil)
 

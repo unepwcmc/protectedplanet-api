@@ -49,6 +49,8 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
 
     refute last_response.ok?
     assert_equal 400, last_response.status
+    assert_equal 3, @json_response['protected_area_parcels'].size
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
   end
 
   def test_get_protected_area_parcels_with_geometry_true_returns_all_protected_area_parcels_with_geojson
@@ -68,6 +70,7 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     get_json_api '/v4/protected_area_parcels/search', { country: 'WES' }
 
     assert last_response.ok?
+
     assert_equal(1, @json_response['protected_area_parcels'].size)
     assert_equal(123, @json_response['protected_area_parcels'][0]['site_id'])
     assert_equal('ABC', @json_response['protected_area_parcels'][0]['site_pid'])
@@ -132,6 +135,12 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     assert last_response.ok?
     assert_equal 1, @json_response['protected_area_parcels'].size
     assert_equal 8101, @json_response['protected_area_parcels'][0]['site_id']
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+
+    assert_equal(1, @json_response['protected_area_parcels'].size)
+    assert_equal(123, @json_response['protected_area_parcels'][0]['site_id'])
+    assert_equal('ABC', @json_response['protected_area_parcels'][0]['site_pid'])
+    assert_equal('Parcel A', @json_response['protected_area_parcels'][0]['name_english'])
     assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
   end
 

@@ -53,6 +53,7 @@ Browser clients sending `Origin` only receive CORS headers for origins listed in
 RACK_ENV=production bundle exec rake api_users:reset_permissions
 ```
 
+- As of 10Apr26 all users should have all fields access, if this changes in future then update the rake task
 - **Purpose:** Give all API users access to every field listed in each model’s `api_attributes`.
 - **When:** After adding or changing fields in `api_attributes`, or after migrations expose new API columns.
 
@@ -157,7 +158,17 @@ end
 
 ### 2. Reset permissions
 
-Run [Reset API user permissions](#reset-api-user-permissions) so existing users can see new fields.
+
+
+#### ⚠️ Important Notes:
+- **Always run the rake task** after modifying `api_attributes`
+- This ensures existing API users can access new fields
+- **How?**
+  - Adding new fields to `api_attributes` arrays
+  - Modifying existing field permissions
+  - Database migrations that add API-exposed columns (via ProtectedPlanet repo rails db:migrate)
+  - Run [Reset API user permissions](#reset-api-user-permissions) so existing users can see new fields.
+
 
 Do this whenever `api_attributes` or related permissions change, or when migrations add API-exposed columns.
 

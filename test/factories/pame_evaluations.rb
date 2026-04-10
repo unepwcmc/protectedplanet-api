@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :pame_evaluation do
-    association :protected_area
-    association :pame_source
-    association :pame_method
-
     eff_metaid { ContractSamples::V4_PAME_EVALUATION['eff_metaid'] }
     asmt_year { ContractSamples::V4_PAME_EVALUATION['asmt_year'] }
     asmt_url { ContractSamples::V4_PAME_EVALUATION['asmt_url'] }

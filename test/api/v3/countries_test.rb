@@ -93,6 +93,13 @@ class API::V3::CountriesTest < Minitest::Test
     assert_equal 404, last_response.status
   end
 
+  def test_get_countries_unknown_returns_404
+    get_with_rabl '/v3/countries/ZZZ'
+
+    refute last_response.ok?
+    assert_equal 404, last_response.status
+  end
+
   def test_get_countries_WES_returns_designations_with_counts
     country = create(:country, name: 'Zubrowka', iso_3: 'WES', bounding_box: 'POINT(-122 47)')
     jurisdiction = create(:jurisdiction, name: 'National')
@@ -202,6 +209,21 @@ class API::V3::CountriesTest < Minitest::Test
   def test_get_countries_returns_401_on_inactive_user
     user = ApiUser.create(token: 'thetoken', active: false)
     get_json_api '/v3/countries', { token: user.token }
+
+    refute last_response.ok?
+    assert_equal 401, last_response.status
+  end
+
+  def test_get_countries_returns_401_on_wrong_token
+    get_with_rabl '/v3/countries', token: 'wrong token'
+
+    refute last_response.ok?
+    assert_equal 401, last_response.status
+  end
+
+  def test_get_countries_returns_401_on_inactive_user
+    user = ApiUser.create(token: 'thetoken', active: false)
+    get_with_rabl '/v3/countries', { token: user.token }
 
     refute last_response.ok?
     assert_equal 401, last_response.status

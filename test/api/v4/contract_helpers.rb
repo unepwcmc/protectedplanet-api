@@ -19,6 +19,7 @@ module V4ContractHelpers
   PAME_SOURCE_KEYS = %w[eff_metaid data_title resp_party year language].freeze
 
   PAME_METHOD_KEYS = %w[id name].freeze
+
   PAGINATION_KEYS = %w[page per_page total_pages total_count].freeze
 
   GREEN_LIST_STATUS_KEYS = %w[
@@ -60,15 +61,15 @@ module V4ContractHelpers
     missing = PAME_EVALUATION_KEYS - evaluation.keys
     assert_empty missing, "pame_evaluation missing keys: #{missing.inspect}"
 
-    assert_kind_of Hash, evaluation["source"]
-    src_missing = PAME_SOURCE_KEYS - evaluation["source"].keys
+    assert_kind_of Hash, evaluation['source']
+    src_missing = PAME_SOURCE_KEYS - evaluation['source'].keys
     assert_empty src_missing, "pame source missing keys: #{src_missing.inspect}"
-    src_id = evaluation["source"]["eff_metaid"]
+    src_id = evaluation['source']['eff_metaid']
     assert src_id.is_a?(Integer) && src_id > 0,
-      "API must include source.eff_metaid (positive integer; serialized pame_sources.id)"
+           'API must include source.eff_metaid (positive integer; serialized pame_sources.id)'
 
-    assert_kind_of Hash, evaluation["pame_method"]
-    pm_missing = PAME_METHOD_KEYS - evaluation["pame_method"].keys
+    assert_kind_of Hash, evaluation['pame_method']
+    pm_missing = PAME_METHOD_KEYS - evaluation['pame_method'].keys
     assert_empty pm_missing, "pame_method missing keys: #{pm_missing.inspect}"
   end
 
@@ -76,9 +77,9 @@ module V4ContractHelpers
     assert_kind_of Hash, gl
     missing = GREEN_LIST_STATUS_KEYS - gl.keys
     assert_empty missing, "green_list_status missing keys: #{missing.inspect}"
-    assert_equal gl["gl_status"], gl["status"]
-    assert_equal gl["gl_expiry"], gl["expiry_date"]
-    assert_equal gl["gl_link"], gl["link"]
+    assert_equal gl['gl_status'], gl['status']
+    assert_equal gl['gl_expiry'], gl['expiry_date']
+    assert_equal gl['gl_link'], gl['link']
   end
 
   def assert_v4_pame_evaluation(evaluation)
@@ -89,11 +90,11 @@ module V4ContractHelpers
     end
 
     SAMPLE_PAME_SOURCE_VALUES.each do |key, value|
-      assert_equal value, evaluation["source"][key], "unexpected source value for #{key}"
+      assert_equal value, evaluation['source'][key], "unexpected source value for #{key}"
     end
 
     SAMPLE_PAME_METHOD_VALUES.each do |key, value|
-      assert_equal value, evaluation["pame_method"][key], "unexpected pame_method value for #{key}"
+      assert_equal value, evaluation['pame_method'][key], "unexpected pame_method value for #{key}"
     end
   end
 
@@ -101,18 +102,18 @@ module V4ContractHelpers
     SAMPLE_GREEN_LIST_VALUES.each do |key, value|
       assert_equal value, gl[key], "unexpected green_list_status value for #{key}"
     end
-    assert_equal gl["gl_status"], gl["status"]
-    assert_equal gl["gl_expiry"], gl["expiry_date"]
-    assert_equal gl["gl_link"], gl["link"]
+    assert_equal gl['gl_status'], gl['status']
+    assert_equal gl['gl_expiry'], gl['expiry_date']
+    assert_equal gl['gl_link'], gl['link']
   end
 
   def assert_v4_country_shape(country)
     assert_kind_of Hash, country
     missing = COUNTRY_CORE_KEYS - country.keys
     assert_empty missing, "country missing keys: #{missing.inspect}"
-    assert_kind_of Hash, country["links"]
-    assert_kind_of Array, country["designations"]
-    assert_kind_of Array, country["iucn_categories"]
+    assert_kind_of Hash, country['links']
+    assert_kind_of Array, country['designations']
+    assert_kind_of Array, country['iucn_categories']
   end
 
   def assert_v4_country(country)
@@ -136,30 +137,29 @@ module V4ContractHelpers
     assert_kind_of Hash, pa
     missing = keys - pa.keys
     assert_empty missing, "protected_area missing keys: #{missing.inspect}"
-
-    assert_kind_of Array, pa["countries"]
-    assert_kind_of Array, pa["sources"]
-    assert_kind_of Array, pa["protected_area_parcels"]
-    assert_kind_of Array, pa["pame_evaluations"]
-    assert_kind_of Hash, pa["iucn_category"]
-    assert_kind_of Hash, pa["designation"]
-    assert_kind_of Hash, pa["designation"]["jurisdiction"]
-    assert_kind_of Hash, pa["no_take_status"]
-    assert_kind_of Hash, pa["legal_status"]
-    assert_kind_of Hash, pa["management_authority"]
-    assert_kind_of Hash, pa["governance"]
-    assert_kind_of Hash, pa["realm"]
-    assert pa.has_key?("green_list_status")
-    assert_kind_of Hash, pa["links"]
+    assert_kind_of Array, pa['countries']
+    assert_kind_of Array, pa['sources']
+    assert_kind_of Array, pa['protected_area_parcels']
+    assert_kind_of Array, pa['pame_evaluations']
+    assert_kind_of Hash, pa['iucn_category']
+    assert_kind_of Hash, pa['designation']
+    assert_kind_of Hash, pa['designation']['jurisdiction']
+    assert_kind_of Hash, pa['no_take_status']
+    assert_kind_of Hash, pa['legal_status']
+    assert_kind_of Hash, pa['management_authority']
+    assert_kind_of Hash, pa['governance']
+    assert_kind_of Hash, pa['realm']
+    assert pa.has_key?('green_list_status')
+    assert_kind_of Hash, pa['links']
 
     if with_geometry
-      assert pa.key?("geojson"), "geojson key expected when with_geometry is true"
+      assert pa.key?('geojson'), 'geojson key expected when with_geometry is true'
       assert(
-        pa["geojson"].nil? || pa["geojson"].is_a?(Hash),
-        "geojson must be null or a GeoJSON Feature hash when with_geometry is true"
+        pa['geojson'].nil? || pa['geojson'].is_a?(Hash),
+        'geojson must be null or a GeoJSON Feature hash when with_geometry is true'
       )
     else
-      refute pa.key?("geojson"), "geojson must be omitted when with_geometry is false"
+      refute pa.key?('geojson'), 'geojson must be omitted when with_geometry is false'
     end
   end
 
@@ -169,28 +169,28 @@ module V4ContractHelpers
     missing = keys - pap.keys
     assert_empty missing, "protected_area_parcel missing keys: #{missing.inspect}"
 
-    assert_kind_of Array, pap["countries"]
-    assert_kind_of Array, pap["sources"]
-    assert_kind_of Array, pap["pame_evaluations"]
-    assert_kind_of Hash, pap["iucn_category"]
-    assert_kind_of Hash, pap["designation"]
-    assert_kind_of Hash, pap["designation"]["jurisdiction"]
-    assert_kind_of Hash, pap["no_take_status"]
-    assert_kind_of Hash, pap["legal_status"]
-    assert_kind_of Hash, pap["management_authority"]
-    assert_kind_of Hash, pap["governance"]
-    assert_kind_of Hash, pap["realm"]
-    assert pap.has_key?("green_list_status")
-    assert_kind_of Hash, pap["links"]
+    assert_kind_of Array, pap['countries']
+    assert_kind_of Array, pap['sources']
+    assert_kind_of Array, pap['pame_evaluations']
+    assert_kind_of Hash, pap['iucn_category']
+    assert_kind_of Hash, pap['designation']
+    assert_kind_of Hash, pap['designation']['jurisdiction']
+    assert_kind_of Hash, pap['no_take_status']
+    assert_kind_of Hash, pap['legal_status']
+    assert_kind_of Hash, pap['management_authority']
+    assert_kind_of Hash, pap['governance']
+    assert_kind_of Hash, pap['realm']
+    assert pap.has_key?('green_list_status')
+    assert_kind_of Hash, pap['links']
 
     if with_geometry
-      assert pap.key?("geojson"), "geojson key expected when with_geometry is true"
+      assert pap.key?('geojson'), 'geojson key expected when with_geometry is true'
       assert(
-        pap["geojson"].nil? || pap["geojson"].is_a?(Hash),
-        "geojson must be null or a GeoJSON Feature hash when with_geometry is true"
+        pap['geojson'].nil? || pap['geojson'].is_a?(Hash),
+        'geojson must be null or a GeoJSON Feature hash when with_geometry is true'
       )
     else
-      refute pap.key?("geojson"), "geojson must be omitted when with_geometry is false"
+      refute pap.key?('geojson'), 'geojson must be omitted when with_geometry is false'
     end
   end
 end

@@ -21,6 +21,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     get_json_api '/v4/protected_areas'
 
     assert last_response.ok?
+
     assert_equal 3, @json_response['protected_areas'].size
     assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
     assert_v4_pagination_shape(@json_response['pagination'])
@@ -49,6 +50,8 @@ class API::V4::ProtectedAreasTest < Minitest::Test
 
     refute last_response.ok?
     assert_equal 400, last_response.status
+    assert_equal 3, @json_response['protected_areas'].size
+    assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
   end
 
   def test_get_protected_areas_with_geometry_true_returns_all_protected_areas_with_geojson
@@ -172,6 +175,10 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     assert_equal 1, @json_response['protected_areas'].size
     assert_equal 801, @json_response['protected_areas'][0]['site_id']
     assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+    assert_equal(1, @json_response['protected_areas'].size)
+    assert_equal(123, @json_response['protected_areas'][0]['site_id'])
+    assert_equal('Darjeeling', @json_response['protected_areas'][0]['name_english'])
+    assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
   end
 
   def test_get_protected_areas_search_with_marine_returns_marine_pas
@@ -275,6 +282,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
 
   def test_get_protected_area_merges_pame_evaluations_from_site_and_parcels
     pa = create(:protected_area, site_id: 9102)
+
     parcel = create(:protected_area_parcel, site_id: 9102, site_pid: 'P9102A', name: 'Parcel A')
     create(:pame_evaluation, protected_area: pa, asmt_id: 11_517)
     create(:pame_evaluation, protected_area: nil, protected_area_parcel: parcel, asmt_id: 11_518)
@@ -292,6 +300,19 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     create(:protected_area, site_id: 26_630, name: 'Sample No PAME')
 
     get_json_api '/v4/protected_areas/26630', { with_geometry: false }
+    assert last_response.ok?
+
+    pa = @json_response['protected_area']
+    refute pa['is_green_list']
+    assert_nil pa['green_list_status']
+    assert_equal [], pa['pame_evaluations']
+    assert_equal [], pa['protected_area_parcels']
+  end
+
+  def test_get_protected_area_26630_style_payload_has_empty_green_list_pame_and_parcels
+    create(:protected_area, site_id: 26_630, name: 'Sample No PAME')
+
+    get_with_rabl '/v4/protected_areas/26630', { with_geometry: false }
     assert last_response.ok?
 
     pa = @json_response['protected_area']

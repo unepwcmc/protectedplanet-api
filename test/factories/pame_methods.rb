@@ -5,9 +5,7 @@ FactoryBot.define do
     skip_create
 
     initialize_with do
-      PameMethod.find_or_create_by!(
-        name: ContractSamples::V4_PAME_METHOD['name']
-      )
+      PameMethod.find_or_create_by!(name: ContractSamples::V4_PAME_METHOD['name'])
     end
   end
 end
