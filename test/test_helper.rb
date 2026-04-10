@@ -39,6 +39,27 @@ module Minitest
         nil
       end
     end
+
+    def parse_last_response_json
+      JSON.parse(last_response.body)
+    rescue StandardError
+      nil
+    end
+
+    def assert_error_response(status, response_payload = @json_response)
+      assert_equal status, last_response.status
+      if response_payload.is_a?(Array)
+        refute_empty response_payload, 'expected non-empty validation error payload'
+        first_error = response_payload.first
+        assert_kind_of Hash, first_error, 'expected validation error item to be a hash'
+        refute_empty Array(first_error['messages']), "expected validation payload to include 'messages'"
+      else
+        assert_kind_of Hash, response_payload, 'expected JSON object response payload'
+        message = response_payload['error'] || response_payload['message']
+        refute_nil message, "expected error payload to include 'error' or 'message'"
+        refute_empty message.to_s.strip
+      end
+    end
   end
 end
 

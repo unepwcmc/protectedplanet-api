@@ -36,7 +36,28 @@ class API::V3::CountriesTest < Minitest::Test
     get_json_api '/v3/countries', { per_page: 51 }
 
     refute last_response.ok?
-    assert_equal 400, last_response.status
+    assert_error_response(400)
+  end
+
+  def test_get_countries_page_below_one_returns_empty_slice
+    get_json_api '/v3/countries', { page: 0 }
+
+    assert last_response.ok?
+    assert_equal 0, @json_response['countries'].size
+  end
+
+  def test_get_countries_rejects_per_page_below_one
+    get_json_api '/v3/countries', { per_page: 0 }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_countries_rejects_non_integer_page
+    get_json_api '/v3/countries', { page: 'x' }
+
+    refute last_response.ok?
+    assert_error_response(400)
   end
 
   def test_get_countries_with_geometry_true_returns_all_countries_with_geojson
@@ -90,14 +111,7 @@ class API::V3::CountriesTest < Minitest::Test
     get_json_api '/v3/countries/ZZZ'
 
     refute last_response.ok?
-    assert_equal 404, last_response.status
-  end
-
-  def test_get_countries_unknown_returns_404
-    get_with_rabl '/v3/countries/ZZZ'
-
-    refute last_response.ok?
-    assert_equal 404, last_response.status
+    assert_error_response(404)
   end
 
   def test_get_countries_WES_returns_designations_with_counts
@@ -203,7 +217,7 @@ class API::V3::CountriesTest < Minitest::Test
     get_json_api '/v3/countries', token: 'wrong token'
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_countries_returns_401_on_inactive_user
@@ -211,21 +225,6 @@ class API::V3::CountriesTest < Minitest::Test
     get_json_api '/v3/countries', { token: user.token }
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
-  end
-
-  def test_get_countries_returns_401_on_wrong_token
-    get_with_rabl '/v3/countries', token: 'wrong token'
-
-    refute last_response.ok?
-    assert_equal 401, last_response.status
-  end
-
-  def test_get_countries_returns_401_on_inactive_user
-    user = ApiUser.create(token: 'thetoken', active: false)
-    get_with_rabl '/v3/countries', { token: user.token }
-
-    refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 end

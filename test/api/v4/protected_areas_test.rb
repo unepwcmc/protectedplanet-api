@@ -49,9 +49,28 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     get_json_api '/v4/protected_areas', { per_page: 51 }
 
     refute last_response.ok?
-    assert_equal 400, last_response.status
-    assert_equal 3, @json_response['protected_areas'].size
-    assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+    assert_error_response(400)
+  end
+
+  def test_get_protected_areas_page_below_one_falls_back_to_first_page
+    get_json_api '/v4/protected_areas', { page: 0 }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['pagination']['page']
+  end
+
+  def test_get_protected_areas_rejects_per_page_below_one
+    get_json_api '/v4/protected_areas', { per_page: 0 }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_protected_areas_rejects_non_integer_per_page
+    get_json_api '/v4/protected_areas', { per_page: 'x' }
+
+    refute last_response.ok?
+    assert_error_response(400)
   end
 
   def test_get_protected_areas_with_geometry_true_returns_all_protected_areas_with_geojson
@@ -86,7 +105,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     get_json_api '/v4/protected_areas/999999'
 
     refute last_response.ok?
-    assert_equal 404, last_response.status
+    assert_error_response(404)
   end
 
   def test_get_protected_areas_search_with_country_returns_pas_with_country
@@ -175,10 +194,29 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     assert_equal 1, @json_response['protected_areas'].size
     assert_equal 801, @json_response['protected_areas'][0]['site_id']
     assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
-    assert_equal(1, @json_response['protected_areas'].size)
-    assert_equal(123, @json_response['protected_areas'][0]['site_id'])
-    assert_equal('Darjeeling', @json_response['protected_areas'][0]['name_english'])
-    assert_v4_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
+  end
+
+  def test_get_protected_areas_search_with_invalid_designation_type_returns_400
+    get_json_api '/v4/protected_areas/search', { designation: 'abc' }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_protected_areas_search_with_country_and_iucn_category_uses_intersection
+    country = create(:country, name: 'Intersectia', iso_3: 'INT')
+    cat_keep = create(:iucn_category, name: 'Keep')
+    cat_drop = create(:iucn_category, name: 'Drop')
+
+    create(:protected_area, site_id: 901, name: 'Keep PA', countries: [country], iucn_category: cat_keep)
+    create(:protected_area, site_id: 902, name: 'Drop by Cat', countries: [country], iucn_category: cat_drop)
+    create(:protected_area, site_id: 903, name: 'Drop by Country', iucn_category: cat_keep)
+
+    get_json_api '/v4/protected_areas/search', { country: 'INT', iucn_category: cat_keep.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_areas'].size
+    assert_equal 901, @json_response['protected_areas'][0]['site_id']
   end
 
   def test_get_protected_areas_search_with_marine_returns_marine_pas
@@ -213,7 +251,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     get_json_api '/v4/protected_areas/search', {}
 
     refute last_response.ok?
-    assert_equal 400, last_response.status
+    assert_error_response(400)
   end
 
   def test_get_protected_areas_biopama_returns_only_acp_countries_areas_with_pame_evaluations
@@ -237,7 +275,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     get_json_api '/v4/protected_areas', token: 'wrong token'
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_protected_areas_returns_401_on_inactive_user
@@ -245,7 +283,7 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     get_json_api '/v4/protected_areas', { token: user.token }
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_protected_area_pame_evaluation_json_matches_v4_contract
@@ -307,19 +345,5 @@ class API::V4::ProtectedAreasTest < Minitest::Test
     assert_nil pa['green_list_status']
     assert_equal [], pa['pame_evaluations']
     assert_equal [], pa['protected_area_parcels']
-  end
-
-  def test_get_protected_area_26630_style_payload_has_empty_green_list_pame_and_parcels
-    create(:protected_area, site_id: 26_630, name: 'Sample No PAME')
-
-    get_with_rabl '/v4/protected_areas/26630', { with_geometry: false }
-    assert last_response.ok?
-
-    pa = @json_response['protected_area']
-    refute pa['is_green_list']
-    assert_nil pa['green_list_status']
-    assert_equal [], pa['pame_evaluations']
-    assert_equal [], pa['protected_area_parcels']
-    assert_v4_protected_area_envelope(pa, with_geometry: false)
   end
 end

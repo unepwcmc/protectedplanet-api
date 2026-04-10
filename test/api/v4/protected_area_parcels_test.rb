@@ -48,9 +48,28 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     get_json_api '/v4/protected_area_parcels', { per_page: 51 }
 
     refute last_response.ok?
-    assert_equal 400, last_response.status
-    assert_equal 3, @json_response['protected_area_parcels'].size
-    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+    assert_error_response(400)
+  end
+
+  def test_get_protected_area_parcels_page_below_one_falls_back_to_first_page
+    get_json_api '/v4/protected_area_parcels', { page: 0 }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['pagination']['page']
+  end
+
+  def test_get_protected_area_parcels_rejects_per_page_below_one
+    get_json_api '/v4/protected_area_parcels', { per_page: 0 }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_protected_area_parcels_rejects_non_integer_per_page
+    get_json_api '/v4/protected_area_parcels', { per_page: 'x' }
+
+    refute last_response.ok?
+    assert_error_response(400)
   end
 
   def test_get_protected_area_parcels_with_geometry_true_returns_all_protected_area_parcels_with_geojson
@@ -136,12 +155,29 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     assert_equal 1, @json_response['protected_area_parcels'].size
     assert_equal 8101, @json_response['protected_area_parcels'][0]['site_id']
     assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+  end
 
-    assert_equal(1, @json_response['protected_area_parcels'].size)
-    assert_equal(123, @json_response['protected_area_parcels'][0]['site_id'])
-    assert_equal('ABC', @json_response['protected_area_parcels'][0]['site_pid'])
-    assert_equal('Parcel A', @json_response['protected_area_parcels'][0]['name_english'])
-    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+  def test_get_protected_area_parcels_search_with_invalid_designation_type_returns_400
+    get_json_api '/v4/protected_area_parcels/search', { designation: 'abc' }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_protected_area_parcels_search_with_country_and_iucn_category_uses_intersection
+    country = create(:country, name: 'Parcelia', iso_3: 'PAR')
+    cat_keep = create(:iucn_category, name: 'Parcel Keep')
+    cat_drop = create(:iucn_category, name: 'Parcel Drop')
+
+    create(:protected_area_parcel, site_id: 9201, site_pid: 'P9201', countries: [country], iucn_category: cat_keep)
+    create(:protected_area_parcel, site_id: 9202, site_pid: 'P9202', countries: [country], iucn_category: cat_drop)
+    create(:protected_area_parcel, site_id: 9203, site_pid: 'P9203', iucn_category: cat_keep)
+
+    get_json_api '/v4/protected_area_parcels/search', { country: 'PAR', iucn_category: cat_keep.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_area_parcels'].size
+    assert_equal 9201, @json_response['protected_area_parcels'][0]['site_id']
   end
 
   def test_get_protected_area_parcels_search_with_marine_returns_matching_parcels
@@ -162,7 +198,7 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     get_json_api '/v4/protected_area_parcels/search', {}
 
     refute last_response.ok?
-    assert_equal 400, last_response.status
+    assert_error_response(400)
   end
 
   def test_get_protected_area_parcels_123_returns_parcels_for_site_id_123
@@ -184,7 +220,7 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     get_json_api '/v4/protected_area_parcels/123'
 
     refute last_response.ok?
-    assert_equal 404, last_response.status
+    assert_error_response(404)
   end
 
   def test_get_protected_area_parcels_123_ABC_returns_single_parcel
@@ -202,14 +238,14 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     get_json_api '/v4/protected_area_parcels/123/ABC'
 
     refute last_response.ok?
-    assert_equal 404, last_response.status
+    assert_error_response(404)
   end
 
   def test_get_protected_area_parcels_returns_401_on_wrong_token
     get_json_api '/v4/protected_area_parcels', token: 'wrong token'
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_protected_area_parcels_returns_401_on_inactive_user
@@ -217,7 +253,7 @@ class API::V4::ProtectedAreaParcelsTest < Minitest::Test
     get_json_api '/v4/protected_area_parcels', { token: user.token }
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_protected_area_parcel_includes_pame_and_green_list_shapes

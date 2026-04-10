@@ -44,6 +44,27 @@ class API::V3::ProtectedAreasTest < Minitest::Test
     assert_equal(EXPECTED_GEOJSON, @json_response['protected_areas'][0]['geojson'])
   end
 
+  def test_get_protected_areas_page_below_one_returns_empty_slice
+    get_json_api '/v3/protected_areas', { page: 0 }
+
+    assert last_response.ok?
+    assert_equal 0, @json_response['protected_areas'].size
+  end
+
+  def test_get_protected_areas_rejects_per_page_below_one
+    get_json_api '/v3/protected_areas', { per_page: 0 }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_protected_areas_rejects_non_integer_per_page
+    get_json_api '/v3/protected_areas', { per_page: 'x' }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
   def test_get_protected_areas_123_returns_protected_area_with_site_id_123
     create(:protected_area, name: 'Darjeeling', site_id: 123)
     get_json_api '/v3/protected_areas/123', { with_geometry: false }
@@ -69,7 +90,7 @@ class API::V3::ProtectedAreasTest < Minitest::Test
     get_json_api '/v3/protected_areas/999999'
 
     refute last_response.ok?
-    assert_equal 404, last_response.status
+    assert_error_response(404)
   end
 
   def test_get_protected_areas_search_with_country_returns_pas_with_country
@@ -156,6 +177,29 @@ class API::V3::ProtectedAreasTest < Minitest::Test
     assert_v3_protected_area_envelope(@json_response['protected_areas'].first, with_geometry: false)
   end
 
+  def test_get_protected_areas_search_with_invalid_designation_type_returns_400
+    get_json_api '/v3/protected_areas/search', { designation: 'abc' }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_protected_areas_search_with_country_and_iucn_category_uses_intersection
+    country = create(:country, name: 'V3 Intersectia', iso_3: 'VAI')
+    cat_keep = create(:iucn_category, name: 'V3 Keep')
+    cat_drop = create(:iucn_category, name: 'V3 Drop')
+
+    create(:protected_area, site_id: 3901, name: 'Keep V3', countries: [country], iucn_category: cat_keep)
+    create(:protected_area, site_id: 3902, name: 'Drop by Cat', countries: [country], iucn_category: cat_drop)
+    create(:protected_area, site_id: 3903, name: 'Drop by Country', iucn_category: cat_keep)
+
+    get_json_api '/v3/protected_areas/search', { country: 'VAI', iucn_category: cat_keep.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_areas'].size
+    assert_equal 3901, @json_response['protected_areas'][0]['wdpa_id']
+  end
+
   def test_get_protected_areas_search_with_marine_returns_marine_pas
     create(:protected_area, name: 'Darjeeling', marine: true)
     create(:protected_area, name: 'Not Marine', marine: false)
@@ -210,7 +254,7 @@ class API::V3::ProtectedAreasTest < Minitest::Test
   def test_get_protected_areas_search_wants_at_least_one_param
     get_json_api '/v3/protected_areas/search', {}
     refute last_response.ok?
-    assert last_response.status == 400
+    assert_error_response(400)
   end
 
   def test_get_protected_areas_biopama_returns_only_acp_countries_areas
@@ -247,7 +291,7 @@ class API::V3::ProtectedAreasTest < Minitest::Test
     get_json_api '/v3/protected_areas', token: 'wrong token'
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_protected_areas_returns_401_on_inactive_user
@@ -255,7 +299,7 @@ class API::V3::ProtectedAreasTest < Minitest::Test
     get_json_api '/v3/protected_areas', { token: user.token }
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_v3_protected_area_includes_like_pame_values

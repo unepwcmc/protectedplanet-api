@@ -46,7 +46,28 @@ class API::V4::CountriesTest < Minitest::Test
     get_json_api '/v4/countries', { per_page: 51 }
 
     refute last_response.ok?
-    assert_equal 400, last_response.status
+    assert_error_response(400)
+  end
+
+  def test_get_countries_page_below_one_falls_back_to_first_page
+    get_json_api '/v4/countries', { page: 0 }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['pagination']['page']
+  end
+
+  def test_get_countries_rejects_per_page_below_one
+    get_json_api '/v4/countries', { per_page: 0 }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_countries_rejects_non_integer_page
+    get_json_api '/v4/countries', { page: 'x' }
+
+    refute last_response.ok?
+    assert_error_response(400)
   end
 
   def test_get_countries_with_geometry_true_returns_all_countries_with_geojson
@@ -92,7 +113,7 @@ class API::V4::CountriesTest < Minitest::Test
     get_json_api '/v4/countries/ZZZ'
 
     refute last_response.ok?
-    assert_equal 404, last_response.status
+    assert_error_response(404)
   end
 
   def test_get_country_returns_iucn_categories_with_long_names
@@ -134,7 +155,7 @@ class API::V4::CountriesTest < Minitest::Test
     get_json_api '/v4/countries', token: 'wrong token'
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_countries_returns_401_on_inactive_user
@@ -142,7 +163,7 @@ class API::V4::CountriesTest < Minitest::Test
     get_json_api '/v4/countries', { token: user.token }
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_country_matches_truth_for_core_identity_fields
@@ -150,33 +171,6 @@ class API::V4::CountriesTest < Minitest::Test
     create(:country, name: sample['name'], iso: 'AG', iso_3: sample['iso_3'], bounding_box: 'POINT(-122 47)')
 
     get_json_api "/v4/countries/#{sample['id']}", { with_geometry: false }
-    assert last_response.ok?
-
-    country = @json_response['country']
-    assert_v4_country_shape(country)
-    assert_v4_country(country)
-  end
-
-  def test_get_countries_returns_401_on_wrong_token
-    get_with_rabl '/v4/countries', token: 'wrong token'
-
-    refute last_response.ok?
-    assert_equal 401, last_response.status
-  end
-
-  def test_get_countries_returns_401_on_inactive_user
-    user = ApiUser.create(token: 'thetoken', active: false)
-    get_with_rabl '/v4/countries', { token: user.token }
-
-    refute last_response.ok?
-    assert_equal 401, last_response.status
-  end
-
-  def test_get_country_matches_truth_for_core_identity_fields
-    sample = ContractSamples::SAMPLE_COUNTRY
-    create(:country, name: sample['name'], iso: 'AG', iso_3: sample['iso_3'], bounding_box: 'POINT(-122 47)')
-
-    get_with_rabl "/v4/countries/#{sample['id']}", { with_geometry: false }
     assert last_response.ok?
 
     country = @json_response['country']
