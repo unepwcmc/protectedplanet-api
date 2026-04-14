@@ -33,7 +33,7 @@ COPY . .
 # -----------------------------------------------------------------------------
 # Production: no compilers; runtime libs only; non-root user
 # -----------------------------------------------------------------------------
-FROM $DOCKER_BASE_IMAGE AS production
+FROM builder AS production
 
 # Runtime libraries for pg, RGeo/GEOS, psych/libyaml; curl for HEALTHCHECK
 RUN apt-get update && apt-get install -y --no-install-recommends \
