@@ -3,7 +3,8 @@ require 'csv'
 module AdminCsvGenerator
   def self.generate
     CSV.generate do |csv|
-      csv << ["email", "token", "full_name", "company", "type", "has_license", "license_number", "reason", "active", "archived"]
+      csv << %w[email token full_name company type has_license license_number reason active
+                archived]
 
       ApiUser.all.each do |user|
         csv << [

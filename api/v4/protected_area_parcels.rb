@@ -1,11 +1,7 @@
 require 'models/protected_area_parcel'
 
 class API::V4::ProtectedAreaParcels < Grape::API
-  include Grape::Kaminari
-
-  before do
-    authenticate!
-  end
+  helpers API::Helpers
 
   rescue_from Grape::Exceptions::ValidationErrors do |e|
     error! e, 400
@@ -13,24 +9,33 @@ class API::V4::ProtectedAreaParcels < Grape::API
 
   # == annotations
   ################
-  desc "Get all protected area parcels, paginated."
-  paginate per_page: 25, max_per_page: 50
-  params { optional :with_geometry, default: false, type: Boolean }
+  desc 'Get all protected area parcels, paginated.'
+  params do
+    optional :page, type: Integer, default: 1
+    optional :per_page, type: Integer, default: 25, values: 1..50
+    optional :with_geometry, default: false, type: Boolean
+  end
   # == body
   #########
-  get rabl: "v4/views/protected_area_parcels" do
-    collection = ProtectedAreaParcel
+  get do
+    collection = ProtectedAreaParcel.with_api_json_includes
     collection = collection.without_geometry unless params[:with_geometry]
+    paginated = paginate_collection(collection)
 
-    @with_geometry = params[:with_geometry]
-    @protected_area_parcels = paginate(collection)
+    API::Serialisers::V4::ProtectedAreaParcelSerializer.collection(
+      paginated,
+      current_user: current_user,
+      with_geometry: params[:with_geometry],
+      pagination: pagination_payload(paginated)
+    )
   end
 
   # == annotations
   ################
-  desc "Search for a subset of protected area parcels."
-  paginate per_page: 25, max_per_page: 50
+  desc 'Search for a subset of protected area parcels.'
   params do
+    optional :page, type: Integer, default: 1
+    optional :per_page, type: Integer, default: 25, values: 1..50
     optional :country, type: String, regexp: /[a-zA-Z]{3}/
     optional :marine, type: Boolean
     optional :designation, type: Integer
@@ -39,44 +44,58 @@ class API::V4::ProtectedAreaParcels < Grape::API
     optional :iucn_category, type: Integer
     optional :with_geometry, default: false, type: Boolean
     at_least_one_of :country, :marine, :designation,
-      :jurisdiction, :governance, :iucn_category
+                    :jurisdiction, :governance, :iucn_category
   end
   # == body
   #########
-  get :search, rabl: "v4/views/protected_area_parcels" do
+  get :search do
     collection = ProtectedAreaParcel.search(declared(params, include_missing: false))
     collection = collection.without_geometry unless params[:with_geometry]
+    paginated = paginate_collection(collection)
 
-    @with_geometry = params[:with_geometry]
-    @protected_area_parcels = paginate(collection)
+    API::Serialisers::V4::ProtectedAreaParcelSerializer.collection(
+      paginated,
+      current_user: current_user,
+      with_geometry: params[:with_geometry],
+      pagination: pagination_payload(paginated)
+    )
   end
 
   # == annotations
   ################
-  desc "Get parcels of a protected area via its site_id."
+  desc 'Get parcels of a protected area via its site_id.'
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########
-  get ":site_id", rabl: "v4/views/protected_area_parcels" do
-    @with_geometry = params[:with_geometry]
-    collection = ProtectedAreaParcel.where(site_id: params[:site_id])
+  get ':site_id' do
+    collection = ProtectedAreaParcel.with_api_json_includes.where(site_id: params[:site_id]).order(:site_id, :site_pid)
     collection = collection.without_geometry unless params[:with_geometry]
-    
-    @protected_area_parcels = collection
-    error!(:not_found, 404) if @protected_area_parcels.empty?
+    error!(:not_found, 404) if collection.empty?
+
+    API::Serialisers::V4::ProtectedAreaParcelSerializer.collection(
+      collection,
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 
   # == annotations
   ################
-  desc "Get a protected area parcel via its site_id and site_pid."
+  desc 'Get a protected area parcel via its site_id and site_pid.'
   params { optional :with_geometry, default: true, type: Boolean }
   # == body
   #########
-  get ":site_id/:site_pid", rabl: "v4/views/protected_area_parcel" do
-    @with_geometry = params[:with_geometry]
-    @protected_area_parcel = ProtectedAreaParcel.find_by(
+  get ':site_id/:site_pid' do
+    protected_area_parcel = ProtectedAreaParcel.with_api_json_includes.find_by(
       site_id: params[:site_id],
       site_pid: params[:site_pid]
-    ) or error!(:not_found, 404)
+    )
+    error!(:not_found, 404) unless protected_area_parcel
+
+    API::Serialisers::V4::ProtectedAreaParcelSerializer.single(
+      protected_area_parcel,
+      current_user: current_user,
+      with_geometry: params[:with_geometry]
+    )
   end
 end

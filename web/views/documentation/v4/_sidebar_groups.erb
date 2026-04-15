@@ -1,0 +1,22 @@
+<aside class="side-bar">
+  <div class="side-bar__inner">
+    <h2 class="header-with-delimiter side-bar__header"><%= header %></h2>
+
+    <div class="side-bar__body">
+      <% sections.each do |section| %>
+        <% if section[:links].nil? || section[:links].empty? %>
+          <a href="<%= section[:anchor] %>" class="side-bar__group-title side-bar__group-title--no-border"><%= section[:title] %></a>
+        <% else %>
+          <div class="side-bar__group">
+            <a href="<%= section[:anchor] %>" class="side-bar__group-title"><%= section[:title] %></a>
+            <div>
+              <% section[:links].each do |link| %>
+                <a href="<%= link[:anchor] %>" class="side-bar__value side-bar__value--smaller"><%= link[:label] %></a>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</aside>

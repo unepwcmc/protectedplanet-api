@@ -1,116 +1,304 @@
-require "test_helper"
-require "api/root"
+require 'test_helper'
+require 'api/root'
 
-class API::V4::ProtectedAreaParcelsTest < MiniTest::Test
+class API::V4::ProtectedAreaParcelsTest < Minitest::Test
   include Rack::Test::Methods
+  include V4ContractHelpers
 
   EXPECTED_GEOJSON = {
-    "type" => "Feature",
-    "properties" => {"fill-opacity" => 0.7, "stroke-width" => 0.05, "stroke" => "#40541b", "fill" => "#83ad35", "marker-color" => "#2B3146"},
-    "geometry" => {"type" => "Point", "coordinates" => [-122, 47]}
+    'type' => 'Feature',
+    'properties' => { 'fill-opacity' => 0.7, 'stroke-width' => 0.05, 'stroke' => '#40541b', 'fill' => '#83ad35',
+                      'marker-color' => '#2B3146' },
+    'geometry' => { 'type' => 'Point', 'coordinates' => [-122, 47] }
   }
 
   def app
-    API::V4::ProtectedAreaParcels
+    API::Root
   end
 
   def test_get_protected_area_parcels_returns_all_protected_area_parcels_as_JSON
     3.times { create(:protected_area_parcel) }
-    get_with_rabl "/v4/protected_area_parcels"
+    get_json_api '/v4/protected_area_parcels'
 
     assert last_response.ok?
-    assert_equal 3, @json_response["protected_area_parcels"].size
+    assert_equal 3, @json_response['protected_area_parcels'].size
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 1, @json_response['pagination']['page']
+    assert_equal 25, @json_response['pagination']['per_page']
+    assert_equal 1, @json_response['pagination']['total_pages']
+    assert_equal 3, @json_response['pagination']['total_count']
+  end
+
+  def test_get_protected_area_parcels_second_page_returns_slice
+    3.times { create(:protected_area_parcel) }
+    get_json_api '/v4/protected_area_parcels', { page: 2, per_page: 2 }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_area_parcels'].size
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 2, @json_response['pagination']['page']
+    assert_equal 2, @json_response['pagination']['per_page']
+    assert_equal 2, @json_response['pagination']['total_pages']
+    assert_equal 3, @json_response['pagination']['total_count']
+  end
+
+  def test_get_protected_area_parcels_rejects_per_page_out_of_range
+    get_json_api '/v4/protected_area_parcels', { per_page: 51 }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_protected_area_parcels_page_below_one_falls_back_to_first_page
+    get_json_api '/v4/protected_area_parcels', { page: 0 }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['pagination']['page']
+  end
+
+  def test_get_protected_area_parcels_rejects_per_page_below_one
+    get_json_api '/v4/protected_area_parcels', { per_page: 0 }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_protected_area_parcels_rejects_non_integer_per_page
+    get_json_api '/v4/protected_area_parcels', { per_page: 'x' }
+
+    refute last_response.ok?
+    assert_error_response(400)
   end
 
   def test_get_protected_area_parcels_with_geometry_true_returns_all_protected_area_parcels_with_geojson
-    3.times { create(:protected_area_parcel, the_geom: "POINT(-122 47)") }
-    get_with_rabl "/v4/protected_area_parcels", {with_geometry: true}
+    3.times { create(:protected_area_parcel, the_geom: 'POINT(-122 47)') }
+    get_json_api '/v4/protected_area_parcels', { with_geometry: true }
 
     assert last_response.ok?
-    assert_equal(EXPECTED_GEOJSON, @json_response["protected_area_parcels"][0]["geojson"])
+    assert_equal(EXPECTED_GEOJSON, @json_response['protected_area_parcels'][0]['geojson'])
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: true)
   end
 
   def test_get_protected_area_parcels_search_with_country_returns_matching_parcels
-    country = create(:country, name: "Zubrowka", iso_3: "WES")
-    create(:protected_area_parcel, site_id: 123, site_pid: "ABC", name: "Parcel A", countries: [country])
-    create(:protected_area_parcel, site_id: 456, site_pid: "XYZ", name: "Parcel B")
+    country = create(:country, name: 'Zubrowka', iso_3: 'WES')
+    create(:protected_area_parcel, site_id: 123, site_pid: 'ABC', name: 'Parcel A', countries: [country])
+    create(:protected_area_parcel, site_id: 456, site_pid: 'XYZ', name: 'Parcel B')
 
-    get_with_rabl "/v4/protected_area_parcels/search", {country: "WES"}
+    get_json_api '/v4/protected_area_parcels/search', { country: 'WES' }
 
     assert last_response.ok?
-    assert_equal(1, @json_response["protected_area_parcels"].size)
-    assert_equal(123, @json_response["protected_area_parcels"][0]["site_id"])
-    assert_equal("ABC", @json_response["protected_area_parcels"][0]["site_pid"])
-    assert_equal("Parcel A", @json_response["protected_area_parcels"][0]["name_english"])
+
+    assert_equal(1, @json_response['protected_area_parcels'].size)
+    assert_equal(123, @json_response['protected_area_parcels'][0]['site_id'])
+    assert_equal('ABC', @json_response['protected_area_parcels'][0]['site_pid'])
+    assert_equal('Parcel A', @json_response['protected_area_parcels'][0]['name_english'])
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 1, @json_response['pagination']['total_count']
+  end
+
+  def test_get_protected_area_parcels_search_with_designation_returns_matching_parcels
+    des_a = create(:designation, name: 'Pap Des A')
+    des_b = create(:designation, name: 'Pap Des B')
+    create(:protected_area_parcel, site_id: 5101, site_pid: 'P5101', designation: des_a)
+    create(:protected_area_parcel, site_id: 5102, site_pid: 'P5102', designation: des_b)
+
+    get_json_api '/v4/protected_area_parcels/search', { designation: des_a.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_area_parcels'].size
+    assert_equal 5101, @json_response['protected_area_parcels'][0]['site_id']
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+  end
+
+  def test_get_protected_area_parcels_search_with_jurisdiction_returns_matching_parcels
+    jur_a = create(:jurisdiction, name: 'Pap Jur A')
+    jur_b = create(:jurisdiction, name: 'Pap Jur B')
+    des_a = create(:designation, name: 'Pap Des Jur A', jurisdiction: jur_a)
+    des_b = create(:designation, name: 'Pap Des Jur B', jurisdiction: jur_b)
+    create(:protected_area_parcel, site_id: 6101, site_pid: 'P6101', designation: des_a)
+    create(:protected_area_parcel, site_id: 6102, site_pid: 'P6102', designation: des_b)
+
+    get_json_api '/v4/protected_area_parcels/search', { jurisdiction: jur_a.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_area_parcels'].size
+    assert_equal 6101, @json_response['protected_area_parcels'][0]['site_id']
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+  end
+
+  def test_get_protected_area_parcels_search_with_governance_returns_matching_parcels
+    gov_a = create(:governance, name: 'Pap Gov A')
+    gov_b = create(:governance, name: 'Pap Gov B')
+    create(:protected_area_parcel, site_id: 7101, site_pid: 'P7101', governance: gov_a)
+    create(:protected_area_parcel, site_id: 7102, site_pid: 'P7102', governance: gov_b)
+
+    get_json_api '/v4/protected_area_parcels/search', { governance: gov_a.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_area_parcels'].size
+    assert_equal 7101, @json_response['protected_area_parcels'][0]['site_id']
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+  end
+
+  def test_get_protected_area_parcels_search_with_iucn_category_returns_matching_parcels
+    cat_a = create(:iucn_category, name: 'Pap Cat A')
+    cat_b = create(:iucn_category, name: 'Pap Cat B')
+    create(:protected_area_parcel, site_id: 8101, site_pid: 'P8101', iucn_category: cat_a)
+    create(:protected_area_parcel, site_id: 8102, site_pid: 'P8102', iucn_category: cat_b)
+
+    get_json_api '/v4/protected_area_parcels/search', { iucn_category: cat_a.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_area_parcels'].size
+    assert_equal 8101, @json_response['protected_area_parcels'][0]['site_id']
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
+  end
+
+  def test_get_protected_area_parcels_search_with_invalid_designation_type_returns_400
+    get_json_api '/v4/protected_area_parcels/search', { designation: 'abc' }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_protected_area_parcels_search_with_country_and_iucn_category_uses_intersection
+    country = create(:country, name: 'Parcelia', iso_3: 'PAR')
+    cat_keep = create(:iucn_category, name: 'Parcel Keep')
+    cat_drop = create(:iucn_category, name: 'Parcel Drop')
+
+    create(:protected_area_parcel, site_id: 9201, site_pid: 'P9201', countries: [country], iucn_category: cat_keep)
+    create(:protected_area_parcel, site_id: 9202, site_pid: 'P9202', countries: [country], iucn_category: cat_drop)
+    create(:protected_area_parcel, site_id: 9203, site_pid: 'P9203', iucn_category: cat_keep)
+
+    get_json_api '/v4/protected_area_parcels/search', { country: 'PAR', iucn_category: cat_keep.id }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['protected_area_parcels'].size
+    assert_equal 9201, @json_response['protected_area_parcels'][0]['site_id']
   end
 
   def test_get_protected_area_parcels_search_with_marine_returns_matching_parcels
-    create(:protected_area_parcel, site_id: 123, site_pid: "ABC", name: "Parcel A", marine: true)
-    create(:protected_area_parcel, site_id: 456, site_pid: "XYZ", name: "Parcel B", marine: false)
+    create(:protected_area_parcel, site_id: 123, site_pid: 'ABC', name: 'Parcel A', marine: true)
+    create(:protected_area_parcel, site_id: 456, site_pid: 'XYZ', name: 'Parcel B', marine: false)
 
-    get_with_rabl "/v4/protected_area_parcels/search", {marine: true}
+    get_json_api '/v4/protected_area_parcels/search', { marine: true }
 
     assert last_response.ok?
-    assert_equal(1, @json_response["protected_area_parcels"].size)
-    assert_equal(123, @json_response["protected_area_parcels"][0]["site_id"])
-    assert_equal("ABC", @json_response["protected_area_parcels"][0]["site_pid"])
-    assert_equal("Parcel A", @json_response["protected_area_parcels"][0]["name_english"])
+    assert_equal(1, @json_response['protected_area_parcels'].size)
+    assert_equal(123, @json_response['protected_area_parcels'][0]['site_id'])
+    assert_equal('ABC', @json_response['protected_area_parcels'][0]['site_pid'])
+    assert_equal('Parcel A', @json_response['protected_area_parcels'][0]['name_english'])
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcels'].first, with_geometry: false)
   end
 
   def test_get_protected_area_parcels_search_wants_at_least_one_param
-    get_with_rabl "/v4/protected_area_parcels/search", {}
+    get_json_api '/v4/protected_area_parcels/search', {}
 
     refute last_response.ok?
-    assert_equal 400, last_response.status
+    assert_error_response(400)
   end
 
   def test_get_protected_area_parcels_123_returns_parcels_for_site_id_123
-    create(:protected_area_parcel, site_id: 123, site_pid: "ABC", name: "Parcel A")
-    create(:protected_area_parcel, site_id: 123, site_pid: "DEF", name: "Parcel B")
-    create(:protected_area_parcel, site_id: 456, site_pid: "XYZ", name: "Parcel C")
+    create(:protected_area_parcel, site_id: 123, site_pid: 'ABC', name: 'Parcel A')
+    create(:protected_area_parcel, site_id: 123, site_pid: 'DEF', name: 'Parcel B')
+    create(:protected_area_parcel, site_id: 456, site_pid: 'XYZ', name: 'Parcel C')
 
-    get_with_rabl "/v4/protected_area_parcels/123"
+    get_json_api '/v4/protected_area_parcels/123'
 
     assert last_response.ok?
-    assert_equal(2, @json_response["protected_area_parcels"].size)
+    assert_equal(2, @json_response['protected_area_parcels'].size)
+    @json_response['protected_area_parcels'].each do |pap|
+      assert_v4_protected_area_parcel_envelope(pap, with_geometry: true)
+    end
+    refute @json_response.key?('pagination')
   end
 
   def test_get_protected_area_parcels_123_returns_404_when_none_exist
-    get_with_rabl "/v4/protected_area_parcels/123"
+    get_json_api '/v4/protected_area_parcels/123'
 
     refute last_response.ok?
-    assert_equal 404, last_response.status
+    assert_error_response(404)
   end
 
   def test_get_protected_area_parcels_123_ABC_returns_single_parcel
-    create(:protected_area_parcel, site_id: 123, site_pid: "ABC", name: "Parcel A")
-    get_with_rabl "/v4/protected_area_parcels/123/ABC"
+    create(:protected_area_parcel, site_id: 123, site_pid: 'ABC', name: 'Parcel A')
+    get_json_api '/v4/protected_area_parcels/123/ABC'
 
     assert last_response.ok?
-    assert_equal(123, @json_response["protected_area_parcel"]["site_id"])
-    assert_equal("ABC", @json_response["protected_area_parcel"]["site_pid"])
-    assert_equal("Parcel A", @json_response["protected_area_parcel"]["name_english"])
+    assert_equal(123, @json_response['protected_area_parcel']['site_id'])
+    assert_equal('ABC', @json_response['protected_area_parcel']['site_pid'])
+    assert_equal('Parcel A', @json_response['protected_area_parcel']['name_english'])
+    assert_v4_protected_area_parcel_envelope(@json_response['protected_area_parcel'], with_geometry: true)
   end
 
   def test_get_protected_area_parcels_123_ABC_returns_404_when_missing
-    get_with_rabl "/v4/protected_area_parcels/123/ABC"
+    get_json_api '/v4/protected_area_parcels/123/ABC'
 
     refute last_response.ok?
-    assert_equal 404, last_response.status
+    assert_error_response(404)
   end
 
   def test_get_protected_area_parcels_returns_401_on_wrong_token
-    get_with_rabl "/v4/protected_area_parcels", token: "wrong token"
+    get_json_api '/v4/protected_area_parcels', token: 'wrong token'
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
   end
 
   def test_get_protected_area_parcels_returns_401_on_inactive_user
-    user = ApiUser.create(token: "thetoken", active: false)
-    get_with_rabl "/v4/protected_area_parcels", {token: user.token}
+    user = ApiUser.create(token: 'thetoken', active: false)
+    get_json_api '/v4/protected_area_parcels', { token: user.token }
 
     refute last_response.ok?
-    assert_equal 401, last_response.status
+    assert_error_response(401)
+  end
+
+  def test_get_protected_area_parcel_includes_pame_and_green_list_shapes
+    gl = GreenListStatus.create!(ContractSamples::GREEN_LIST_STATUS_ATTRIBUTES)
+    parcel = create(
+      :protected_area_parcel,
+      site_id: 9200,
+      site_pid: 'P9200',
+      name: 'GL parcel',
+      green_list_status: gl
+    )
+    create(:pame_evaluation, protected_area: nil, protected_area_parcel: parcel, asmt_id: 11_519)
+
+    get_json_api '/v4/protected_area_parcels/9200/P9200', { with_geometry: false }
+    assert last_response.ok?
+
+    pap = @json_response['protected_area_parcel']
+    assert pap['is_green_list']
+    assert_v4_green_list_status_shape(pap['green_list_status'])
+    assert_v4_green_list_status(pap['green_list_status'])
+
+    assert_equal 1, pap['pame_evaluations'].size
+    assert_v4_pame_evaluation(pap['pame_evaluations'].first)
+    assert_equal 11_519, pap['pame_evaluations'].first['asmt_id']
+    assert_v4_protected_area_parcel_envelope(pap, with_geometry: false)
+  end
+
+  def test_get_protected_area_parcel_611_2_style_payload_has_expected_core_values
+    create(
+      :protected_area_parcel,
+      site_id: 611,
+      site_pid: '611_2',
+      name: 'Wood Buffalo National Park Of Canada',
+      marine: false
+    )
+
+    get_json_api '/v4/protected_area_parcels/611/611_2', { with_geometry: false }
+    assert last_response.ok?
+
+    pap = @json_response['protected_area_parcel']
+    assert_equal 'Wood Buffalo National Park Of Canada', pap['name_english']
+    assert_equal 611, pap['site_id']
+    assert_equal '611_2', pap['site_pid']
+    refute pap['is_green_list']
+    assert_equal [], pap['pame_evaluations']
+    assert_v4_protected_area_parcel_envelope(pap, with_geometry: false)
   end
 end

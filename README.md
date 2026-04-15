@@ -2,222 +2,193 @@
 
 The official API for accessing global protected area data from the World Database on Protected Areas (WDPA).
 
-> **All protected planet projects in same place:** For Vscode users clone [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet) repo and use [protected-planet-family-apps.code-workspace](https://github.com/unepwcmc/ProtectedPlanet/blob/master/protected-planet-family-apps.code-workspace) to open all protected planet apps in the same workspace
+> **All Protected Planet projects in one workspace:** If you use VS Code, clone [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet) and open [protected-planet-family-apps.code-workspace](https://github.com/unepwcmc/ProtectedPlanet/blob/master/protected-planet-family-apps.code-workspace) so related apps load together.
 
-## 🌍 For API Users
+## For API users
 
-If you want to **use** the API to access protected area data, visit our [API Documentation](https://api.protectedplanet.net/documentation) to get started.
+To **use** the API, see [API Documentation](https://api.protectedplanet.net/documentation).
 
-## 🛠️ For Developers
+## For developers
 
-This guide is for developers who want to **contribute** to the API codebase or run it locally.
+This guide is for people who **run or contribute to** this codebase locally.
 
-## Architecture Overview
+## Architecture overview
 
-The Protected Planet API is built as a **Ruby Rack application** with two main components:
+The app is a **Ruby Rack** stack with two mounted applications:
 
-| Component | Framework | Purpose |
-|-----------|-----------|---------|
-| `/api/**/*` | [Grape](https://github.com/ruby-grape/grape) | RESTful API endpoints |
-| `/web/**/*` | [Sinatra](https://www.sinatrarb.com/) | Documentation website |
+| Area | Framework | Role |
+|------|-----------|------|
+| `api/**/*` | [Grape](https://github.com/ruby-grape/grape) | REST API (v3 and v4 namespaces) |
+| `web/**/*` | [Sinatra](https://www.sinatrarb.com/) | Documentation and admin UI |
 
-### How it works:
-1. Both frameworks are combined using **Rack::Cascade** in [`config.ru`](/config.ru)
-2. They share **ActiveRecord models** that are tailored for API usage:
-   - Based on [ProtectedPlanet models](https://github.com/unepwcmc/ProtectedPlanet/tree/master/app/models) but optimized for API responses
-   - **Important:** Always cross-reference with ProtectedPlanet when making changes
-   - **For new models:** Copy from ProtectedPlanet first, then adapt for API needs
-3. API responses use **RABL templates** for JSON formatting
-4. Documentation is rendered using **ERB and Markdown**
+### How it fits together
 
-### Database:
-The `db/` folder is a **git submodule** linked to [protectedplanet-db](https://github.com/unepwcmc/protectedplanet-db), which contains all database schemas and migrations.
+1. **Rack::Cascade** in [`config.ru`](config.ru) runs **documentation first**, then the API: `[Web::Root, API::Root]`.
+2. **Shared ActiveRecord models** under `models/` mirror [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet/tree/master/app/models) but are shaped for API output. Cross-check the main app when changing behaviour; for new models, copy from ProtectedPlanet and adapt.
+3. **JSON responses** are built with **Grape serialiser classes** in [`api/serialisers/`](api/serialisers/) (not RABL).
+4. **Docs** use ERB views and Markdown (via Kramdown).
+5. **Middleware** (see `config.ru`): cookie sessions, CSRF, CORS, optional AppSignal, ActiveRecord connection management, and in development a code reloader.
 
-## 📋 Available Tasks
+### Database
 
-The API includes several rake tasks for maintenance and development:
+The `db/` directory is a **git submodule** pointing at [protectedplanet-db](https://github.com/unepwcmc/protectedplanet-db) (schemas and migrations live there). Connection settings come from `POSTGRES_*` variables in `.env` (see [`.env.example`](.env.example)).
 
-### User Management Tasks
+All database migrations are ran in ProtectedPlanet using rails. This project is purely for serving APIs
 
-#### Reset API User Permissions
+## Environment variables
+
+Boot **requires** `RACK_ENV` (e.g. `development`, `test`, or `production`). That value becomes the Ruby constant `RACK_ENV`—see [`config/environment.rb`](config/environment.rb).
+
+Copy [`.env.example`](.env.example) to `.env` and fill in values (team secrets are typically stored in Keeper). Database fields must match a running Postgres instance (often the one from the main ProtectedPlanet Docker stack).
+
+### CORS (`CORS_ORIGINS`)
+
+Browser clients sending `Origin` only receive CORS headers for origins listed in **`CORS_ORIGINS`** (comma-separated). In **development** and **test**, if the variable is unset or empty, the app behaves like a wildcard (`*`) and allows any origin, matching older behaviour. In **staging** and **production**, **`CORS_ORIGINS` must be set** to at least one explicit origin or the application will not start. Deployed values should list real front-end URLs (for example `https://www.protectedplanet.net`).
+
+## Available tasks
+
+### Reset API user permissions
+
 ```bash
-RAILS_ENV=production bundle exec rake api_users:reset_permissions
-```
-- **Purpose:** Reset permissions for all API users
-- **When to use:** After adding new fields to `api_attributes` arrays
-- **Required after:** Database migrations that add API-exposed columns
-
-#### Remove API Users
-```bash
-# Remove inactive users only
-bundle exec rake api_users:remove[inactive]
-
-# Remove archived users only  
-bundle exec rake api_users:remove[archived]
-
-# Remove both inactive and archived users
-bundle exec rake api_users:remove[archived_or_inactive]
-```
-- **Purpose:** Clean up inactive or archived API users
-- **Safety:** Includes confirmation prompt before deletion
-- **Preview:** Shows which users will be deleted before asking for confirmation
-
-### Other Tasks
-```bash
-# List all available tasks
-bundle exec rake -T
-
-# List only api_users tasks
-bundle exec rake -T api_users
+RACK_ENV=production bundle exec rake api_users:reset_permissions
 ```
 
-## 🚀 Getting Started
+- As of 10Apr26 all users should have all fields access, if this changes in future then update the rake task
+- **Purpose:** Give all API users access to every field listed in each model’s `api_attributes`.
+- **When:** After adding or changing fields in `api_attributes`, or after migrations expose new API columns.
 
-### Option 1: Docker Setup (Recommended)
-
-The easiest way to run the API locally:
-
-1. **Use the docker-compose setup** from the main protectedplanet repository
-2. **Create environment file:**
-   ```bash
-   # Create .env file and copy contents from Keeper (internal password manager)
-   touch .env
-   ```
-3. **Run database migrations** in the main protectedplanet Rails app first
-   ```bash
-   # Note: We can't run migrations directly in this repo (non-Rails)
-   # Run this in the main protectedplanet repository:
-   bundle exec rails db:migrate
-   ```
-4. **Start the server:**
-   ```bash
-   docker-compose up
-   ```
-5. **Access the API:** Open your browser to `http://localhost:9292`
-
-### Option 2: Local Ruby Setup
-
-⚠️ **Not recommended** - use Docker instead for easier setup.
-
-<details>
-<summary>Click to expand local setup instructions</summary>
-
-1. **Install Ruby version** (check `.ruby-version` file):
-   ```bash
-   rbenv install $(cat .ruby-version)
-   rbenv local $(cat .ruby-version)
-   ```
-
-2. **Clone and setup:**
-   ```bash
-   git clone git@github.com:unepwcmc/protectedplanet-api.git
-   cd protectedplanet-api
-   bundle install
-   ```
-
-3. **Configure environment:**
-   ```bash
-   # Create .env file and copy contents from Keeper
-   touch .env
-   ```
-
-4. **Run migrations** (in main protectedplanet Rails app)
-
-5. **Start server:**
-   ```bash
-   rackup
-   ```
-
-6. **Access:** `http://localhost:9292`
-
-</details>
-
-## 🔄 Updating Database Schema
-
-The database schema is managed as a git submodule. To get the latest database updates:
+### Remove API users
 
 ```bash
-# Navigate to the database submodule
+RACK_ENV=production bundle exec rake api_users:remove[inactive]
+RACK_ENV=production bundle exec rake api_users:remove[archived]
+RACK_ENV=production bundle exec rake api_users:remove[archived_or_inactive]
+```
+
+- **Purpose:** Remove inactive or archived API users (with confirmation and a preview).
+
+### Other tasks
+
+```bash
+RACK_ENV=development bundle exec rake -T
+```
+
+## Getting started
+
+### Option 1: Docker with ProtectedPlanet (recommended)
+
+The API shares the Rails app database. The parent repo’s Compose file defines an optional **`api`** service (profile `api`) that builds this project.
+
+1. Clone [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet) and configure its `.env` (including Postgres) and continue following all steps inside ProtectedPlanet project.
+2. Set **`API_PATH`** in that `.env` to your local **absolute path** to this `protectedplanet-api` checkout.
+3. Run migrations from the Rails app when needed (`bundle exec rails db:migrate` inside the `web` container or local Rails), and restore or seed data per [ProtectedPlanet Docker docs](https://github.com/unepwcmc/ProtectedPlanet/blob/master/docs/docker.md).
+4. Start the stack **with the API profile**:
+
+   ```bash
+   docker compose --profile api up
+   ```
+
+5. Open **`http://localhost:9292`**.
+
+For more detail (including running only `api` and `db`), see **Step 4** in [`docs/docker.md` in ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet/blob/master/docs/docker.md).
+
+### Option 2: Local Ruby
+
+Use this when you already have Postgres and env vars configured.
+
+1. Install **Ruby 4.0.2** (see [`.tool-versions`](.tool-versions)), e.g. with [asdf](https://asdf-vm.com/).
+2. Install gems: `bundle install`
+3. Configure `.env` from `.env.example` and set `RACK_ENV=development` plus `POSTGRES_*` (and other required keys).
+4. Ensure the database exists and migrations have been applied from the main ProtectedPlanet Rails app (this repo is not a Rails app and does not run `rails db:migrate` here).
+5. Start the app on port **9292**:
+
+   ```bash
+    sh ./bin/docker-dev-server
+   ```
+
+6. Visit **`http://localhost:9292`**.
+
+### Development email previews
+
+- `mailhog` (default): sends email to MailHog (`http://localhost:8025`)
+- `smtp`: uses `MAILER_*` SMTP settings
+
+Docker run (ProtectedPlanet):
+
+```bash
+docker compose --profile api-new up
+```
+
+Open:
+
+- API: `http://localhost:9292`
+- MailHog: `http://localhost:8025`
+
+## Updating the database submodule
+
+```bash
 cd db/
-
-# Fetch and merge latest changes
 git fetch
 git merge origin/master
-
-# Return to project root
 cd ..
 ```
 
-## 🧪 Development Console
+## Development console
 
-Access the Rails console to interact with models and test functionality:
+Use **IRB** (not Rails console). From the **project root**, load the app in one step:
 
 ```bash
-# Start IRB with the application environment loaded
-RAILS_ENV=development bundle exec irb
-
-# Load the application
-$LOAD_PATH.unshift("#{File.dirname(__FILE__)}")
-require 'config/environment.rb'
-require 'lib/mailer.rb'
-
-# Now you can interact with models
-ApiUser.first
-ProtectedArea.count
+RACK_ENV=development bundle exec bin/console
 ```
 
-## 🔧 API Development
 
-### Adding New API Attributes
+## API development: new attributes
 
-When you add new fields to the API, you need to update user permissions:
+### 1. Add the field to `api_attributes`
 
-#### Step 1: Add the attribute to the model
 ```ruby
-# In models/protected_area.rb (or other model)
+# e.g. models/protected_area.rb
 def api_attributes
   [
     'name', 'wdpa_id', 'designation',
-    'your_new_field'  # Add your new field here
+    'your_new_field'
   ]
 end
 ```
 
-#### Step 2: Reset user permissions
-- Use the **Reset API User Permissions** task mentioned in the [📋 Available Tasks](#-available-tasks) section
+### 2. Reset permissions
+
+
 
 #### ⚠️ Important Notes:
 - **Always run the rake task** after modifying `api_attributes`
 - This ensures existing API users can access new fields
-- **Required after:**
+- **How?**
   - Adding new fields to `api_attributes` arrays
-  - Modifying existing field permissions  
-  - Database migrations that add API-exposed columns
+  - Modifying existing field permissions
+  - Database migrations that add API-exposed columns (via ProtectedPlanet repo rails db:migrate)
+  - Run [Reset API user permissions](#reset-api-user-permissions) so existing users can see new fields.
 
-## Run Tests
-```bundle exec rake test```
 
-## 🐛 Troubleshooting
+Do this whenever `api_attributes` or related permissions change, or when migrations add API-exposed columns.
 
-### PostgreSQL Installation Issues
+## Tests
 
-**Error:** `An error occurred while installing pg (0.18.4), and Bundler cannot continue.`
-
-**Solution:**
 ```bash
-gem install pg -v '0.18.1' -- --with-cflags="-Wno-error=implicit-function-declaration"
+bundle exec rake test
 ```
 
-### Common Issues
+`RACK_ENV` defaults to `test` in [`test/test_helper.rb`](test/test_helper.rb) if unset. Ensure `POSTGRES_TEST_DBNAME` (and related `POSTGRES_*` vars) point at a test database.
 
-- **Database connection errors:** Ensure the main protectedplanet Rails app database is running
-- **Missing migrations:** Run migrations in the main protectedplanet repository first
-- **Environment variables:** Check that your `.env` file contains all required variables from Keeper
+## Troubleshooting
 
----
+- **Database connection errors:** Confirm Postgres is up and `POSTGRES_*` in `.env` match your instance (host/port often differ between Docker and localhost).
+- **Missing tables or columns:** Run migrations in the main ProtectedPlanet Rails repository against the same database.
+- **`RACK_ENV` missing:** Set it for any command that loads [`config/environment.rb`](config/environment.rb).
+- **Secrets:** Compare your `.env` with [`.env.example`](.env.example) and your team’s Keeper record.
 
-## 📚 Additional Resources
+## Additional resources
 
-- [API Documentation](https://api.protectedplanet.net/documentation) - For API users
-- [ProtectedPlanet Main Repository](https://github.com/unepwcmc/ProtectedPlanet) - Main Rails application
-- [ProtectedPlanet Database](https://github.com/unepwcmc/protectedplanet-db) - Database schemas and migrations
+- [API documentation](https://api.protectedplanet.net/documentation) (for API consumers)
+- [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet) (main Rails application)
+- [protectedplanet-db](https://github.com/unepwcmc/protectedplanet-db) (database submodule)

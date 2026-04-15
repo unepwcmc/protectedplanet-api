@@ -1,15 +1,41 @@
 # Authentication
 
-To make successful HTTP calls to the Protected Planet API, you must have a API token, obtainable through a simple [request form](/request).
+To make successful HTTP calls to the Protected Planet API, you need an API token from the [request form](/request).
 
-Once received, you will need to append the `token` parameter to whichever set of parameters your API calls will contain. For brevity, the `token` parameter is omitted from the rest of this documentation, as it is always required. If an API call is executed with the `token` parameter missing or invalid, the server will respond with HTTP code `401 (Unauthorized)` and an error message in a `JSON` object.
+## Recommended: `Authorization` header (Bearer)
 
-You can use the `/test` endpoint to check for the validity of your API token:
+Send the token on every request using the `Authorization` header and the `Bearer` scheme:
+
+~~~
+$ curl -H "Authorization: Bearer YOUR_TOKEN" \
+    https://api.protectedplanet.net/v4/protected_areas
+~~~
+
+Only the `Bearer` scheme is accepted in this header (for example, `Authorization: Bearer ca4703ffba6b9a26b2db73f78e56e088`).
+
+You can verify your token with the `/test` endpoint:
 
 ## `GET /test`
 
 ~~~
-$ curl https://api.protectedplanet.net/test?token=ca4703ffba6b9a26b2db73f78e56e088
+$ curl -H "Authorization: Bearer YOUR_TOKEN" https://api.protectedplanet.net/test
 
-{ status: "Success!" }
+{ "status": "Success!" }
 ~~~
+
+## Legacy: `token` as query or form parameter
+
+You may still pass `token` as a **query string** or **form** parameter. This is **deprecated** and will not be supported in next API version. Successful responses include:
+
+- a `Deprecation` header, and  
+- a `Warning` header (HTTP warning `299`) describing the migration to `Authorization: Bearer`.
+
+~~~
+$ curl "https://api.protectedplanet.net/test?token=YOUR_TOKEN"
+~~~
+
+For brevity, the `token` parameter is omitted from the rest of this documentation, as a valid token is always required (via header or parameter). New integrations should use `Authorization: Bearer` only.
+
+## Errors
+
+If a call is made with the token missing or invalid, the server responds with HTTP status `401 Unauthorized` and a JSON error body.

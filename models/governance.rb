@@ -18,7 +18,7 @@ class Governance < ActiveRecord::Base
       "For-profit organisations"
     ],
     "Governance by Indigenous Peoples and Local Communities" => [
-      "Indigenous peoples",
+      "Indigenous Peoples",
       "Local communities"
     ],
     "Not Reported" => [

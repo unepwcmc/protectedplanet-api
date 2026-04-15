@@ -1,28 +1,28 @@
-
-<aside class="side-bar">
-  <div class="side-bar__inner">
-    <h2 class="header-with-delimiter side-bar__header">API Calls</h2>
-
-    <div class="side-bar__body">
-      <a href="#authentication" class="side-bar__group-title side-bar__group-title--no-border">Authentication</a>
-      <div class="side-bar__group">
-        <a href="#countries" class="side-bar__group-title">Countries</a>
-        <div>
-          <a href="#get-v3countries" class="side-bar__value side-bar__value--smaller">GET /v3/countries</a>
-          <a href="#get-v3countriesiso3" class="side-bar__value side-bar__value--smaller">GET /v3/countries/:iso_3</a>
-        </div>
-      </div>
-
-      <div class="side-bar__group">
-        <a href="#protected-areas" class="side-bar__group-title">Protected Areas</a>
-        <div>
-          <a href="#get-v3protectedareas" class="side-bar__value side-bar__value--smaller">GET /v3/protected_areas</a>
-          <a href="#get-v3protectedareaswdpaid" class="side-bar__value side-bar__value--smaller">GET /v3/protected_areas/:wdpa_id</a>
-          <a href="#get-v3protectedareassearch" class="side-bar__value side-bar__value--smaller">GET /v3/protected_areas/search</a>
-          <a href="#get-v3protectedareasbiopama" class="side-bar__value side-bar__value--smaller">GET /v3/protected_areas/biopama</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</aside>
+<% sections = [
+  {
+    title: 'Authentication',
+    anchor: '#authentication',
+    links: []
+  },
+  {
+    title: 'Countries',
+    anchor: '#countries',
+    links: [
+      { anchor: '#get-v3countries', label: 'GET /v3/countries' },
+      { anchor: '#get-v3countriesiso3', label: 'GET /v3/countries/:iso_3' }
+    ]
+  },
+  {
+    title: 'Protected Areas',
+    anchor: '#protected-areas',
+    links: [
+      { anchor: '#get-v3protectedareas', label: 'GET /v3/protected_areas' },
+      { anchor: '#get-v3protectedareaswdpaid', label: 'GET /v3/protected_areas/:wdpa_id' },
+      { anchor: '#get-v3protectedareassearch', label: 'GET /v3/protected_areas/search' },
+      { anchor: '#get-v3protectedareasbiopama', label: 'GET /v3/protected_areas/biopama' }
+    ]
+  }
+] %>
+<%= erb :"documentation/v3/_sidebar_groups",
+        locals: { header: 'API Calls', sections: sections } %>
 

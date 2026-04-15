@@ -1,104 +1,180 @@
-require "test_helper"
-require "api/root"
+require 'test_helper'
+require 'api/root'
 
-class API::V4::CountriesTest < MiniTest::Test
+class API::V4::CountriesTest < Minitest::Test
   include Rack::Test::Methods
+  include V4ContractHelpers
 
   EXPECTED_GEOJSON = {
-    "type" => "Feature",
-    "properties" => {"fill-opacity" => 0.7, "stroke-width" => 0.05, "stroke" => "#40541b", "fill" => "#83ad35", "marker-color" => "#2B3146"},
-    "geometry" => {"type" => "Point", "coordinates" => [-122, 47]}
+    'type' => 'Feature',
+    'properties' => { 'fill-opacity' => 0.7, 'stroke-width' => 0.05, 'stroke' => '#40541b', 'fill' => '#83ad35',
+                      'marker-color' => '#2B3146' },
+    'geometry' => { 'type' => 'Point', 'coordinates' => [-122, 47] }
   }
 
   def app
-    API::V4::Countries
+    API::Root
   end
 
   def test_get_countries_returns_all_countries_as_JSON
     3.times { create(:country) }
-    get_with_rabl "/v4/countries"
+    get_json_api '/v4/countries'
 
     assert last_response.ok?
-    assert_equal 3, @json_response["countries"].size
+    assert_equal 3, @json_response['countries'].size
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 1, @json_response['pagination']['page']
+    assert_equal 25, @json_response['pagination']['per_page']
+    assert_equal 1, @json_response['pagination']['total_pages']
+    assert_equal 3, @json_response['pagination']['total_count']
+  end
+
+  def test_get_countries_second_page_returns_slice
+    3.times { create(:country) }
+    get_json_api '/v4/countries', { page: 2, per_page: 2 }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['countries'].size
+    assert_v4_pagination_shape(@json_response['pagination'])
+    assert_equal 2, @json_response['pagination']['page']
+    assert_equal 2, @json_response['pagination']['per_page']
+    assert_equal 2, @json_response['pagination']['total_pages']
+    assert_equal 3, @json_response['pagination']['total_count']
+  end
+
+  def test_get_countries_rejects_per_page_out_of_range
+    get_json_api '/v4/countries', { per_page: 51 }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_countries_page_below_one_falls_back_to_first_page
+    get_json_api '/v4/countries', { page: 0 }
+
+    assert last_response.ok?
+    assert_equal 1, @json_response['pagination']['page']
+  end
+
+  def test_get_countries_rejects_per_page_below_one
+    get_json_api '/v4/countries', { per_page: 0 }
+
+    refute last_response.ok?
+    assert_error_response(400)
+  end
+
+  def test_get_countries_rejects_non_integer_page
+    get_json_api '/v4/countries', { page: 'x' }
+
+    refute last_response.ok?
+    assert_error_response(400)
   end
 
   def test_get_countries_with_geometry_true_returns_all_countries_with_geojson
-    3.times { create(:country, bounding_box: "POINT(-122 47)") }
-    get_with_rabl "/v4/countries", {with_geometry: true}
+    3.times { create(:country, bounding_box: 'POINT(-122 47)') }
+    get_json_api '/v4/countries', { with_geometry: true }
 
     assert last_response.ok?
-    assert_equal(EXPECTED_GEOJSON, @json_response["countries"][0]["geojson"])
+    assert_equal(EXPECTED_GEOJSON, @json_response['countries'][0]['geojson'])
   end
 
   def test_get_countries_USA_returns_country_with_iso_3_USA
-    create(:country, name: "United States", iso: "US", iso_3: "USA")
-    get_with_rabl "/v4/countries/USA"
+    create(:country, name: 'United States', iso: 'US', iso_3: 'USA')
+    get_json_api '/v4/countries/USA'
 
     assert last_response.ok?
-    assert_equal("USA", @json_response["country"]["id"])
-    assert_equal("USA", @json_response["country"]["iso_3"])
-    assert_equal("United States", @json_response["country"]["name"])
+    assert_equal('USA', @json_response['country']['id'])
+    assert_equal('USA', @json_response['country']['iso_3'])
+    assert_equal('United States', @json_response['country']['name'])
+    assert_v4_country_shape(@json_response['country'])
   end
 
   def test_get_countries_usa_returns_country_with_iso_3_USA
-    create(:country, name: "United States", iso: "US", iso_3: "USA")
-    get_with_rabl "/v4/countries/usa"
+    create(:country, name: 'United States', iso: 'US', iso_3: 'USA')
+    get_json_api '/v4/countries/usa'
 
     assert last_response.ok?
-    assert_equal("USA", @json_response["country"]["id"])
-    assert_equal("USA", @json_response["country"]["iso_3"])
-    assert_equal("United States", @json_response["country"]["name"])
+    assert_equal('USA', @json_response['country']['id'])
+    assert_equal('USA', @json_response['country']['iso_3'])
+    assert_equal('United States', @json_response['country']['name'])
   end
 
   def test_get_countries_GB_returns_country_with_iso_GB
-    create(:country, name: "United Kingdom", iso: "GB", iso_3: "GBR")
-    get_with_rabl "/v4/countries/GB"
+    create(:country, name: 'United Kingdom', iso: 'GB', iso_3: 'GBR')
+    get_json_api '/v4/countries/GB'
 
     assert last_response.ok?
-    assert_equal("GBR", @json_response["country"]["id"])
-    assert_equal("GBR", @json_response["country"]["iso_3"])
-    assert_equal("United Kingdom", @json_response["country"]["name"])
+    assert_equal('GBR', @json_response['country']['id'])
+    assert_equal('GBR', @json_response['country']['iso_3'])
+    assert_equal('United Kingdom', @json_response['country']['name'])
   end
 
   def test_get_countries_unknown_returns_404
-    get_with_rabl "/v4/countries/ZZZ"
+    get_json_api '/v4/countries/ZZZ'
 
     refute last_response.ok?
-    assert_equal 404, last_response.status
+    assert_error_response(404)
   end
 
   def test_get_country_returns_iucn_categories_with_long_names
-    country = create(:country, name: "Zubrowka", iso_3: "WES", bounding_box: "POINT(-122 47)")
-    iucn_category = create(:iucn_category, name: "IV")
-    create(:protected_area, name: "Grand Budapest", countries: [country], iucn_category: iucn_category)
+    country = create(:country, name: 'Zubrowka', iso_3: 'WES', bounding_box: 'POINT(-122 47)')
+    iucn_category = create(:iucn_category, name: 'IV')
+    create(:protected_area, name: 'Grand Budapest', countries: [country], iucn_category: iucn_category)
 
-    get_with_rabl "/v4/countries/wes", iucn_category_long_names: true
+    get_json_api '/v4/countries/wes', iucn_category_long_names: true
 
     assert last_response.ok?
     assert_equal([{
-      "id" => iucn_category.id,
-      "name" => "IV - Habitat/Species Management Area",
-      "pas_count" => 1,
-      "pas_percentage" => 100
-    }], @json_response["country"]["iucn_categories"])
+                   'id' => iucn_category.id,
+                   'name' => 'IV - Habitat/Species Management Area',
+                   'pas_count' => 1,
+                   'pas_percentage' => 100
+                 }], @json_response['country']['iucn_categories'])
   end
 
   def test_get_country_returns_grouped_governances
-    country = create(:country, name: "Zubrowka", iso_3: "WES", bounding_box: "POINT(-122 47)")
-    governance = create(:governance, name: "Joint governance")
-    create(:protected_area, name: "Grand Budapest", countries: [country], governance: governance)
+    country = create(:country, name: 'Zubrowka', iso_3: 'WES', bounding_box: 'POINT(-122 47)')
+    governance = create(:governance, name: 'Joint governance')
+    create(:protected_area, name: 'Grand Budapest', countries: [country], governance: governance)
 
-    get_with_rabl "/v4/countries/wes", group_governances: true
+    get_json_api '/v4/countries/wes', group_governances: true
 
     assert last_response.ok?
     assert_equal({
-      "Shared Governance" => [{
-        "id" => governance.id,
-        "name" => "Joint governance",
-        "governance_type" => "Shared Governance",
-        "pas_count" => 1,
-        "pas_percentage" => 100
-      }]
-    }, @json_response["country"]["governances"])
+                   'Shared Governance' => [{
+                     'id' => governance.id,
+                     'name' => 'Joint governance',
+                     'governance_type' => 'Shared Governance',
+                     'pas_count' => 1,
+                     'pas_percentage' => 100
+                   }]
+                 }, @json_response['country']['governances'])
+  end
+
+  def test_get_countries_returns_401_on_wrong_token
+    get_json_api '/v4/countries', token: 'wrong token'
+
+    refute last_response.ok?
+    assert_error_response(401)
+  end
+
+  def test_get_countries_returns_401_on_inactive_user
+    user = ApiUser.create(token: 'thetoken', active: false)
+    get_json_api '/v4/countries', { token: user.token }
+
+    refute last_response.ok?
+    assert_error_response(401)
+  end
+
+  def test_get_country_matches_truth_for_core_identity_fields
+    sample = ContractSamples::SAMPLE_COUNTRY
+    create(:country, name: sample['name'], iso: 'AG', iso_3: sample['iso_3'], bounding_box: 'POINT(-122 47)')
+
+    get_json_api "/v4/countries/#{sample['id']}", { with_geometry: false }
+    assert last_response.ok?
+
+    country = @json_response['country']
+    assert_v4_country_shape(country)
+    assert_v4_country(country)
   end
 end

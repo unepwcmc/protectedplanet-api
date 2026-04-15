@@ -1,3 +1,4 @@
 class GreenListStatus < ActiveRecord::Base
-  has_one :protected_area
+  has_many :protected_areas
+  has_many :protected_area_parcels
 end

@@ -1,14 +1,13 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+# Read about factories at https://github.com/thoughtbot/factory_bot
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :api_user do
-    email "test@user.com"
-    full_name "Test User"
-    company "Test Company"
-    reason "To test things"
-    permissions({"ProtectedArea" => ["name", "marine"]})
+    email { 'test@user.com' }
+    full_name { 'Test User' }
+    company { 'Test Company' }
+    reason { 'To test things' }
+    permissions { { 'ProtectedArea' => %w[name marine] } }
 
-    token "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    token { 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' }
   end
 end
-
