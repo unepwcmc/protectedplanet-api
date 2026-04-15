@@ -3,6 +3,7 @@ require "api/root"
 
 class API::V4::CountriesTest < MiniTest::Test
   include Rack::Test::Methods
+  include V4ContractHelpers
 
   EXPECTED_GEOJSON = {
     "type" => "Feature",
@@ -38,6 +39,7 @@ class API::V4::CountriesTest < MiniTest::Test
     assert_equal("USA", @json_response["country"]["id"])
     assert_equal("USA", @json_response["country"]["iso_3"])
     assert_equal("United States", @json_response["country"]["name"])
+    assert_v4_country_shape(@json_response["country"])
   end
 
   def test_get_countries_usa_returns_country_with_iso_3_USA
@@ -100,5 +102,32 @@ class API::V4::CountriesTest < MiniTest::Test
         "pas_percentage" => 100
       }]
     }, @json_response["country"]["governances"])
+  end
+
+  def test_get_countries_returns_401_on_wrong_token
+    get_with_rabl "/v4/countries", token: "wrong token"
+
+    refute last_response.ok?
+    assert_equal 401, last_response.status
+  end
+
+  def test_get_countries_returns_401_on_inactive_user
+    user = ApiUser.create(token: "thetoken", active: false)
+    get_with_rabl "/v4/countries", {token: user.token}
+
+    refute last_response.ok?
+    assert_equal 401, last_response.status
+  end
+
+  def test_get_country_matches_truth_for_core_identity_fields
+    sample = ContractSamples::SAMPLE_COUNTRY
+    create(:country, name: sample["name"], iso: "AG", iso_3: sample["iso_3"], bounding_box: "POINT(-122 47)")
+
+    get_with_rabl "/v4/countries/#{sample['id']}", {with_geometry: false}
+    assert last_response.ok?
+
+    country = @json_response["country"]
+    assert_v4_country_shape(country)
+    assert_v4_country(country)
   end
 end

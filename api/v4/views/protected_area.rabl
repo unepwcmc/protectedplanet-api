@@ -134,20 +134,28 @@ if @current_user.access_to?(ProtectedArea, :oecm_assessment)
 end
 
 if @current_user.access_to?(ProtectedArea, :pame_evaluations)
-  child :pame_evaluations do
-    attributes :id, :metadata_id,
-      :url, :year,
-      :methodology
-    child :pame_source => :source do
-      attributes :data_title, :resp_party,
-      :year, :language
+  # Use node + partial so this works for both show (@protected_area) and
+  # collection (pa from block). child/extends with a custom method can fail in
+  # RABL when rendering the list view.
+  node :pame_evaluations do |pa|
+    pa = pa || @protected_area
+    next [] unless pa
+    pa.all_pame_evaluations_from_current_pa_and_parcels.map do |evaluation|
+      partial("v4/views/pame_evaluation", object: evaluation)
     end
   end
 end
 
 if @current_user.access_to?(ProtectedArea, :green_list_status)
   child :green_list_status, object_root: false do
-    attributes :id, :status, :expiry_date
+    attributes :id, :gl_status, :gl_expiry, :gl_link
+
+    # Alias, Remove it in next version (v5)
+    attribute :gl_status => :status
+    # Alias, Remove it in next version (v5)
+    attribute :gl_expiry => :expiry_date
+    # Alias, Remove it in next version (v5)
+    attribute :gl_link => :link
   end
 end
 

@@ -1,3 +1,7 @@
+### 0.7.0
+- Add fields for PAME & GL to individual parcels
+- Add new field names to PAME & GL with alias of old names
+
 ### 0.6.2
 - Update db
 - Make return iso3 not iso with 2 digits

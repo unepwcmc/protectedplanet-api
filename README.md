@@ -43,7 +43,7 @@ The API includes several rake tasks for maintenance and development:
 ```bash
 RAILS_ENV=production bundle exec rake api_users:reset_permissions
 ```
-- **Purpose:** Reset permissions for all API users
+- **Purpose:** Reset permissions for all API users - which will give `ALL` users access to `ALL` avaliable pre-defined FIELDS
 - **When to use:** After adding new fields to `api_attributes` arrays
 - **Required after:** Database migrations that add API-exposed columns
 
@@ -191,7 +191,7 @@ end
 - This ensures existing API users can access new fields
 - **Required after:**
   - Adding new fields to `api_attributes` arrays
-  - Modifying existing field permissions  
+  - Modifying existing field permissions
   - Database migrations that add API-exposed columns
 
 ## Run Tests

@@ -6,6 +6,9 @@ require "rack/test"
 require "factory_girl"
 require "database_cleaner"
 require "config/environment"
+require_relative "support/contract_samples"
+require_relative "api/v4/contract_helpers"
+require_relative "api/v3/contract_helpers"
 
 DatabaseCleaner.clean_with :truncation
 DatabaseCleaner.strategy = :transaction
@@ -25,15 +28,6 @@ class Minitest::Test
   def get_with_rabl path, params={}
     get path, {token: TEST_API_TOKEN}.merge(params), {"api.tilt.root" => "api"}
     @json_response = JSON.parse(last_response.body) rescue nil
-  end
-end
-
-class TestClass
-  def self.remove_module(mod)
-    mod.instance_methods.each do |m|
-      next if [:object_id, :__send__].include?(m)
-      undef_method(m)
-    end
   end
 end
 

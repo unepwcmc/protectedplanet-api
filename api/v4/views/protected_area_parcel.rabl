@@ -77,6 +77,14 @@ if @current_user.access_to?(ProtectedAreaParcel, :oecm_assessment)
   attribute :oecm_assessment
 end
 
+# PAME evaluations for this parcel only (protected_area shows all from PA + parcels).
+# If the user has access to the protected area, then they will also have access to PAME evaluations.
+if @current_user.access_to?(ProtectedArea, :pame_evaluations)
+  child :pame_evaluations, object_root: false do
+    extends "v4/views/pame_evaluation"
+  end
+end
+
 # Relations
 if @current_user.access_to?(ProtectedAreaParcel, :countries)
   child :countries, object_root: false do
@@ -148,9 +156,17 @@ if @current_user.access_to?(ProtectedAreaParcel, :realm)
   end
 end
 
-if @current_user.access_to?(ProtectedAreaParcel, :green_list_status)
+# If the user has access to the protected area, then they will also have access to Green List status
+if @current_user.access_to?(ProtectedArea, :green_list_status)
   child :green_list_status, object_root: false do
-    attributes :id, :status, :expiry_date
+    attributes :id, :gl_status, :gl_expiry, :gl_link
+
+    # Alias, Remove it in next version (v5)
+    attribute :gl_status => :status
+    # Alias, Remove it in next version (v5)
+    attribute :gl_expiry => :expiry_date
+    # Alias, Remove it in next version (v5)
+    attribute :gl_link => :link
   end
 end
 

@@ -75,4 +75,17 @@ class ProtectedArea < ActiveRecord::Base
   def is_green_list
     green_list_status_id.present?
   end
+
+  # In v4 we expose all PAME evaluations for this protected area and its parcels.
+  def all_pame_evaluations_from_current_pa_and_parcels
+    pa_parcel_internal_ids = protected_area_parcels.pluck(:id)
+    if pa_parcel_internal_ids.any?
+      PameEvaluation.where(
+        "protected_area_id = ? OR protected_area_parcel_id IN (?)",
+        id, pa_parcel_internal_ids
+      ).distinct
+    else
+      PameEvaluation.where(protected_area_id: id).distinct
+    end
+  end
 end

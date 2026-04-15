@@ -4,6 +4,7 @@ module Middlewares; end
 
 class Middlewares::StatsCollector < Grape::Middleware::Base
   PAS_PATH_REGEXP       = Regexp.compile("/v./protected_areas")
+  PA_PARCELS_PATH_REGEXP = Regexp.compile('/v./protected_area_parcels')
   COUNTRIES_PATH_REGEXP = Regexp.compile("/v./countries")
 
   def after
@@ -19,6 +20,10 @@ class Middlewares::StatsCollector < Grape::Middleware::Base
 
       if env["PATH_INFO"] =~ COUNTRIES_PATH_REGEXP
         Appsignal.increment_counter("countries_hits", 1)
+      end
+
+      if env['PATH_INFO'] =~ PA_PARCELS_PATH_REGEXP
+        Appsignal.increment_counter('protected_area_parcels_hits', 1) 
       end
     end
   end
