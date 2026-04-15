@@ -1,7 +1,7 @@
 # Renders a single PAME evaluation for v3 (v3 field names: metadata_id, method)
 attribute :asmt_id => :id
 attribute :asmt_url => :url
-attribute :amst_year => :year
+attribute :asmt_year => :year
 attribute :eff_metaid => :metadata_id
 attribute :method => :methodology
 
