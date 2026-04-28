@@ -44,3 +44,4 @@ appsignal.log
 
 # ctags
 tags
+.env.*
