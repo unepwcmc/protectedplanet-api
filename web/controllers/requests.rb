@@ -11,7 +11,7 @@ class Web::RequestsController < Sinatra::Base
 
   post('/request') do
     if ApiRequestProtection.bot_submission?(params, session)
-      @false_success_for_bot = true
+      @false_success = true
       return erb :request_success, layout: :layout
     end
 
@@ -28,6 +28,7 @@ class Web::RequestsController < Sinatra::Base
     end
 
     if (pending_user = ApiUser.pending_user_for_email(email))
+      @false_success = true
       @new_user = pending_user
       return erb :request_success, layout: :layout
     end
