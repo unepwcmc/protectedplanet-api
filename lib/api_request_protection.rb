@@ -1,4 +1,4 @@
-# Bot protection for POST /request (honeypot, timing).
+# Bot protection for POST /submit-request-new-user (honeypot, timing).
 # Honeypot field markup: web/views/request/_honeypot.rhtml
 module ApiRequestProtection
   HONEYPOT_FIELD = 'company_website'

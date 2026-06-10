@@ -9,7 +9,11 @@ class Web::RequestsController < Sinatra::Base
     erb :request, layout: :layout
   end
 
-  post('/request') do
+  get('/submit-request-new-user') do
+    redirect '/request'
+  end
+
+  post('/submit-request-new-user') do
     if ApiRequestProtection.bot_submission?(params, session)
       @false_success = true
       return erb :request_success, layout: :layout
