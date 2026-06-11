@@ -1,12 +1,14 @@
 <div class="fullscreen-message">
   <p class="link-with-icon fullscreen-message__header">
-    <i class="fa fa-warning fa-2x link-with-icon__icon link-with-icon__icon--above"></i>
-    We could not process your request.
+    <i class="fa fa-exclamation-triangle fa-2x link-with-icon__icon link-with-icon__icon--above"></i>
+    Unable to submit your request
   </p>
+  <% if @errors %>
+    <% @errors.each do |error| %>
+      <p class="fullscreen-message__body"><%= error %></p>
+    <% end %>
+  <% end %>
   <p class="fullscreen-message__body">
-    Please review your details and try again.
-  </p>
-  <p class="fullscreen-message__body">
-    You can return to the <a class="link-with-icon link-with-icon--inherit" href="/request">request form</a> and submit again.
+    <a class="link-with-icon link-with-icon--inherit" href="/request">Go back to the request form</a>
   </p>
 </div>

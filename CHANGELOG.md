@@ -1,3 +1,7 @@
+### 0.7.1
+- Correct typo for asmt_year in v3
+- Add parcel collector for appsignal
+
 ### 0.7.0
 - Add fields for PAME & GL to individual parcels
 - Add new field names to PAME & GL with alias of old names

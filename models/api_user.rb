@@ -1,5 +1,32 @@
 class ApiUser < ActiveRecord::Base
+  include Sinatra::Helpers
+
+  before_validation :normalize_email_field
   before_create :set_permissions, :set_gdpr_consent
+
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, on: :request
+  validates :full_name, :reason, presence: true, on: :request
+
+  scope :pending, -> { where(active: false, archived: [false, nil]) }
+  scope :active_accounts, -> { where(active: true, archived: [false, nil]) }
+
+  def self.normalize_email(email)
+    email.to_s.downcase.strip
+  end
+
+  def self.active_user_for_email(email)
+    active_accounts
+      .where("lower(email) = ?", normalize_email(email))
+      .order(created_at: :desc)
+      .first
+  end
+
+  def self.pending_user_for_email(email)
+    pending
+      .where("lower(email) = ?", normalize_email(email))
+      .order(created_at: :desc)
+      .first
+  end
 
   def activate!
     return if self.active
@@ -35,6 +62,10 @@ class ApiUser < ActiveRecord::Base
   end
 
   private
+
+  def normalize_email_field
+    self.email = self.class.normalize_email(email) if email.present?
+  end
 
   def set_permissions
     self.permissions ||= {}
