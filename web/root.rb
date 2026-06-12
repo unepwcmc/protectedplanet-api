@@ -1,14 +1,15 @@
 require 'lib/mailer'
 
-require 'web/helpers'
-require 'web/controllers/admin'
-require 'web/controllers/documentation'
-require 'web/controllers/privacy_policy'
-require 'web/controllers/requests'
+require "web/base_controller"
+require "web/helpers"
+require "web/controllers/admin"
+require "web/controllers/documentation"
+require "web/controllers/privacy_policy"
+require "web/controllers/requests"
 
 module Web
-  class Root < Sinatra::Base
-    get '/' do
+  class Root < Web::BaseController
+    get "/" do
       erb :home, layout: :layout
     end
 

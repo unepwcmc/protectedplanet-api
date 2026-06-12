@@ -1,11 +1,9 @@
 module Web; end
 
-class Web::RequestsController < Sinatra::Base
-  helpers Web::Helpers
-  set :views, File.join(settings.root, '../views')
+require 'web/base_controller'
 
+class Web::RequestsController < Web::BaseController
   get('/request') do
-    session[:request_form_loaded_at] = Time.now.to_i
     @turnstile_site_key = TurnstileVerifier.site_key if TurnstileVerifier.enabled?
     erb :request, layout: :layout
   end
@@ -15,7 +13,8 @@ class Web::RequestsController < Sinatra::Base
   end
 
   post('/submit-request-new-user') do
-    if ApiRequestProtection.bot_submission?(params, session)
+    if (bot_reasons = ApiRequestProtection.bot_detection_reasons(params)).any?
+      ApiRequestProtection.log_bot_detection(bot_reasons)
       @false_success = true
       return erb :request_success, layout: :layout
     end
@@ -28,8 +27,8 @@ class Web::RequestsController < Sinatra::Base
     email = ApiUser.normalize_email(params['email'])
 
     if (active_user = ApiUser.active_user_for_email(email))
-      @api_user = active_user
-      return erb :request_already_active, layout: :layout
+      @false_success = true
+      return erb :request_success, layout: :layout
     end
 
     if (pending_user = ApiUser.pending_user_for_email(email))

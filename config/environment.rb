@@ -31,6 +31,10 @@ require 'kaminari/activerecord'
 
 require 'appsignal'
 
+Appsignal.start unless $environment == "test"
+require 'lib/appsignal_notifier'
+
+
 # Markdown rendering
 require 'kramdown'
 Tilt.prefer Tilt::KramdownTemplate

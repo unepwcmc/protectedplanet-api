@@ -24,15 +24,15 @@
     </div>
 
     <p style="line-height:1.75;margin-bottom:1.75em">
-      Hi <%= api_user.full_name %>, your request for a new Protected Planet API token has been accepted. Your new token is:
+      Hi <%= Rack::Utils.escape_html(api_user.full_name) %>, your request for a new Protected Planet API token has been accepted. Your new token is:
     </p>
 
     <p style="text-align: center; line-height:1.75;margin-bottom:1.75em">
-      <strong><%= api_user.token %></strong>
+      <strong><%= Rack::Utils.escape_html(api_user.token) %></strong>
     </p>
 
     <p style="line-height:1.75;margin-bottom:1.75em">
-      Before using the API, be sure to visit the <a style="color: #71a32b; text-decoration: none;" href="<%= documentation_url %>">Protected Planet documentation</a>
+      Before using the API, be sure to visit the <a style="color: #71a32b; text-decoration: none;" href="<%= Rack::Utils.escape_html(documentation_url) %>">Protected Planet documentation</a>
     </p>
 
     <p style="line-height:1.75;margin-bottom:1.75em">The Protected Planet team</p>

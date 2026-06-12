@@ -1,6 +1,6 @@
  
 <div class="flex flex-row gap-1">
-  <%= erb "documentation/v4/_sidebar".to_sym %>
+  <%== erb "documentation/v4/_sidebar".to_sym %>
 
   <div class="three-fourths article">
     <h1 class="article__title">API Documentation</h1>
@@ -38,15 +38,15 @@
     </div>
 
     <article class="s-article">
-      <%= markdown_cached :"documentation/v4/introduction" %>
+      <%== markdown_cached :"documentation/v4/introduction" %>
       <hr>
-      <%= erb "documentation/v4/_authentication".to_sym %>
+      <%== erb "documentation/v4/_authentication".to_sym %>
       <hr>
-      <%= markdown_cached :"documentation/v4/countries" %>
+      <%== markdown_cached :"documentation/v4/countries" %>
       <hr>
-      <%= markdown_cached :"documentation/v4/protected_areas" %>
+      <%== markdown_cached :"documentation/v4/protected_areas" %>
       <hr>
-      <%= markdown_cached :"documentation/v4/protected_area_parcels" %>
+      <%== markdown_cached :"documentation/v4/protected_area_parcels" %>
     </article>
   </div>
 </div>

@@ -1,5 +1,5 @@
 <form class="s-form" method="POST" action="/submit-request-new-user">
-  <%= Rack::Csrf.csrf_tag(env) %>
+  <%== Rack::Csrf.csrf_tag(env) %>
   <fieldset>
     <label for="email">Email</label>
     <input class="big" name="email" required type="email">
@@ -55,7 +55,7 @@
     <textarea placeholder="e.g. who is the audience, what type of service is being provided, how will the data be used: visualisation only, download, reposting" name="reason" required></textarea>
   </fieldset>
 
-  <%= erb "request/_honeypot".to_sym %>
+  <%== erb "request/_honeypot".to_sym %>
 
   <fieldset class="gdpr-checkbox">
     <input type="checkbox" id="privacy_policy" required value="1" />

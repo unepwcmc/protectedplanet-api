@@ -2,9 +2,10 @@ module Web; end
 require 'web/helpers'
 require 'lib/admin_csv_generator'
 
-class Web::AdminController < Sinatra::Base
+require 'web/base_controller'
+
+class Web::AdminController < Web::BaseController
   helpers Web::Helpers
-  set :views, File.join(settings.root, '../views')
 
   before do
     path = request.path_info
@@ -24,6 +25,7 @@ class Web::AdminController < Sinatra::Base
   end
 
   get('/admin/export') do
+    protected!
     content_type 'application/octet-stream'
     attachment 'pp_api_users.csv'
 
