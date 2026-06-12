@@ -14,7 +14,7 @@ class Web::RequestsController < Web::BaseController
 
   post('/submit-request-new-user') do
     if (bot_reasons = ApiRequestProtection.bot_detection_reasons(params)).any?
-      ApiRequestProtection.log_bot_detection(params['email'], bot_reasons)
+      ApiRequestProtection.log_bot_detection(bot_reasons)
       @false_success = true
       return erb :request_success, layout: :layout
     end
@@ -28,7 +28,6 @@ class Web::RequestsController < Web::BaseController
 
     if (active_user = ApiUser.active_user_for_email(email))
       @false_success = true
-      Thread.new { Mailer.send_already_active_account_notification(active_user) }
       return erb :request_success, layout: :layout
     end
 

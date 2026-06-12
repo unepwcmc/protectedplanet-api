@@ -9,8 +9,14 @@ module TurnstileVerifier
   OPEN_TIMEOUT = 3
   READ_TIMEOUT = 5
 
+  REQUIRED_ENVIRONMENTS = %w[production staging].freeze
+
   def self.enabled?
     site_key.present? && secret_key.present?
+  end
+
+  def self.required?
+    REQUIRED_ENVIRONMENTS.include?($environment)
   end
 
   def self.site_key
@@ -22,7 +28,10 @@ module TurnstileVerifier
   end
 
   def self.failed_verification?(params, remote_ip: nil)
-    return false unless enabled?
+    unless enabled?
+      log_missing_configuration if required?
+      return required?
+    end
 
     token = params[RESPONSE_PARAM]
     return true if token.to_s.strip.empty?
@@ -60,8 +69,23 @@ module TurnstileVerifier
     false
   end
 
+  def self.log_missing_configuration
+    warn('[TurnstileVerifier] Turnstile keys missing in production/staging; blocking submission')
+
+    return if $environment == 'test'
+
+    AppsignalNotifier.report_error(
+      SiteverifyError.new('Turnstile keys not configured'),
+      namespace: 'turnstile_verifier',
+      action: 'TurnstileVerifier#log_missing_configuration'
+    )
+  rescue StandardError => e
+    warn("[TurnstileVerifier] Failed to log missing configuration: #{e.message}")
+  end
+  private_class_method :log_missing_configuration
+
   def self.log_verification_error(detail)
-    STDERR.puts("[TurnstileVerifier] Siteverify error: #{detail}")
+    warn("[TurnstileVerifier] Siteverify error: #{detail}")
 
     return if $environment == 'test'
 
@@ -73,7 +97,7 @@ module TurnstileVerifier
       tags: { detail: detail.to_s[0, 100] }
     )
   rescue StandardError => e
-    STDERR.puts("[TurnstileVerifier] Failed to log siteverify error: #{e.message}")
+    warn("[TurnstileVerifier] Failed to log siteverify error: #{e.message}")
   end
   private_class_method :log_verification_error
 end

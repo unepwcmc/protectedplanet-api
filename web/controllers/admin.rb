@@ -23,6 +23,7 @@ class Web::AdminController < Web::BaseController
   end
 
   get("/admin/export") do
+    protected!
     content_type "application/octet-stream"
     attachment "pp_api_users.csv"
 

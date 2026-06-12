@@ -24,11 +24,9 @@ module ApiRequestProtection
     params[HONEYPOT_FIELD].to_s.strip != ''
   end
 
-  def log_bot_detection(email, reasons)
-    normalized_email = ApiUser.normalize_email(email)
+  def log_bot_detection(reasons)
     checks = reasons.join(',')
-    message = "[ApiRequestProtection] Suppressed submission email=#{normalized_email} checks=#{checks}"
-    STDERR.puts(message)
+    STDERR.puts("[ApiRequestProtection] Suppressed submission checks=#{checks}")
 
     return if $environment == 'test'
 
@@ -41,7 +39,7 @@ module ApiRequestProtection
       BotSubmissionSuppressed.new("checks=#{checks}"),
       namespace: 'api_request_protection',
       action: 'ApiRequestProtection#log_bot_detection',
-      tags: { email: normalized_email, checks: checks }
+      tags: { checks: checks }
     )
   rescue StandardError => e
     STDERR.puts("[ApiRequestProtection] Failed to log bot detection: #{e.message}")
