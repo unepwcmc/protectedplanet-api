@@ -34,13 +34,6 @@ module ApiRequestProtection
     reasons.each do |check|
       Appsignal.increment_counter("api_request_bot_detection_#{check}", 1)
     end
-
-    AppsignalNotifier.report_error(
-      BotSubmissionSuppressed.new("checks=#{checks}"),
-      namespace: 'api_request_protection',
-      action: 'ApiRequestProtection#log_bot_detection',
-      tags: { checks: checks }
-    )
   rescue StandardError => e
     STDERR.puts("[ApiRequestProtection] Failed to log bot detection: #{e.message}")
   end
