@@ -13,7 +13,8 @@ class SecurityHeaders
     "object-src 'none'",
     "img-src 'self' data: https:",
     "style-src 'self' 'unsafe-inline'",
-    "script-src 'self' https://www.google-analytics.com 'unsafe-inline'",
+    "script-src 'self' https://www.google-analytics.com https://challenges.cloudflare.com 'unsafe-inline'",
+    "frame-src https://challenges.cloudflare.com",
     "connect-src 'self' https://www.google-analytics.com"
   ].join('; ').freeze
 

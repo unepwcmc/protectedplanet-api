@@ -1,8 +1,10 @@
 module Web; end
 
+require 'web/helpers'
 require 'web/base_controller'
 
 class Web::DocumentationController < Web::BaseController
+  helpers Web::Helpers
   get('/documentation') do
     erb :documentation, layout: :layout
   end

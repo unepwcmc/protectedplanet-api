@@ -16,15 +16,15 @@ module TurnstileVerifier
   end
 
   def self.required?
-    REQUIRED_ENVIRONMENTS.include?($environment)
+    REQUIRED_ENVIRONMENTS.include?(APP_ENV)
   end
 
   def self.site_key
-    $secrets.dig(:turnstile, :site_key).to_s.strip
+    APP_SECRETS.dig(:turnstile, :site_key).to_s.strip
   end
 
   def self.secret_key
-    $secrets.dig(:turnstile, :secret_key).to_s.strip
+    APP_SECRETS.dig(:turnstile, :secret_key).to_s.strip
   end
 
   def self.failed_verification?(params, remote_ip: nil)
@@ -72,7 +72,7 @@ module TurnstileVerifier
   def self.log_missing_configuration
     warn('[TurnstileVerifier] Turnstile keys missing in production/staging; blocking submission')
 
-    return if $environment == 'test'
+    return if APP_ENV == 'test'
 
     AppsignalNotifier.report_error(
       SiteverifyError.new('Turnstile keys not configured'),
@@ -87,7 +87,7 @@ module TurnstileVerifier
   def self.log_verification_error(detail)
     warn("[TurnstileVerifier] Siteverify error: #{detail}")
 
-    return if $environment == 'test'
+    return if APP_ENV == 'test'
 
     Appsignal.increment_counter('turnstile_siteverify_error', 1)
     AppsignalNotifier.report_error(

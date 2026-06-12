@@ -26,22 +26,15 @@ module ApiRequestProtection
 
   def log_bot_detection(reasons)
     checks = reasons.join(',')
-    STDERR.puts("[ApiRequestProtection] Suppressed submission checks=#{checks}")
+    warn("[ApiRequestProtection] Suppressed submission checks=#{checks}")
 
-    return if $environment == 'test'
+    return if APP_ENV == 'test'
 
     # Counters aggregate volume by check type only (not per email).
     reasons.each do |check|
       Appsignal.increment_counter("api_request_bot_detection_#{check}", 1)
     end
-
-    AppsignalNotifier.report_error(
-      BotSubmissionSuppressed.new("checks=#{checks}"),
-      namespace: 'api_request_protection',
-      action: 'ApiRequestProtection#log_bot_detection',
-      tags: { checks: checks }
-    )
   rescue StandardError => e
-    STDERR.puts("[ApiRequestProtection] Failed to log bot detection: #{e.message}")
+    warn("[ApiRequestProtection] Failed to log bot detection: #{e.message}")
   end
 end
