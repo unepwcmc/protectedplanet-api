@@ -2,9 +2,10 @@ module Web; end
 require "web/helpers"
 require "lib/admin_csv_generator"
 
-class Web::AdminController < Sinatra::Base
+require "web/base_controller"
+
+class Web::AdminController < Web::BaseController
   helpers Web::Helpers
-  set :views, File.join(settings.root, '../views')
 
   get("/admin") do
     protected!

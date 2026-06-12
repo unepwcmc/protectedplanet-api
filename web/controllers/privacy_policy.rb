@@ -1,7 +1,8 @@
 module Web; end
 
-class Web::PrivacyPolicyController < Sinatra::Base
-  set :views, File.join(settings.root, '../views')
+require "web/base_controller"
+
+class Web::PrivacyPolicyController < Web::BaseController
 
   get("/privacy-policy") do
     erb :privacy_policy, layout: :layout

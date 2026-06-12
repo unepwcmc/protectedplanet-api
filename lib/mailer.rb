@@ -8,6 +8,15 @@ module Mailer
     )
   end
 
+  ALREADY_ACTIVE_TEMPLATE = ERB.new(File.read("lib/templates/already_active_account_notification.erb"))
+  def self.send_already_active_account_notification(api_user)
+    Pony.mail(
+      to: api_user.email,
+      subject: "Your Protected Planet API account",
+      html_body: ALREADY_ACTIVE_TEMPLATE.result(binding)
+    )
+  end
+
   NEW_ACTIVATION_TEMPLATE = ERB.new(File.read("lib/templates/new_activation_notification.erb"))
   def self.send_new_activation_notification api_user, documentation_url
     Pony.mail(

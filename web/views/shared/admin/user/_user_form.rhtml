@@ -1,5 +1,5 @@
 <form method="POST" action="/admin/api_users/<%= api_user.id %>">
-  <%= Rack::Csrf.csrf_tag(env) %>
+  <%== Rack::Csrf.csrf_tag(env) %>
 
   <div class="row">
     <label class="u-alt-font">Active</label>

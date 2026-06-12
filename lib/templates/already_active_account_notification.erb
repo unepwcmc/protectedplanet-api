@@ -1,0 +1,22 @@
+<p>
+  Hi<%= api_user.full_name.present? ? " #{Rack::Utils.escape_html(api_user.full_name)}" : '' %>,
+</p>
+
+<p>
+  We received a request for a Protected Planet API key at
+  <%= Rack::Utils.escape_html(api_user.email) %>.
+  An active API account already exists for this address, so you do not need to submit another request.
+</p>
+
+<p>
+  Your API token was sent to this address when your request was originally approved.
+  Please check your inbox and spam folder for an email titled
+  &ldquo;Your Protected Planet API token&rdquo;.
+</p>
+
+<p>
+  If you cannot find it or need a new token, please contact
+  <a href="mailto:protectedareas@unep-wcmc.org">protectedareas@unep-wcmc.org</a>.
+</p>
+
+<p>The Protected Planet team</p>

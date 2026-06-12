@@ -16,6 +16,7 @@ require 'grape-kaminari'
 
 require 'appsignal'
 Appsignal.start unless $environment == "test"
+require 'lib/appsignal_notifier'
 
 require 'active_support'
 

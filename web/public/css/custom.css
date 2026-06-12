@@ -20,7 +20,7 @@
 }
 
 /* Must match ApiRequestProtection::HONEYPOT_CSS_CLASS */
-.api-request-company-website {
+.api-request-contact-preference-x {
   position: absolute;
   left: -9999px;
   width: 1px;
