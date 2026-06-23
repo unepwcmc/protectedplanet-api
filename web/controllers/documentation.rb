@@ -1,7 +1,8 @@
 module Web; end
 
-class Web::DocumentationController < Sinatra::Base
-  set :views, File.join(settings.root, '../views')
+require "web/base_controller"
+
+class Web::DocumentationController < Web::BaseController
 
   get("/documentation") do
     erb :documentation, layout: :layout

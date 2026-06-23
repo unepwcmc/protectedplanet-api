@@ -16,6 +16,7 @@ require 'grape-kaminari'
 
 require 'appsignal'
 Appsignal.start unless $environment == "test"
+require 'lib/appsignal_notifier'
 
 require 'active_support'
 
@@ -28,6 +29,10 @@ require 'pony'
 
 # Configuration files
 require 'config/secrets'
+
+# Request protection (after secrets — TurnstileVerifier reads $secrets)
+require 'lib/turnstile_verifier'
+require 'lib/api_request_protection'
 require 'config/pony'
 require 'config/rabl'
 require 'config/active_record'

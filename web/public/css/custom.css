@@ -19,6 +19,15 @@
   display: inline !important;
 }
 
+/* Must match ApiRequestProtection::HONEYPOT_CSS_CLASS */
+.api-request-contact-preference-x {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 /* Active navigation link styling - higher specificity to override main.css */
 .hero .link-with-icon.link-with-icon--active {
   text-decoration: underline;
