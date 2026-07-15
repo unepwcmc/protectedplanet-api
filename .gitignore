@@ -38,6 +38,7 @@ build/
 
 # dotenv
 .env
+.env.*
 
 # Appsignal
 appsignal.log

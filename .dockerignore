@@ -1,0 +1,37 @@
+# Git and editor
+.git
+.gitignore
+.gitattributes
+.cursor
+.idea
+.vscode
+.ruby-lsp
+
+# Secrets and local env (keep example for reference)
+.env
+.env.*
+!.env.example
+
+# Bundler local state (must not overwrite image build config)
+.bundle
+vendor/bundle
+
+# Logs and temp files
+log
+log/*
+tmp
+tmp/*
+*.log
+
+# Tests and coverage (not needed at runtime)
+test
+coverage
+.rspec
+
+# Docs and CI (smaller context, no runtime use)
+*.md
+!README.md
+.github
+
+# Docker (avoid invalidating layers when only editing local dev Dockerfile)
+Dockerfile

@@ -1,0 +1,46 @@
+service: protectedplanet-api
+
+registry:
+  server: ghcr.io
+  username:
+    - KAMAL_REGISTRY_USERNAME
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+ssh:
+  user: wcmc
+
+builder:
+  remote:
+    arch: amd64
+  dockerfile: Dockerfile.deploy
+  args:
+    DOCKER_BASE_IMAGE: ruby:4.0.2-slim
+
+env:
+  clear:
+    APPSIGNAL_APP_NAME: protectedplanet-api
+  secret:
+    - RACK_SESSION_SECRET
+    - POSTGRES_HOST
+    - POSTGRES_PORT
+    - POSTGRES_DBNAME
+    - POSTGRES_USER
+    - POSTGRES_PASSWORD
+    - CORS_ORIGINS
+    - ADMIN_USERNAME
+    - ADMIN_PASSWORD
+    - MAILER_AUTHENTICATION
+    - MAILER_ADDRESS
+    - MAILER_DOMAIN
+    - MAILER_USERNAME
+    - MAILER_PASSWORD
+    - MAILER_HOST
+    - MAILER_PORT
+    - APPSIGNAL_API_TOKEN
+
+healthcheck:
+  path: /
+  max_attempts: 15
+  interval: 20s
+  port: "9292"

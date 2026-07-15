@@ -179,7 +179,13 @@ Sample response:
                 }
             ]
         }
-    ]
+    ],
+    "pagination": {
+        "page": 1,
+        "per_page": 25,
+        "total_pages": 12,
+        "total_count": 287
+    }
 }
 ~~~
 

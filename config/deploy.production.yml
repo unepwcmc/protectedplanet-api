@@ -1,0 +1,17 @@
+image: unepwcmc/protectedplanet-api/protectedplanet-api-production
+
+servers:
+  web:
+    hosts:
+      - new-web.pp-production.linode.protectedplanet.net
+    options:
+      add-host: host.docker.internal:host-gateway
+    labels:
+      traefik.http.routers.protectedplanet-api-web-production.rule: Host(`TODO_PRODUCTION_DOMAIN`)
+      traefik.http.routers.protectedplanet-api-web-production.priority: 10
+      traefik.http.middlewares.protectedplanet-api-https-headers.headers.customRequestHeaders.X-Forwarded-Proto: "https"
+      traefik.http.routers.protectedplanet-api-web-production.middlewares: protectedplanet-api-https-headers@docker,protectedplanet-api-web-production-retry@docker
+
+env:
+  clear:
+    RACK_ENV: production

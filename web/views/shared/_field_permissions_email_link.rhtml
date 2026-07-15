@@ -1,6 +1,6 @@
 <%
   # Generate email recipients from secrets configuration
-  recipients = $secrets[:mailer][:notifications_recipients].join(',')
+  recipients = Array(APP_SECRETS.dig(:mailer, :notifications_recipients)).join(',')
   
   # Email subject
   subject = "Protected Planet API - Field Permissions Request"

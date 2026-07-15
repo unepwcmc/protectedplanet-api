@@ -95,15 +95,21 @@ Sample response:
             "pame_evaluations": [
                 {
                     "asmt_id": 29653,
-                    "id": 29653, // Alias to asmt_id. It will be removed in next version (v5), use asmt_id.
+                    <!-- id is an alias to asmt_id. It will be removed in next version (v5)-->
+                    "id": 29653,
                     "eff_metaid": 27,
-                    "metadata_id": 27, // Alias to eff_metaid. It will be removed in next version (v5), use eff_metaid.
+                    <!-- metadata_id is an alias to eff_metaid. 
+                    It will be removed in next version (v5)-->
+                    "metadata_id": 27, 
                     "asmt_year": 2018,
-                    "year": 2018, // Alias to asmt_year. It will be removed in next version (v5), use asmt_year.
+                    <!-- year is an alias to asmt_year. It will be removed in next version (v5) -->
+                    "year": 2018, 
                     "method": "IMET",
-                    "methodology": "IMET", // Alias to method. It will be removed in next version (v5), use method.
+                    <!-- methodology is an alias to method. It will be removed in next version (v5) -->
+                    "methodology": "IMET", 
                     "asmt_url": "Not reported",
-                    "url": "Not reported", // Alias to asmt_url. It will be removed in next version (v5), use asmt_url.
+                    <!-- url is an alias to asmt_url. It will be removed in next version (v5) -->
+                    "url": "Not reported", 
                     "submit_year": 2019,
                     "verif_eff": "Verified",
                     "info_url": null,
@@ -147,18 +153,27 @@ Sample response:
             "green_list_status": {
                 "id": 1,
                 "gl_status": "Listed",
-                "status": "Listed", // Alias to gl_status. It will be removed in next version (v5), use gl_status.
+                <!-- status is an alias to gl_status. It will be removed in next version (v5) -->
+                "status": "Listed",
                 "gl_expiry": null,
-                "expiry_date": null, // Alias to gl_expiry. It will be removed in next version (v5), use gl_expiry.
+                <!-- expiry_date is an alias to gl_expiry. It will be removed in next version (v5) -->
+                "expiry_date": null, 
                 "gl_link": null,
-                "link": null // Alias to gl_link. It will be removed in next version (v5), use gl_link.
+                <!-- link is an alias to gl_link. It will be removed in next version (v5) -->
+                "link": null 
             },
             "links": {
                 "protected_planet": "https://protectedplanet.net/555555"
             },
             "legal_status_updated_at": "01/01/1872"
         }
-    ]
+    ],
+    "pagination": {
+        "page": 1,
+        "per_page": 25,
+        "total_pages": 12,
+        "total_count": 287
+    }
 }
 ~~~
 
@@ -275,15 +290,20 @@ Sample response:
             "pame_evaluations": [
                 {
                     "asmt_id": 29653,
-                    "id": 29653, // Alias to asmt_id. It will be removed in next version (v5), use asmt_id.
+                    <!-- id is an alias to asmt_id. It will be removed in next version (v5) -->
+                    "id": 29653, 
                     "eff_metaid": 27,
-                    "metadata_id": 27, // Alias to eff_metaid. It will be removed in next version (v5), use eff_metaid.
+                    <!--  metadata_id is an alias to eff_metaid. It will be removed in next version (v5) -->
+                    "metadata_id": 27,
                     "asmt_year": 2018,
-                    "year": 2018, // Alias to asmt_year. It will be removed in next version (v5), use asmt_year.
+                    <!-- year is an alias to asmt_year. It will be removed in next version (v5) -->
+                    "year": 2018, 
                     "method": "IMET",
-                    "methodology": "IMET", // Alias to method. It will be removed in next version (v5), use method.
+                    <!-- methodology is an alias to method. It will be removed in next version (v5) -->
+                    "methodology": "IMET", 
                     "asmt_url": "Not reported",
-                    "url": "Not reported", // Alias to asmt_url. It will be removed in next version (v5), use asmt_url.
+                    <!-- url is an alias to asmt_url. It will be removed in next version (v5) -->
+                    "url": "Not reported",
                     "submit_year": 2019,
                     "verif_eff": "Verified",
                     "info_url": null,
@@ -315,11 +335,14 @@ Sample response:
             "green_list_status": {
                 "id": 1,
                 "gl_status": "Listed",
-                "status": "Listed", // Alias to gl_status. It will be removed in next version (v5), use gl_status.
+                <!-- status is an alias to gl_status. It will be removed in next version (v5) -->
+                "status": "Listed",
                 "gl_expiry": null,
-                "expiry_date": null, // Alias to gl_expiry. It will be removed in next version (v5), use gl_expiry.
+                <!-- expiry_date is an alias to gl_expiry. It will be removed in next version (v5) -->
+                "expiry_date": null, 
                 "gl_link": null,
-                "link": null // Alias to gl_link. It will be removed in next version (v5), use gl_link.
+                <!-- link is an alias to gl_link. It will be removed in next version (v5) -->
+                "link": null 
             },
             "sources": [
                 {
@@ -338,12 +361,19 @@ Sample response:
             },
             "legal_status_updated_at": "01/01/1872"
         }
-    ]
+    ],
+    "pagination": {
+        "page": 1,
+        "per_page": 10,
+        "total_pages": 29,
+        "total_count": 287
+    }
 }
 ~~~
 
 ## `GET /v4/protected_area_parcels/:site_id`
 Returns all parcels for a protected area by its site_id.
+This endpoint is not paginated and does not include a `pagination` object.
 
 The accepted parameters are:
 
@@ -422,15 +452,20 @@ Sample response:
             "pame_evaluations": [
                 {
                     "asmt_id": 29653,
-                    "id": 29653, // Alias to asmt_id. It will be removed in next version (v5), use asmt_id.
+                    <!-- id is an alias to asmt_id. It will be removed in next version (v5) -->
+                    "id": 29653, 
                     "eff_metaid": 27,
-                    "metadata_id": 27, // Alias to eff_metaid. It will be removed in next version (v5), use eff_metaid.
+                    <!-- metadata_id is an alias to eff_metaid. It will be removed in next version (v5) -->
+                    "metadata_id": 27, 
                     "asmt_year": 2018,
-                    "year": 2018, // Alias to asmt_year. It will be removed in next version (v5), use asmt_year.
+                    <!-- year is an alias to asmt_year. It will be removed in next version (v5) -->
+                    "year": 2018, 
                     "method": "IMET",
-                    "methodology": "IMET", // Alias to method. It will be removed in next version (v5), use method.
+                    <!-- methodology is an alias to method. It will be removed in next version (v5) -->
+                    "methodology": "IMET",
                     "asmt_url": "Not reported",
-                    "url": "Not reported", // Alias to asmt_url. It will be removed in next version (v5), use asmt_url.
+                    <!-- url is an alias to asmt_url. It will be removed in next version (v5) -->
+                    "url": "Not reported", 
                     "submit_year": 2019,
                     "verif_eff": "Verified",
                     "info_url": null,
@@ -474,11 +509,14 @@ Sample response:
             "green_list_status": {
                 "id": 1,
                 "gl_status": "Listed",
-                "status": "Listed", // Alias to gl_status. It will be removed in next version (v5), use gl_status.
+                <!-- status is an alias to gl_status. It will be removed in next version (v5) -->
+                "status": "Listed", 
                 "gl_expiry": null,
-                "expiry_date": null, // Alias to gl_expiry. It will be removed in next version (v5), use gl_expiry.
+                <!-- expiry_date is an alias to gl_expiry. It will be removed in next version (v5) -->
+                "expiry_date": null,
                 "gl_link": null,
-                "link": null // Alias to gl_link. It will be removed in next version (v5), use gl_link.
+                <!-- link is an alias to gl_link. It will be removed in next version (v5) -->
+                "link": null
             },
             "legal_status_updated_at": "01/01/1872",
             "geojson": {
@@ -596,15 +634,20 @@ Sample response:
         "pame_evaluations": [
             {
                 "asmt_id": 29653,
-                "id": 29653, // Alias to asmt_id. It will be removed in next version (v5), use asmt_id.
+                <!-- id is an alias to asmt_id. It will be removed in next version (v5) -->
+                "id": 29653,
                 "eff_metaid": 27,
-                "metadata_id": 27, // Alias to eff_metaid. It will be removed in next version (v5), use eff_metaid.
+                <!-- metadata_id is an alias to eff_metaid. It will be removed in next version (v5) -->
+                "metadata_id": 27,
                 "asmt_year": 2018,
-                "year": 2018, // Alias to asmt_year. It will be removed in next version (v5), use asmt_year.
+                <!-- year is an alias to asmt_year. It will be removed in next version (v5) -->
+                "year": 2018,
                 "method": "IMET",
-                "methodology": "IMET", // Alias to method. It will be removed in next version (v5), use method.
+                <!-- methodology is an alias to method. It will be removed in next version (v5) -->
+                "methodology": "IMET",
                 "asmt_url": "Not reported",
-                "url": "Not reported", // Alias to asmt_url. It will be removed in next version (v5), use asmt_url.
+                <!-- url is an alias to asmt_url. It will be removed in next version (v5) -->
+                "url": "Not reported",
                 "submit_year": 2019,
                 "verif_eff": "Verified",
                 "info_url": null,
@@ -636,11 +679,14 @@ Sample response:
         "green_list_status": {
             "id": 1,
             "gl_status": "Listed",
-            "status": "Listed", // Alias to gl_status. It will be removed in next version (v5), use gl_status.
+            <!-- status is an alias to gl_status. It will be removed in next version (v5) -->
+            "status": "Listed",
             "gl_expiry": null,
-            "expiry_date": null, // Alias to gl_expiry. It will be removed in next version (v5), use gl_expiry.
+            <!-- expiry_date is an alias to gl_expiry. It will be removed in next version (v5) -->
+            "expiry_date": null,
             "gl_link": null,
-            "link": null // Alias to gl_link. It will be removed in next version (v5), use gl_link.
+            <!-- link is an alias to gl_link. It will be removed in next version (v5) -->
+            "link": null
         },
         "sources": [
             {

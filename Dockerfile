@@ -1,31 +1,24 @@
-FROM ruby:2.3.6
+FROM ruby:4.0.2-slim
 
-# Buster is EOL, so point APT to Debian archive mirrors before updating
-RUN printf 'deb http://archive.debian.org/debian buster main\n\
-deb http://archive.debian.org/debian buster-updates main\n\
-deb http://archive.debian.org/debian-security buster/updates main\n' > /etc/apt/sources.list \
-    && printf 'Acquire::Check-Valid-Until \"0\";\nAcquire::Retries \"3\";\nAPT::Get::AllowUnauthenticated \"true\";\n' > /etc/apt/apt.conf.d/99no-check-valid \
-    && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Check-Valid-Until=false update
-RUN apt-get install -y --allow-unauthenticated \
-  autoconf \
-  bison \
+# build-essential: compile native gems (e.g. puma, pg, rgeo). libpq-dev: pg gem.
+# libssl-dev / zlib1g-dev: common deps for extensions linking OpenSSL/zlib.
+# libyaml-dev: psych (via debug → irb → rdoc) needs yaml.h; slim image omits it.
+RUN apt-get update && apt-get install -y --no-install-recommends \
   build-essential \
-  curl \
-  git \
-  libreadline-dev \
   libssl-dev \
   libpq-dev \
-  nodejs \
-  zlib1g-dev
+  libyaml-dev \
+  zlib1g-dev \
+  && rm -rf /var/lib/apt/lists/*
 
-# install npm
-RUN apt-get install -y --allow-unauthenticated -qq npm
-RUN mkdir /ProtectedPlanetApi
-WORKDIR /ProtectedPlanetApi
-ADD Gemfile /ProtectedPlanetApi/Gemfile
-ADD Gemfile.lock /ProtectedPlanetApi/Gemfile.lock
-ADD config.ru /ProtectedPlanetApi/config.ru
-RUN gem install bundler -v 1.12.5 && bundle _1.12.5_ install
-COPY . /ProtectedPlanetApi
+WORKDIR /app
+COPY Gemfile /app/Gemfile
+COPY Gemfile.lock /app/Gemfile.lock
+RUN gem install bundler -v 4.0.9 && bundle install
+COPY . /app
+RUN chmod +x /app/bin/docker-dev-server
 EXPOSE 9292
-CMD ["rackup"]
+
+# Run the script via /bin/sh so it works when ${API_PATH}:/app bind-mounts replace the image:
+# the host checkout may not have +x on bin/*. (Direct exec would need chmod on the host.)
+CMD ["/bin/sh", "/app/bin/docker-dev-server"]

@@ -1,7 +1,11 @@
 require 'models/country'
 
 class API::V3::Countries < Grape::API
-  include Grape::Kaminari
+  helpers API::Helpers
+
+  rescue_from Grape::Exceptions::ValidationErrors do |e|
+    error! e, 400
+  end
 
   after do
     set_v3_deprecation_headers
@@ -9,45 +13,56 @@ class API::V3::Countries < Grape::API
 
   # == annotations
   ################
-  desc "Get all countries, paginated."
-  paginate per_page: 25, max_per_page: 50
-  params {
+  desc 'Get all countries, paginated.'
+  params do
+    optional :page, type: Integer, default: 1
+    optional :per_page, type: Integer, default: 25, values: 1..50
     optional :with_geometry, default: false, type: Boolean
     optional :iucn_category_long_names, default: false, type: Boolean
     optional :group_governances, default: false, type: Boolean
-  }
+  end
   # == body
   #########
-  get rabl: "v3/views/countries" do
-    collection = Country
+  get do
+    collection = Country.with_api_json_includes
     collection = collection.without_geometry unless params[:with_geometry]
 
-    @with_geometry = params[:with_geometry]
-    @iucn_category_long_names = params[:iucn_category_long_names]
-    @group_governances = params[:group_governances]
-    @countries = paginate(collection)
+    API::Serialisers::V3::CountrySerialiser.collection(
+      paginate_collection(collection),
+      current_user: current_user,
+      with_geometry: params[:with_geometry],
+      iucn_category_long_names: params[:iucn_category_long_names],
+      group_governances: params[:group_governances]
+    )
   end
 
   # == annotations
   ################
-  desc "Get one country, with geometry, given a ISO3 code"
-  params {
+  desc 'Get one country, with geometry, given a ISO3 code'
+  params do
     optional :with_geometry, default: true, type: Boolean
     optional :iucn_category_long_names, default: false, type: Boolean
     optional :group_governances, default: false, type: Boolean
-  }
+  end
   # == body
   #########
-  get ":iso_3", rabl: "v3/views/country" do
-    @with_geometry = params[:with_geometry]
-    @iucn_category_long_names = params[:iucn_category_long_names]
-    @group_governances = params[:group_governances]
+  get ':iso_3' do
+    scope = Country.with_api_json_includes
+    country =
+      if params[:iso_3].length == 2
+        scope.find_by_iso(params[:iso_3].upcase)
+      else
+        scope.find_by_iso_3(params[:iso_3].upcase)
+      end
 
-    if params[:iso_3].length == 2
-      @country = Country.find_by_iso(params[:iso_3].upcase) or error!(:not_found, 404)
-    else
-      @country = Country.find_by_iso_3(params[:iso_3].upcase) or error!(:not_found, 404)
-    end
+    error!(:not_found, 404) unless country
+
+    API::Serialisers::V3::CountrySerialiser.single(
+      country,
+      current_user: current_user,
+      with_geometry: params[:with_geometry],
+      iucn_category_long_names: params[:iucn_category_long_names],
+      group_governances: params[:group_governances]
+    )
   end
 end
-

@@ -1,4 +1,4 @@
-require "lib/mailer"
+require 'lib/mailer'
 
 require "web/base_controller"
 require "web/helpers"

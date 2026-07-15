@@ -1,7 +1,7 @@
-require "test_helper"
-require "models/concerns/api_object"
+require 'test_helper'
+require 'models/concerns/api_object'
 
-class ApiObjectTest < MiniTest::Test
+class ApiObjectTest < Minitest::Test
   def test_including_api_object_adds_to_api_objects
     klass = Class.new
     refute $api_objects.include?(klass)
@@ -16,8 +16,8 @@ class ApiObjectTest < MiniTest::Test
     klass.send(:include, ApiObject)
     assert_equal [], klass.api_attributes
 
-    klass.api_attributes = ["name", "iso_3"]
-    assert_equal ["name", "iso_3"], klass.api_attributes
+    klass.api_attributes = %w[name iso_3]
+    assert_equal %w[name iso_3], klass.api_attributes
   ensure
     $api_objects.reject! { |o| o == klass } if klass
   end
