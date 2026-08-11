@@ -1,18 +1,29 @@
 service: protectedplanet-api
 
+# No registry, no credentials — matching SAPI's Proxmox setup.
+#
+# `localhost:5555` is a naming prefix. Kamal 2 auto-starts a `registry:3`
+# container bound to 127.0.0.1:5555 on whichever machine runs the deploy, and
+# because `builder.remote` below targets the same host the app runs on, the
+# image is built straight into that host's Docker store. Nothing crosses a
+# registry, so there is no token to expire — which is what killed deploys on
+# the old Linode staging (see docs/findings/002).
+#
+# CONSTRAINT: holds only while build host == deploy host. If CI later builds on
+# the GitHub Actions runner, the image must cross hosts and a real registry
+# comes back into play.
 registry:
-  server: ghcr.io
-  username:
-    - KAMAL_REGISTRY_USERNAME
-  password:
-    - KAMAL_REGISTRY_PASSWORD
+  server: localhost:5555
 
 ssh:
   user: wcmc
 
+# kamal-proxy waits this long for a new container to report healthy (default 30).
+deploy_timeout: 120
+
 builder:
-  remote:
-    arch: amd64
+  arch: amd64
+  remote: ssh://wcmc@pp-web-staging-01.internal.unep-wcmc.org
   dockerfile: Dockerfile.deploy
   args:
     DOCKER_BASE_IMAGE: ruby:4.0.2-slim
@@ -39,8 +50,7 @@ env:
     - MAILER_PORT
     - APPSIGNAL_API_TOKEN
 
-healthcheck:
-  path: /
-  max_attempts: 15
-  interval: 20s
-  port: "9292"
+# Kamal 2 replaces Traefik with kamal-proxy: the `traefik:` block, the per-role
+# router/middleware labels and the top-level `healthcheck:` block are all gone.
+# Routing, TLS, retries and health checking are declared in the `proxy:` block
+# in config/deploy.<env>.yml.

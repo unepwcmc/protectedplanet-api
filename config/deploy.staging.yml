@@ -3,14 +3,29 @@ image: unepwcmc/protectedplanet-api/protectedplanet-api-staging
 servers:
   web:
     hosts:
-      - new-web.pp-staging.linode.protectedplanet.net
+      - pp-web-staging-01.internal.unep-wcmc.org # 172.20.0.160, VM 222 on pve-04
     options:
-      add-host: host.docker.internal:host-gateway
-    labels:
-      traefik.http.routers.protectedplanet-api-web-staging.rule: Host(`api-remove-after-testing.new-web.pp-staging.linode.protectedplanet.net`)
-      traefik.http.routers.protectedplanet-api-web-staging.priority: 10
-      traefik.http.middlewares.protectedplanet-api-https-headers.headers.customRequestHeaders.X-Forwarded-Proto: "https"
-      traefik.http.routers.protectedplanet-api-web-staging.middlewares: protectedplanet-api-https-headers@docker,protectedplanet-api-web-staging-retry@docker
+      add-host: host.docker.internal:host-gateway # reach host-bound Redis / Memcached
+    proxy:
+      # Real hostname now, not the `api-remove-after-testing` placeholder the
+      # Kamal 1 config used on Linode.
+      host: api-pp-web-staging-01.internal.unep-wcmc.org
+      app_port: 9292 # Puma via config.ru, per Dockerfile EXPOSE
+      response_timeout: 120 # default 30; Cloudflare's ceiling is 120
+      # Supply the *.internal.unep-wcmc.org wildcard explicitly. `ssl: true`
+      # alone makes kamal-proxy attempt Let's Encrypt ACME, which cannot
+      # validate an internal-only hostname — it fails with "no viable challenge
+      # type found" and then serves no certificate at all.
+      ssl:
+        certificate_pem: CERTIFICATE_PEM
+        private_key_pem: PRIVATE_KEY_PEM
+      forward_headers: true # replaces the Traefik X-Forwarded-Proto middleware
+      # Short interval so several attempts land inside deploy_timeout. The old
+      # Kamal 1 config used interval: 20s, which against the 30s default meant
+      # the first check hit a closed port and the second never arrived.
+      healthcheck:
+        path: /
+        interval: 3
 
 env:
   clear:

@@ -1,0 +1,6 @@
+# Kamal pinned separately from the app bundle. This app's Gemfile carries the
+# note "We can't upgrade to dotenv 3.2 until we upgrade kamal v2" — keeping
+# Kamal out of the app's lockfile removes that coupling entirely.
+source 'https://rubygems.org'
+
+gem 'kamal', '~> 2.10'
