@@ -12,8 +12,14 @@ service: protectedplanet-api
 # CONSTRAINT: holds only while build host == deploy host. If CI later builds on
 # the GitHub Actions runner, the image must cross hosts and a real registry
 # comes back into play.
+# Each app gets its OWN local-registry port. Kamal forwards this port from the
+# deploy host back to the machine running the deploy; with every app on 5555 two
+# concurrent deploys ask the same shared host to forward the same port to
+# different runners, and one dies with
+#   RuntimeError: Failed to establish port forward on pp-web-staging-01
+# Distinct ports let all six deploy in parallel.
 registry:
-  server: localhost:5555
+  server: localhost:5556
 
 ssh:
   user: wcmc
