@@ -1,0 +1,25 @@
+meta {
+  name: Get country by ISO code
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/v4/countries/{{iso_3}}?with_geometry=true&iucn_category_long_names=false&group_governances=false
+  body: none
+  auth: inherit
+}
+
+params:query {
+  with_geometry: true
+  iucn_category_long_names: false
+  group_governances: false
+}
+
+params:path {
+  iso_3: {{iso_3}}
+}
+
+docs {
+  Get one country by ISO3 (e.g. KEN) or ISO2 (e.g. KE) code. 404 if not found.
+}
