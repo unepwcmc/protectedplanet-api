@@ -194,6 +194,29 @@ end
   - Modifying existing field permissions
   - Database migrations that add API-exposed columns
 
+### Bruno API Collection
+
+A [Bruno](https://www.usebruno.com/) collection covering all **v4** endpoints lives in [`bruno/`](bruno/).
+
+**Usage:**
+1. Install Bruno, then *Open Collection* and select the `bruno/` folder.
+2. Pick an environment: `local` (`http://localhost:9292`) or `production` (`https://api.protectedplanet.net`).
+3. Set the `token` variable (declared as a secret var, so it is never committed) to a valid API user token.
+
+**What's included:**
+
+| Folder | Requests |
+| --- | --- |
+| `v4/protected_areas` | list, `/search`, `/biopama`, `/:site_id` |
+| `v4/protected_area_parcels` | list, `/search`, `/:site_id`, `/:site_id/:site_pid` |
+| `v4/countries` | list, `/:iso_3` (accepts ISO2 or ISO3) |
+| (root) | `/test` health check |
+
+**Notes:**
+- Auth is defined once at collection level as `Authorization: Bearer {{token}}` and inherited by every request. The `?token=` query parameter still works but is deprecated.
+- Optional search filters are pre-written but disabled (the `~` prefix in the params list) — enable them in the UI. `/search` requires at least one filter or it returns `400`.
+- `site_id`, `site_pid` and `iso_3` environment variables are placeholders; change them to values present in your database.
+
 ## Run Tests
 ```bundle exec rake test```
 
@@ -220,4 +243,5 @@ gem install pg -v '0.18.1' -- --with-cflags="-Wno-error=implicit-function-declar
 
 - [API Documentation](https://api.protectedplanet.net/documentation) - For API users
 - [ProtectedPlanet Main Repository](https://github.com/unepwcmc/ProtectedPlanet) - Main Rails application
+- [Bruno](https://www.usebruno.com/) - API client used by the `bruno/` collection
 - [ProtectedPlanet Database](https://github.com/unepwcmc/protectedplanet-db) - Database schemas and migrations
