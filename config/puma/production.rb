@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
-# Production: cluster-friendly preload, AR fork hooks.
-# Staging uses the same behaviour via config/puma/staging.rb (delegates here).
-# No stdout_redirect (same idea as wdpa-data-management-portal): Puma uses default process logging;
-# container runtime / Kamal collects stdout/stderr like the sibling Rails app.
-
-worker_count = Integer(ENV.fetch('PUMA_WORKERS', '0'))
+worker_count = Integer(ENV.fetch('PUMA_WORKERS', '2'))
 workers worker_count
 
 max_threads = Integer(ENV.fetch('PUMA_MAX_THREADS', '5'))
@@ -30,4 +25,4 @@ end
 
 port 9292
 
-pidfile ENV['PUMA_PIDFILE'] if (path = ENV['PUMA_PIDFILE']) && !path.empty?
+pidfile ENV.fetch('PUMA_PIDFILE', nil) if (path = ENV.fetch('PUMA_PIDFILE', nil)) && !path.empty?

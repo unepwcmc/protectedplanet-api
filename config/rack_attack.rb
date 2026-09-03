@@ -5,6 +5,7 @@ require 'active_support'
 require 'active_support/cache'
 require 'active_support/core_ext/object/blank'
 require 'api/auth_token'
+require_relative '../lib/client_ip'
 
 # Caps how many requests a single client can make, so one heavy API token (or a token-less
 # flood) can't consume the whole Puma thread pool and starve everyone else.
@@ -19,7 +20,7 @@ Rack::Attack.throttle('api/token-or-ip', limit: 50, period: 10) do |req|
   next unless req.path.match?(%r{\A/v[34]/})
 
   token = API::AuthToken.from_rack_params_and_env(req.params, req.env)
-  token.presence || req.ip
+  token.presence || ClientIp.resolve(req.env)
 end
 
 Rack::Attack.throttled_responder = lambda do |req|

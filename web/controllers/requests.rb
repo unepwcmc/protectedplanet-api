@@ -19,7 +19,7 @@ class Web::RequestsController < Web::BaseController
       return erb :request_success, layout: :layout
     end
 
-    if TurnstileVerifier.failed_verification?(params, remote_ip: client_ip)
+    if TurnstileVerifier.failed_verification?(params, remote_ip: ClientIp.resolve(request.env))
       @errors = ['Verification failed. Please complete the security check and try again.']
       return erb :request_error, layout: :layout
     end
@@ -48,12 +48,6 @@ class Web::RequestsController < Web::BaseController
   end
 
   private
-
-  def client_ip
-    request.env['HTTP_CF_CONNECTING_IP'].presence ||
-      request.env['HTTP_X_FORWARDED_FOR']&.split(',')&.first&.strip ||
-      request.ip
-  end
 
   def send_notification(new_user)
     activation_url = url('/admin/inactive')
