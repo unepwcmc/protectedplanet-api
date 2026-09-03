@@ -11,7 +11,7 @@ servers:
       # Kamal 1 config used on Linode.
       host: api-pp-web-staging-01.internal.unep-wcmc.org
       app_port: 9292 # Puma via config.ru, per Dockerfile EXPOSE
-      response_timeout: 30 # default 30; Cloudflare's ceiling is 120
+      response_timeout: 60 # default 30; Cloudflare's ceiling is 120
       # Supply the *.internal.unep-wcmc.org wildcard explicitly. `ssl: true`
       # alone makes kamal-proxy attempt Let's Encrypt ACME, which cannot
       # validate an internal-only hostname — it fails with "no viable challenge
