@@ -15,7 +15,7 @@ require 'api/auth_token'
 # a shared store (e.g. Redis) if a tighter, cluster-wide limit is needed later.
 Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
-Rack::Attack.throttle('api/token-or-ip', limit: 30, period: 10) do |req|
+Rack::Attack.throttle('api/token-or-ip', limit: 50, period: 10) do |req|
   next unless req.path.match?(%r{\A/v[34]/})
 
   token = API::AuthToken.from_rack_params_and_env(req.params, req.env)
