@@ -57,8 +57,7 @@ set** or the app refuses to boot. In development/test an empty value behaves lik
 
 ### Rate limiting
 
-`config/rack_attack.rb` throttles each API token (or IP, if no token) to 10 requests per
-10 seconds on `/v3` and `/v4` paths. **Caveat:** the counter store is an in-process
+`config/rack_attack.rb` throttles each API token (or IP, if no token) on `/v3` and `/v4` paths. **Caveat:** the counter store is an in-process
 `ActiveSupport::Cache::MemoryStore`, not Redis — each Puma worker counts independently, so
 the real ceiling for one client is closer to `limit * PUMA_WORKERS`, not a hard cluster-wide
 cap. Move to a shared store if a tighter, exact limit is ever needed.
