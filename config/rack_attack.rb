@@ -6,6 +6,7 @@ require 'active_support/cache'
 require 'active_support/core_ext/object/blank'
 require 'api/auth_token'
 require_relative '../lib/client_ip'
+require_relative '../lib/api_rate_limit'
 
 # Caps how many requests a single client can make, so one heavy API token (or a token-less
 # flood) can't consume the whole Puma thread pool and starve everyone else.
@@ -16,7 +17,7 @@ require_relative '../lib/client_ip'
 # a shared store (e.g. Redis) if a tighter, cluster-wide limit is needed later.
 Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
-Rack::Attack.throttle('api/token-or-ip', limit: 50, period: 10) do |req|
+Rack::Attack.throttle('api/token-or-ip', limit: ApiRateLimit::LIMIT, period: ApiRateLimit::PERIOD) do |req|
   next unless req.path.match?(%r{\A/v[34]/})
 
   token = API::AuthToken.from_rack_params_and_env(req.params, req.env)
