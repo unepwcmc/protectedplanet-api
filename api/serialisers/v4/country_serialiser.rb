@@ -5,7 +5,9 @@ module API
     module V4
       module CountrySerialiser
         include Concerns::SerialiserHelpers
+
         module_function :add_field
+
         module_function
 
         GROUPED_GOVERNANCE_ORDER = [
@@ -16,7 +18,9 @@ module API
           'Not Reported'
         ].freeze
 
-        def collection(countries, current_user:, with_geometry:, iucn_category_long_names:, group_governances:, pagination: nil)
+        def collection(countries, current_user:, with_geometry:, iucn_category_long_names:, group_governances:,
+                       pagination: nil)
+          jurisdictions = jurisdictions_by_name
           response = {
             'countries' => countries.map do |country|
               country_payload(
@@ -24,7 +28,8 @@ module API
                 current_user: current_user,
                 with_geometry: with_geometry,
                 iucn_category_long_names: iucn_category_long_names,
-                group_governances: group_governances
+                group_governances: group_governances,
+                jurisdictions: jurisdictions
               )
             end
           }
@@ -40,12 +45,21 @@ module API
               current_user: current_user,
               with_geometry: with_geometry,
               iucn_category_long_names: iucn_category_long_names,
-              group_governances: group_governances
+              group_governances: group_governances,
+              jurisdictions: jurisdictions_by_name
             )
           }
         end
 
-        def country_payload(country, current_user:, with_geometry:, iucn_category_long_names:, group_governances:)
+        # Jurisdictions (National/Regional/International) are static reference data shared by
+        # every country in a request; look them up once instead of per-country (was ~4 redundant
+        # queries per country: 3x Jurisdiction.find_by_name + 1x Jurisdiction.all).
+        def jurisdictions_by_name
+          Jurisdiction.all.index_by(&:name)
+        end
+
+        def country_payload(country, current_user:, with_geometry:, iucn_category_long_names:,
+                            group_governances:, jurisdictions:)
           # NOTE: Ruby hashes preserve insertion order; this serialiser intentionally
           # inserts keys in the order expected by the legacy output.
           payload = {
@@ -70,19 +84,23 @@ module API
             region_payload(country.region)
           end
 
-          payload['pas_count'] = country.protected_areas.count
-          payload['pas_national_count'] = protected_area_count(country, 'National')
-          payload['pas_regional_count'] = protected_area_count(country, 'Regional')
-          payload['pas_international_count'] = protected_area_count(country, 'International')
-          payload['pas_with_iucn_category_count'] = country.protected_areas.where('iucn_category_id IS NOT NULL').count
-          payload['pas_with_iucn_category_percentage'] = protected_area_with_iucn_percentage(country)
+          pas_count = country.protected_areas.count
+          pas_with_iucn_category_count = country.protected_areas.where('iucn_category_id IS NOT NULL').count
+
+          payload['pas_count'] = pas_count
+          payload['pas_national_count'] = protected_area_count(country, jurisdictions['National'])
+          payload['pas_regional_count'] = protected_area_count(country, jurisdictions['Regional'])
+          payload['pas_international_count'] = protected_area_count(country, jurisdictions['International'])
+          payload['pas_with_iucn_category_count'] = pas_with_iucn_category_count
+          payload['pas_with_iucn_category_percentage'] =
+            protected_area_with_iucn_percentage(pas_with_iucn_category_count, pas_count)
 
           add_field(payload, 'links', current_user.access_to?(Country, :link_to_pp)) do
             { 'protected_planet' => country.link_to_pp }
           end
 
           add_field(payload, 'designations', current_user.access_to?(Country, :designations)) do
-            designations_payload(country)
+            designations_payload(country, jurisdictions)
           end
 
           add_field(payload, 'iucn_categories', current_user.access_to?(Country, :iucn_categories)) do
@@ -96,8 +114,7 @@ module API
           payload
         end
 
-        def protected_area_count(country, jurisdiction_name)
-          jurisdiction = Jurisdiction.find_by_name(jurisdiction_name)
+        def protected_area_count(country, jurisdiction)
           return 0 unless jurisdiction
 
           ProtectedArea.search(country: country.iso_3, jurisdiction: jurisdiction.id).count
@@ -105,11 +122,8 @@ module API
           0
         end
 
-        def protected_area_with_iucn_percentage(country)
-          with_category = country.protected_areas.where('iucn_category_id IS NOT NULL').count
-          total = country.protected_areas.count
-
-          total.positive? ? ((with_category.to_f / total) * 100).round(2) : 0.0
+        def protected_area_with_iucn_percentage(with_category_count, total_count)
+          total_count.positive? ? ((with_category_count.to_f / total_count) * 100).round(2) : 0.0
         end
 
         def statistics_payload(country_statistic)
@@ -157,8 +171,8 @@ module API
           }
         end
 
-        def designations_payload(country)
-          Jurisdiction.all.flat_map do |jurisdiction|
+        def designations_payload(country, jurisdictions)
+          jurisdictions.each_value.flat_map do |jurisdiction|
             country.protected_areas_per_designation(jurisdiction).map do |row|
               {
                 'id' => row['designation_id'].to_i,

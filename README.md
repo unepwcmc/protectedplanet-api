@@ -1,63 +1,115 @@
 # Protected Planet API
 
-The official API for accessing global protected area data from the World Database on Protected Areas (WDPA).
+The public REST API at [api.protectedplanet.net](https://api.protectedplanet.net) serving
+WDPA / WD-OECM data. **Using** the API? Go to the
+[API documentation](https://api.protectedplanet.net/documentation). This README is for
+people who run or change the code.
 
-> **All Protected Planet projects in one workspace:** If you use VS Code, clone [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet) and open [protected-planet-family-apps.code-workspace](https://github.com/unepwcmc/ProtectedPlanet/blob/master/protected-planet-family-apps.code-workspace) so related apps load together.
+**New to the product family?** Read the
+[Protected Planet wiki](https://github.com/unepwcmc/protected-planet-wiki) first.
 
-## For API users
+---
 
-To **use** the API, see [API Documentation](https://api.protectedplanet.net/documentation).
+## What this app is
 
-## For developers
+Not a Rails app. It is a plain **Rack** stack with two mounted applications, cascaded in
+[`config.ru`](config.ru) as `Rack::Cascade.new([Web::Root, API::Root])` — documentation
+first, API second.
 
-This guide is for people who **run or contribute to** this codebase locally.
+| Path | Framework | Role |
+|---|---|---|
+| `api/` | [Grape](https://github.com/ruby-grape/grape) 3.2 | The REST API — `v3` and `v4` namespaces |
+| `web/` | [Sinatra](https://www.sinatrarb.com/) 4.2 | Documentation site and admin UI (ERB + Kramdown) |
+| `models/` | ActiveRecord | Shared models, shaped for API output |
 
-## Architecture overview
+Ruby 4.0.2, Puma 8. JSON is built by serialiser classes in `api/serialisers/`, not RABL.
+Middleware (in `config.ru`): cookie sessions, CSRF, CORS, AppSignal, AR connection
+management, rate limiting (`config/rack_attack.rb`, see caveat below), and a code reloader
+in development.
 
-The app is a **Ruby Rack** stack with two mounted applications:
+### It shares Protected Planet's database
 
-| Area | Framework | Role |
-|------|-----------|------|
-| `api/**/*` | [Grape](https://github.com/ruby-grape/grape) | REST API (v3 and v4 namespaces) |
-| `web/**/*` | [Sinatra](https://www.sinatrarb.com/) | Documentation and admin UI |
-
-### How it fits together
-
-1. **Rack::Cascade** in [`config.ru`](config.ru) runs **documentation first**, then the API: `[Web::Root, API::Root]`.
-2. **Shared ActiveRecord models** under `models/` mirror [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet/tree/master/app/models) but are shaped for API output. Cross-check the main app when changing behaviour; for new models, copy from ProtectedPlanet and adapt.
-3. **JSON responses** are built with **Grape serialiser classes** in [`api/serialisers/`](api/serialisers/) (not RABL).
-4. **Docs** use ERB views and Markdown (via Kramdown).
-5. **Middleware** (see `config.ru`): cookie sessions, CSRF, CORS, optional AppSignal, ActiveRecord connection management, and in development a code reloader.
-
-### Database
-
-The `db/` directory is a **git submodule** pointing at [protectedplanet-db](https://github.com/unepwcmc/protectedplanet-db) (schemas and migrations live there). Connection settings come from `POSTGRES_*` variables in `.env` (see [`.env.example`](.env.example)).
-
-All database migrations are ran in ProtectedPlanet using rails. This project is purely for serving APIs
-
-## Environment variables
-
-Boot **requires** `RACK_ENV` (e.g. `development`, `test`, or `production`). That value becomes the Ruby constant `RACK_ENV`—see [`config/environment.rb`](config/environment.rb).
-
-Copy [`.env.example`](.env.example) to `.env` and fill in values (team secrets are typically stored in Keeper). Database fields must match a running Postgres instance (often the one from the main ProtectedPlanet Docker stack).
-
-### CORS (`CORS_ORIGINS`)
-
-Browser clients sending `Origin` only receive CORS headers for origins listed in **`CORS_ORIGINS`** (comma-separated). In **development** and **test**, if the variable is unset or empty, the app behaves like a wildcard (`*`) and allows any origin, matching older behaviour. In **staging** and **production**, **`CORS_ORIGINS` must be set** to at least one explicit origin or the application will not start. Deployed values should list real front-end URLs (for example `https://www.protectedplanet.net`).
-
-## Available tasks
-
-### Reset API user permissions
+`db/` is a git **submodule** of
+[protectedplanet-db](https://github.com/unepwcmc/protectedplanet-db), the same one
+[ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet) uses. This app **never
+runs migrations** — all schema changes happen in the Rails app. Models here mirror the
+ones there; cross-check before changing behaviour.
 
 ```bash
-RACK_ENV=production bundle exec rake api_users:reset_permissions
+cd db && git fetch && git merge origin/master && cd ..
 ```
 
-- As of 10Apr26 all users should have all fields access, if this changes in future then update the rake task
-- **Purpose:** Give all API users access to every field listed in each model’s `api_attributes`.
-- **When:** After adding or changing fields in `api_attributes`, or after migrations expose new API columns.
+Because the two apps share a Postgres cluster, they also cannot diverge on Postgres or
+PostGIS version.
 
-### Remove API users
+## What it depends on outside this repo
+
+- **PP Postgres + PostGIS** — the same database ProtectedPlanet uses (`POSTGRES_*` in `.env`).
+- **AppSignal** — optional, enabled by env.
+- **Cloudflare** — in front of production.
+- **SMTP** — API-user signup and token mail.
+- Secrets live in **Keeper**.
+
+### `CORS_ORIGINS`
+
+Comma-separated list of allowed browser origins. In **staging and production it must be
+set** or the app refuses to boot. In development/test an empty value behaves like `*`.
+
+### Rate limiting
+
+`config/rack_attack.rb` throttles each API token (or IP, if no token) to 10 requests per
+10 seconds on `/v3` and `/v4` paths. **Caveat:** the counter store is an in-process
+`ActiveSupport::Cache::MemoryStore`, not Redis — each Puma worker counts independently, so
+the real ceiling for one client is closer to `limit * PUMA_WORKERS`, not a hard cluster-wide
+cap. Move to a shared store if a tighter, exact limit is ever needed.
+
+---
+
+## Running it locally
+
+### With the ProtectedPlanet stack (recommended)
+
+This app is a service in ProtectedPlanet's `docker-compose.yml`, behind the `api` profile.
+
+1. Clone and configure [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet) per
+   its [Docker docs](https://github.com/unepwcmc/ProtectedPlanet/blob/master/docs/docker.md).
+2. Set `API_PATH` in that repo's `.env` to the absolute path of this checkout.
+3. In Protected Planet folder run `docker compose --profile api up`
+4. Open <http://localhost:9292> (MailHog/Mailpit on <http://localhost:8025>).
+
+### Standalone
+
+Needs Ruby 4.0.2 (`.tool-versions`) and a Postgres already migrated by the Rails app.
+
+```bash
+bundle install
+cp .env.example .env      # then fill in RACK_ENV + POSTGRES_*
+sh ./bin/docker-dev-server
+```
+
+`RACK_ENV` is **required** — it becomes the `RACK_ENV` constant in
+[`config/environment.rb`](config/environment.rb) and boot fails without it.
+
+```bash
+RACK_ENV=development bundle exec bin/console   # IRB, not rails console
+bundle exec rake test                          # tests (RACK_ENV defaults to test)
+RACK_ENV=development bundle exec rake -T       # all tasks
+```
+
+---
+
+## Adding a field to the API
+
+1. Add it to the model's `api_attributes` array (e.g. `models/protected_area.rb`).
+2. Run the permission reset, or **existing API users will not see it**:
+   ```bash
+   RACK_ENV=production bundle exec rake api_users:reset_permissions
+   ```
+   As of Apr 2026 every user gets every field; if that policy changes, change the task.
+
+Do the same after any migration that exposes a new API column.
+
+### Other user tasks
 
 ```bash
 RACK_ENV=production bundle exec rake api_users:remove[inactive]
@@ -65,156 +117,29 @@ RACK_ENV=production bundle exec rake api_users:remove[archived]
 RACK_ENV=production bundle exec rake api_users:remove[archived_or_inactive]
 ```
 
-- **Purpose:** Remove inactive or archived API users (with confirmation and a preview).
+---
 
-### Other tasks
+## Trying endpoints
 
-```bash
-RACK_ENV=development bundle exec rake -T
-```
+A [Bruno](https://www.usebruno.com/) collection covering all **v4** endpoints is in
+[`bruno/`](bruno/) — open the folder, pick the `local` or `production` environment, and
+set the `token` secret var. Auth is `Authorization: Bearer {{token}}` at collection level
+(the `?token=` query param still works but is deprecated). Optional search filters are
+pre-written but disabled — `/search` returns `400` with no filters.
 
-## Getting started
+---
 
-### Option 1: Docker with ProtectedPlanet (recommended)
+## Deploying
 
-The API shares the Rails app database. The parent repo’s Compose file defines an optional **`api`** service (profile `api`) that builds this project.
-
-1. Clone [ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet) and configure its `.env` (including Postgres) and continue following all steps inside ProtectedPlanet project.
-2. Set **`API_PATH`** in that `.env` to your local **absolute path** to this `protectedplanet-api` checkout.
-3. Run migrations from the Rails app when needed (`bundle exec rails db:migrate` inside the `web` container or local Rails), and restore or seed data per [ProtectedPlanet Docker docs](https://github.com/unepwcmc/ProtectedPlanet/blob/master/docs/docker.md).
-4. Start the stack **with the API profile**:
-
-   ```bash
-   docker compose --profile api up
-   ```
-
-5. Open **`http://localhost:9292`**.
-
-For more detail (including running only `api` and `db`), see **Step 4** in [`docs/docker.md` in ProtectedPlanet](https://github.com/unepwcmc/ProtectedPlanet/blob/master/docs/docker.md).
-
-### Option 2: Local Ruby
-
-Use this when you already have Postgres and env vars configured.
-
-1. Install **Ruby 4.0.2** (see [`.tool-versions`](.tool-versions)), e.g. with [asdf](https://asdf-vm.com/).
-2. Install gems: `bundle install`
-3. Configure `.env` from `.env.example` and set `RACK_ENV=development` plus `POSTGRES_*` (and other required keys).
-4. Ensure the database exists and migrations have been applied from the main ProtectedPlanet Rails app (this repo is not a Rails app and does not run `rails db:migrate` here).
-5. Start the app on port **9292**:
-
-   ```bash
-    sh ./bin/docker-dev-server
-   ```
-
-6. Visit **`http://localhost:9292`**.
-
-### Development email previews
-
-- `mailhog` (default): sends email to MailHog (`http://localhost:8025`)
-- `smtp`: uses `MAILER_*` SMTP settings
-
-Docker run (ProtectedPlanet):
-
-```bash
-docker compose --profile api-new up
-```
-
-Open:
-
-- API: `http://localhost:9292`
-- MailHog: `http://localhost:8025`
-
-## Updating the database submodule
-
-```bash
-cd db/
-git fetch
-git merge origin/master
-cd ..
-```
-
-## Development console
-
-Use **IRB** (not Rails console). From the **project root**, load the app in one step:
-
-```bash
-RACK_ENV=development bundle exec bin/console
-```
-
-
-## API development: new attributes
-
-### 1. Add the field to `api_attributes`
-
-```ruby
-# e.g. models/protected_area.rb
-def api_attributes
-  [
-    'name', 'wdpa_id', 'designation',
-    'your_new_field'
-  ]
-end
-```
-
-### 2. Reset permissions
-
-
-
-#### ⚠️ Important Notes:
-- **Always run the rake task** after modifying `api_attributes`
-- This ensures existing API users can access new fields
-- **How?**
-  - Adding new fields to `api_attributes` arrays
-  - Modifying existing field permissions
-  - Database migrations that add API-exposed columns (via ProtectedPlanet repo rails db:migrate)
-  - Run [Reset API user permissions](#reset-api-user-permissions) so existing users can see new fields.
-
-### Bruno API Collection
-
-A [Bruno](https://www.usebruno.com/) collection covering all **v4** endpoints lives in [`bruno/`](bruno/).
-
-**Usage:**
-1. Install Bruno, then *Open Collection* and select the `bruno/` folder.
-2. Pick an environment: `local` (`http://localhost:9292`) or `production` (`https://api.protectedplanet.net`).
-3. Set the `token` variable (declared as a secret var, so it is never committed) to a valid API user token.
-
-**What's included:**
-
-| Folder | Requests |
-| --- | --- |
-| `v4/protected_areas` | list, `/search`, `/biopama`, `/:site_id` |
-| `v4/protected_area_parcels` | list, `/search`, `/:site_id`, `/:site_id/:site_pid` |
-| `v4/countries` | list, `/:iso_3` (accepts ISO2 or ISO3) |
-| (root) | `/test` health check |
-
-**Notes:**
-- Auth is defined once at collection level as `Authorization: Bearer {{token}}` and inherited by every request. The `?token=` query parameter still works but is deprecated.
-- Optional search filters are pre-written but disabled (the `~` prefix in the params list) — enable them in the UI. `/search` requires at least one filter or it returns `400`.
-- `site_id`, `site_pid` and `iso_3` environment variables are placeholders; change them to values present in your database.
-
-## Run Tests
-```bundle exec rake test```
-
-Do this whenever `api_attributes` or related permissions change, or when migrations add API-exposed columns.
-
-## Tests
-
-```bash
-bundle exec rake test
-```
-
-`RACK_ENV` defaults to `test` in [`test/test_helper.rb`](test/test_helper.rb) if unset. Ensure `POSTGRES_TEST_DBNAME` (and related `POSTGRES_*` vars) point at a test database.
+Kamal 2, from `config/deploy.yml` with `deploy.staging.yml` / `deploy.production.yml`.
+Staging runs on the internal Proxmox VM `pp-web-staging-01.internal.unep-wcmc.org` (served
+as `api-pp-web-staging-01.internal.unep-wcmc.org`), with the image built on that host and
+no registry. Production is still the Linode box
+`new-web.pp-production.linode.protectedplanet.net`.
 
 ## Troubleshooting
 
-- **Database connection errors:** Confirm Postgres is up and `POSTGRES_*` in `.env` match your instance (host/port often differ between Docker and localhost).
-- **Missing tables or columns:** Run migrations in the main ProtectedPlanet Rails repository against the same database.
-- **`RACK_ENV` missing:** Set it for any command that loads [`config/environment.rb`](config/environment.rb).
-- **Secrets:** Compare your `.env` with [`.env.example`](.env.example) and your team’s Keeper record.
-
-## Additional resources
-
-- [API Documentation](https://api.protectedplanet.net/documentation) - For API users
-- [ProtectedPlanet Main Repository](https://github.com/unepwcmc/ProtectedPlanet) - Main Rails application
-- [Bruno](https://www.usebruno.com/) - API client used by the `bruno/` collection
-- [ProtectedPlanet Database](https://github.com/unepwcmc/protectedplanet-db) - Database schemas and migrations
+- **Can't connect to the database** — `POSTGRES_*` host/port differ between Docker and localhost.
+- **Missing tables or columns** — run migrations in ProtectedPlanet, not here.
+- **`RACK_ENV` missing** — set it for anything that loads `config/environment.rb`.
+- **New field not visible to users** — you skipped `api_users:reset_permissions`.
