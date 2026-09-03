@@ -3,6 +3,6 @@
 # Single source of truth for the throttle figures enforced in config/rack_attack.rb
 # and displayed in the public API docs (web/views/documentation), so the two can't drift.
 module ApiRateLimit
-  LIMIT = 15
+  LIMIT = 25
   PERIOD = 3 # seconds
 end
