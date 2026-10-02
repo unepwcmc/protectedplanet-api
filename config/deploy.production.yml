@@ -1,16 +1,40 @@
+# ⚠ THIS FILE ON THE `production_kamal` BRANCH IS THE PROXMOX PREFLIGHT CONFIG.
+# The `production` branch has its own config/deploy.production.yml which deploys
+# LIVE LINODE PRODUCTION. Do not merge this branch into `production`.
+#
+# The name is forced: unepwcmc/devops-actions' kamal-v2.x-deploy validates
+# `environment` as staging|production and passes it to Kamal as `-d`, so the
+# destination must be `production` and the file must be deploy.production.yml.
+# The GitHub environment stays `production_proxmox`, which is where the secrets live.
+# Kamal destination: production (GitHub environment: production_proxmox).
+# See RUNBOOK-pp-preflight.md appendix for why this is not `production`.
+#
+# Shares pp_production with ProtectedPlanet, so the two must never diverge on
+# database or PostGIS version.
 image: unepwcmc/protectedplanet-api/protectedplanet-api-production
+
+builder:
+  remote: ssh://wcmc@pp-web-prod-01.internal.unep-wcmc.org
 
 servers:
   web:
     hosts:
-      - new-web.pp-production.linode.protectedplanet.net
+      - pp-web-prod-01.internal.unep-wcmc.org # 172.20.0.183, VM 224 on pve-04
     options:
       add-host: host.docker.internal:host-gateway
-    labels:
-      traefik.http.routers.protectedplanet-api-web-production.rule: Host(`TODO_PRODUCTION_DOMAIN`)
-      traefik.http.routers.protectedplanet-api-web-production.priority: 10
-      traefik.http.middlewares.protectedplanet-api-https-headers.headers.customRequestHeaders.X-Forwarded-Proto: "https"
-      traefik.http.routers.protectedplanet-api-web-production.middlewares: protectedplanet-api-https-headers@docker,protectedplanet-api-web-production-retry@docker
+    proxy:
+      host: api-pp-web-prod-01.internal.unep-wcmc.org
+      app_port: 9292 # Rack/Puma, not Rails' 3000
+      response_timeout: 120
+      # Internal-only hostname: ACME cannot validate it, so the wildcard is
+      # handed to kamal-proxy directly. /etc/ssl/kamal on the web host.
+      ssl:
+        certificate_pem: CERTIFICATE_PEM
+        private_key_pem: PRIVATE_KEY_PEM
+      forward_headers: true
+      healthcheck:
+        path: /
+        interval: 3
 
 env:
   clear:
