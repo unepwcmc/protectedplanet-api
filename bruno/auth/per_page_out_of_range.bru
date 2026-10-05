@@ -1,0 +1,17 @@
+meta {
+  name: Rejects per_page over 50
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/v4/protected_areas?per_page=51
+  body: none
+  auth: inherit
+}
+
+tests {
+  test("returns 400 for per_page=51", function() {
+    expect(res.getStatus()).to.equal(400);
+  });
+}

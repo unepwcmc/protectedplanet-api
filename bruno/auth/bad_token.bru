@@ -1,0 +1,21 @@
+meta {
+  name: Rejects invalid token
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/v4/countries?per_page=1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: not-a-real-token
+}
+
+tests {
+  test("returns 401 with an invalid token", function() {
+    expect(res.getStatus()).to.equal(401);
+  });
+}

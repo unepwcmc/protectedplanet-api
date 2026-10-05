@@ -19,3 +19,28 @@ params:query {
 docs {
   Get all protected areas, paginated. per_page must be 1..50.
 }
+
+tests {
+  test("returns 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("returns 1..25 protected areas", function() {
+    const pas = res.getBody().protected_areas;
+    expect(pas).to.be.an("array").that.is.not.empty;
+    expect(pas.length).to.be.at.most(25);
+    pas.forEach(pa => expect(pa.site_id).to.be.a("number"));
+  });
+
+  test("has integer pagination for page 1", function() {
+    const p = res.getBody().pagination;
+    expect(p.page).to.equal(1);
+    expect(p.per_page).to.equal(25);
+    expect(p.total_pages).to.be.a("number");
+    expect(p.total_count).to.be.a("number");
+  });
+
+  test("omits geojson when with_geometry=false", function() {
+    expect(res.getBody().protected_areas[0]).to.not.have.property("geojson");
+  });
+}

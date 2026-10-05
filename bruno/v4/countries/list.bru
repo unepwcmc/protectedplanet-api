@@ -21,3 +21,28 @@ params:query {
 docs {
   Get all countries, paginated. per_page must be 1..50.
 }
+
+tests {
+  test("returns 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("returns 1..25 countries with ISO3 codes", function() {
+    const countries = res.getBody().countries;
+    expect(countries).to.be.an("array").that.is.not.empty;
+    expect(countries.length).to.be.at.most(25);
+    countries.forEach(c => expect(c.iso_3).to.match(/^[A-Z]{3}$/));
+  });
+
+  test("has integer pagination for page 1", function() {
+    const p = res.getBody().pagination;
+    expect(p.page).to.equal(1);
+    expect(p.per_page).to.equal(25);
+    expect(p.total_pages).to.be.a("number");
+    expect(p.total_count).to.be.a("number");
+  });
+
+  test("omits geojson when with_geometry=false", function() {
+    expect(res.getBody().countries[0]).to.not.have.property("geojson");
+  });
+}

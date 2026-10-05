@@ -19,3 +19,24 @@ params:query {
 docs {
   Get all protected area parcels, paginated. per_page must be 1..50.
 }
+
+tests {
+  test("returns 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("returns 1..25 parcels with site_id and site_pid", function() {
+    const parcels = res.getBody().protected_area_parcels;
+    expect(parcels).to.be.an("array").that.is.not.empty;
+    expect(parcels.length).to.be.at.most(25);
+    parcels.forEach(p => expect(p).to.include.all.keys("site_id", "site_pid"));
+  });
+
+  test("has integer pagination for page 1", function() {
+    const p = res.getBody().pagination;
+    expect(p.page).to.equal(1);
+    expect(p.per_page).to.equal(25);
+    expect(p.total_pages).to.be.a("number");
+    expect(p.total_count).to.be.a("number");
+  });
+}

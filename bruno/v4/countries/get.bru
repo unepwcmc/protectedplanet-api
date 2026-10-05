@@ -23,3 +23,16 @@ params:path {
 docs {
   Get one country by ISO3 (e.g. KEN) or ISO2 (e.g. KE) code. 404 if not found.
 }
+
+tests {
+  test("returns 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("returns the requested country", function() {
+    const c = res.getBody().country;
+    expect(c.iso_3).to.equal(bru.getEnvVar("iso_3"));
+    expect(c).to.include.all.keys("name", "pas_count", "designations", "iucn_categories", "governances", "links");
+    expect(c.pas_count).to.be.a("number");
+  });
+}

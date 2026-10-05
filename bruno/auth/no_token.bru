@@ -1,0 +1,17 @@
+meta {
+  name: Rejects missing token
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/v4/countries?per_page=1
+  body: none
+  auth: none
+}
+
+tests {
+  test("returns 401 without a token", function() {
+    expect(res.getStatus()).to.equal(401);
+  });
+}

@@ -26,3 +26,23 @@ docs {
   Search for a subset of protected area parcels.
   At least one of: country, marine, designation, jurisdiction, governance, iucn_category.
 }
+
+tests {
+  test("returns 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("every parcel is in the searched country", function() {
+    const parcels = res.getBody().protected_area_parcels;
+    expect(parcels).to.be.an("array").that.is.not.empty;
+    parcels.forEach(p => expect(p.countries.map(c => c.iso_3)).to.include("KEN"));
+  });
+
+  test("has integer pagination for page 1", function() {
+    const p = res.getBody().pagination;
+    expect(p.page).to.equal(1);
+    expect(p.per_page).to.equal(25);
+    expect(p.total_pages).to.be.a("number");
+    expect(p.total_count).to.be.a("number");
+  });
+}

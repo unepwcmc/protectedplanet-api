@@ -13,3 +13,10 @@ get {
 docs {
   Authenticated smoke test. Returns { "status": "Success!" }.
 }
+
+tests {
+  test("returns 200 with success status", function() {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().status).to.equal("Success!");
+  });
+}

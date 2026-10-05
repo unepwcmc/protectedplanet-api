@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: {{base_url}}/v4/protected_area_parcels/{{site_id}}?with_geometry=true
+  url: {{base_url}}/v4/protected_area_parcels/{{parcel_site_id}}?with_geometry=true
   body: none
   auth: inherit
 }
@@ -15,9 +15,21 @@ params:query {
 }
 
 params:path {
-  site_id: {{site_id}}
+  site_id: {{parcel_site_id}}
 }
 
 docs {
   Get all parcels of a protected area via its site_id. 404 if none found.
+}
+
+tests {
+  test("returns 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("all parcels belong to the requested site_id", function() {
+    const parcels = res.getBody().protected_area_parcels;
+    expect(parcels).to.be.an("array").that.is.not.empty;
+    parcels.forEach(p => expect(String(p.site_id)).to.equal(String(bru.getEnvVar("parcel_site_id"))));
+  });
 }

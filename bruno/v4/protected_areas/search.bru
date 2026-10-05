@@ -28,3 +28,26 @@ docs {
   At least one of: country, marine, is_green_list, designation, jurisdiction, governance, iucn_category.
   `country` is an ISO3 code (3 letters).
 }
+
+tests {
+  test("returns 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("every result is in the searched country", function() {
+    const pas = res.getBody().protected_areas;
+    expect(pas).to.be.an("array").that.is.not.empty;
+    pas.forEach(pa => {
+      const isos = pa.countries.map(c => c.iso_3);
+      expect(isos).to.include("KEN");
+    });
+  });
+
+  test("has integer pagination for page 1", function() {
+    const p = res.getBody().pagination;
+    expect(p.page).to.equal(1);
+    expect(p.per_page).to.equal(25);
+    expect(p.total_pages).to.be.a("number");
+    expect(p.total_count).to.be.a("number");
+  });
+}

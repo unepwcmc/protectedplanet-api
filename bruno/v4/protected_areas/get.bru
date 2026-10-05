@@ -21,3 +21,25 @@ params:path {
 docs {
   Get a protected area via its site_id (WDPA ID). 404 if not found.
 }
+
+tests {
+  test("returns 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("returns the requested protected area", function() {
+    const pa = res.getBody().protected_area;
+    expect(String(pa.site_id)).to.equal(String(bru.getEnvVar("site_id")));
+    expect(pa.countries).to.be.an("array");
+    expect(pa.protected_area_parcels).to.be.an("array");
+    expect(pa.pame_evaluations).to.be.an("array");
+    expect(pa.designation.jurisdiction).to.be.an("object");
+  });
+
+  test("geojson, if granted, is null or a Feature", function() {
+    const pa = res.getBody().protected_area;
+    if ("geojson" in pa && pa.geojson !== null) {
+      expect(pa.geojson).to.be.an("object");
+    }
+  });
+}

@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: {{base_url}}/v4/protected_area_parcels/{{site_id}}/{{site_pid}}?with_geometry=true
+  url: {{base_url}}/v4/protected_area_parcels/{{parcel_site_id}}/{{parcel_site_pid}}?with_geometry=true
   body: none
   auth: inherit
 }
@@ -15,10 +15,22 @@ params:query {
 }
 
 params:path {
-  site_id: {{site_id}}
-  site_pid: {{site_pid}}
+  site_id: {{parcel_site_id}}
+  site_pid: {{parcel_site_pid}}
 }
 
 docs {
   Get a single protected area parcel via its site_id and site_pid. 404 if not found.
+}
+
+tests {
+  test("returns 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("returns the requested parcel", function() {
+    const p = res.getBody().protected_area_parcel;
+    expect(String(p.site_id)).to.equal(String(bru.getEnvVar("parcel_site_id")));
+    expect(String(p.site_pid)).to.equal(String(bru.getEnvVar("parcel_site_pid")));
+  });
 }
