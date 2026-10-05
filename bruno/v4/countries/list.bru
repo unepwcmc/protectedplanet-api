@@ -1,0 +1,23 @@
+meta {
+  name: List countries
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/v4/countries?page=1&per_page=25&with_geometry=false&iucn_category_long_names=false&group_governances=false
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  per_page: 25
+  with_geometry: false
+  iucn_category_long_names: false
+  group_governances: false
+}
+
+docs {
+  Get all countries, paginated. per_page must be 1..50.
+}

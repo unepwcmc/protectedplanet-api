@@ -1,0 +1,21 @@
+meta {
+  name: List protected areas
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/v4/protected_areas?page=1&per_page=25&with_geometry=false
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  per_page: 25
+  with_geometry: false
+}
+
+docs {
+  Get all protected areas, paginated. per_page must be 1..50.
+}

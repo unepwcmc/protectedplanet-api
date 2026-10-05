@@ -1,3 +1,13 @@
+### 0.7.2
+- Add Cloudflare Turnstile verification to API user registration
+- Add honeypot bot detection on registration form
+- Prevent duplicate registrations by returning the same success message for active or pending emails
+- Change registration submit path to POST `/submit-request-new-user` for Cloudflare rate limiting
+- Add AppSignal counters for Turnstile failures, bot detection, and missing credentials
+- Escape HTML by default in ERB templates
+- Protect admin export endpoint
+- Rename `company_name` form field to `company`
+
 ### 0.7.1
 - Correct typo for asmt_year in v3
 - Add parcel collector for appsignal

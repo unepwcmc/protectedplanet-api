@@ -1,0 +1,19 @@
+meta {
+  name: BIOPAMA (ACP countries)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/v4/protected_areas/biopama?with_geometry=false
+  body: none
+  auth: inherit
+}
+
+params:query {
+  with_geometry: false
+}
+
+docs {
+  Get ACP countries protected areas, with PAME evaluations. Not paginated.
+}

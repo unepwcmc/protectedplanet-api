@@ -13,6 +13,7 @@ gem 'kramdown', '~> 2.4'
 gem 'sinatra', '~> 4.2'
 
 # Security
+gem 'rack-attack', '~> 6.7'
 gem 'rack-cors', '~> 3.0', require: 'rack/cors'
 gem 'rack_csrf', '~> 2.7'
 

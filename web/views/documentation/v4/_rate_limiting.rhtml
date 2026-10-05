@@ -1,0 +1,19 @@
+<% require_relative '../../../../lib/api_rate_limit' %>
+
+<h2>Rate limiting</h2>
+
+<p class="article__paragraph">
+  Requests are throttled to
+  <strong>maximum of <%= ApiRateLimit::LIMIT %> requests every <%= ApiRateLimit::PERIOD %> seconds</strong>.
+</p>
+
+<p class="article__paragraph">
+  We monitor usage and may adjust these figures over time.
+</p>
+
+<p class="article__paragraph">
+  Exceeding the limit returns HTTP <code>429 Too Many Requests</code>, with a
+  <code>Retry-After</code> header and a JSON error body:
+</p>
+
+<pre><code>{ "error": "Rate limit exceeded. Please slow down and try again shortly." }</code></pre>

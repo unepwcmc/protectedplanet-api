@@ -1,0 +1,30 @@
+meta {
+  name: Search protected areas
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/v4/protected_areas/search?country=KEN&page=1&per_page=25&with_geometry=false
+  body: none
+  auth: inherit
+}
+
+params:query {
+  country: KEN
+  page: 1
+  per_page: 25
+  with_geometry: false
+  ~marine: true
+  ~is_green_list: true
+  ~designation: 1
+  ~jurisdiction: 1
+  ~governance: 1
+  ~iucn_category: 1
+}
+
+docs {
+  Search for a subset of protected areas.
+  At least one of: country, marine, is_green_list, designation, jurisdiction, governance, iucn_category.
+  `country` is an ISO3 code (3 letters).
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Health check
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/test
+  body: none
+  auth: inherit
+}
+
+docs {
+  Authenticated smoke test. Returns { "status": "Success!" }.
+}

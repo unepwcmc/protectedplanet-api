@@ -8,10 +8,15 @@ CorsOrigins.ensure_explicit_origins!
 require_relative 'security_headers'
 require_relative '../../api/root'
 require_relative '../../web/root'
+require_relative '../rack_attack'
+require_relative '../../lib/max_body_size'
 
+use MaxBodySize
+use Rack::Deflater
 use Rack::Session::Cookie, secret: ENV['RACK_SESSION_SECRET']
 use Rack::Csrf, raise: true
 use SecurityHeaders
+use Rack::Attack
 use Rack::Config do |env|
   env['api.tilt.root'] = File.expand_path('../../api', __dir__)
 end

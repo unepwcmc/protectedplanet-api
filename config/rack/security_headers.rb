@@ -3,7 +3,8 @@ class SecurityHeaders
     'X-Frame-Options' => 'DENY',
     'X-Content-Type-Options' => 'nosniff',
     'Referrer-Policy' => 'strict-origin-when-cross-origin',
-    'Permissions-Policy' => 'camera=(), microphone=(), geolocation=()'
+    'Permissions-Policy' => 'camera=(), microphone=(), geolocation=()',
+    'Strict-Transport-Security' => 'max-age=15768000'
   }.freeze
 
   DEFAULT_CSP = [
@@ -14,7 +15,7 @@ class SecurityHeaders
     "img-src 'self' data: https:",
     "style-src 'self' 'unsafe-inline'",
     "script-src 'self' https://www.google-analytics.com https://challenges.cloudflare.com 'unsafe-inline'",
-    "frame-src https://challenges.cloudflare.com",
+    'frame-src https://challenges.cloudflare.com',
     "connect-src 'self' https://www.google-analytics.com"
   ].join('; ').freeze
 

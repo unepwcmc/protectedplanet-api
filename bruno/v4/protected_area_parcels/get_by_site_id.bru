@@ -1,0 +1,23 @@
+meta {
+  name: Get parcels by site_id
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/v4/protected_area_parcels/{{site_id}}?with_geometry=true
+  body: none
+  auth: inherit
+}
+
+params:query {
+  with_geometry: true
+}
+
+params:path {
+  site_id: {{site_id}}
+}
+
+docs {
+  Get all parcels of a protected area via its site_id. 404 if none found.
+}

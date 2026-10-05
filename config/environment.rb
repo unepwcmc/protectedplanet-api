@@ -46,6 +46,7 @@ Tilt.prefer Tilt::KramdownTemplate
 # Request protection (after secrets — TurnstileVerifier reads APP_SECRETS)
 require 'lib/turnstile_verifier'
 require 'lib/api_request_protection'
+require 'lib/client_ip'
 
 # Models
 Dir["#{File.dirname(__FILE__)}/../models/**/*.rb"].each { |f| require f }
